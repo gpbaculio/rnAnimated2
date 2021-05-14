@@ -16,6 +16,10 @@ export const examples = [
     screen: 'PanGesture',
     title: '💳  Pan Gesture',
   },
+  {
+    screen: 'Transitions',
+    title: '🔁 Transitions',
+  },
 ];
 
 const Examples = () => {
