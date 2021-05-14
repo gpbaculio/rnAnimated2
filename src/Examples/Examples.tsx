@@ -12,6 +12,10 @@ export const examples = [
     screen: 'WorkletsAndSharedValues',
     title: '👩‍🏭 Worklets And SharedValues',
   },
+  {
+    screen: 'PanGesture',
+    title: '💳  Pan Gesture',
+  },
 ];
 
 const Examples = () => {
