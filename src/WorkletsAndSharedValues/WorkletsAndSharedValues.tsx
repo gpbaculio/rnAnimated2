@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, Platform} from 'react-native';
 import Animated, {runOnJS, useSharedValue} from 'react-native-reanimated';
-import {Button} from '../components';
-import {ReText} from '../components';
-import Text from '../components/Text';
+import {Button, ReText, Text} from '../components';
 
 const formatDatetime = (datetime: Date) => {
   'worklet';
@@ -37,7 +35,7 @@ const WorkletsAndSharedValues = () => {
       <ReText text={text} />
       <Text>{jsText}</Text>
       <Button
-        label="asd"
+        label="Say Hello"
         primary
         onPress={() => runOnJS(sayHello)(text, 'UI', text => setJsText(text))}
       />
