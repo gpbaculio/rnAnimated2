@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, Platform} from 'react-native';
-import Animated, {runOnJS, useSharedValue} from 'react-native-reanimated';
+import Animated, {runOnUI, useSharedValue} from 'react-native-reanimated';
 import {Button} from '../components';
 import {ReText} from '../components';
 import Text from '../components/Text';
@@ -29,9 +29,7 @@ const sayHello = (
 
 const WorkletsAndSharedValues = () => {
   const [jsText, setJsText] = useState('');
-
   const text = useSharedValue('');
-
   return (
     <View style={styles.container}>
       <ReText text={text} />
@@ -39,7 +37,7 @@ const WorkletsAndSharedValues = () => {
       <Button
         label="asd"
         primary
-        onPress={() => runOnJS(sayHello)(text, 'UI', text => setJsText(text))}
+        onPress={() => runOnUI(sayHello)(text, 'UI', text => setJsText(text))}
       />
     </View>
   );
