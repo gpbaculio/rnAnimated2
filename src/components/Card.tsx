@@ -1,18 +1,18 @@
 import React from 'react';
 import {Dimensions, Image, StyleSheet} from 'react-native';
 
+const card1 = require('./cardAssets/card1.png');
+const card2 = require('./cardAssets/card2.png');
+const card3 = require('./cardAssets/card3.png');
+const card4 = require('./cardAssets/card4.png');
+const card5 = require('./cardAssets/card5.png');
+const card6 = require('./cardAssets/card6.png');
+
 const {width} = Dimensions.get('window');
 const ratio = 228 / 362;
 export const CARD_WIDTH = width * 0.8;
 export const CARD_HEIGHT = CARD_WIDTH * ratio;
-export const assets = [
-  require('./cardAssets/card1.png'),
-  require('./cardAssets/card2.png'),
-  require('./cardAssets/card3.png'),
-  require('./cardAssets/card4.png'),
-  require('./cardAssets/card5.png'),
-  require('./cardAssets/card6.png'),
-];
+export const assets = [card1, card2, card3, card4, card5, card6];
 
 const styles = StyleSheet.create({
   card: {
