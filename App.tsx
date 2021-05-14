@@ -5,16 +5,17 @@ import {enableScreens} from 'react-native-screens';
 import {NavigationContainer} from '@react-navigation/native';
 
 import {WorkletsAndSharedValues} from './src';
-
 import {styleGuide} from './src/constants';
+import Examples from './src/Examples';
 
 enableScreens();
 
-type AppNavigatorStackNavigatorType = {
+export type AppStackNavigatorType = {
+  Examples: undefined;
   WorkletsAndSharedValues: undefined;
 };
 
-const Stack = createStackNavigator<AppNavigatorStackNavigatorType>();
+const Stack = createStackNavigator<AppStackNavigatorType>();
 
 const AppNavigator = () => (
   <Stack.Navigator
@@ -25,6 +26,13 @@ const AppNavigator = () => (
       },
       headerTintColor: 'white',
     }}>
+    <Stack.Screen
+      name="Examples"
+      component={Examples}
+      options={{
+        title: 'Learning Reanimated 2',
+      }}
+    />
     <Stack.Screen
       name="WorkletsAndSharedValues"
       component={WorkletsAndSharedValues}
