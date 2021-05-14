@@ -4,7 +4,13 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {enableScreens} from 'react-native-screens';
 import {NavigationContainer} from '@react-navigation/native';
 
-import {Examples, PanGesture, WorkletsAndSharedValues} from './src';
+import {
+  Examples,
+  PanGesture,
+  Transitions,
+  WorkletsAndSharedValues,
+} from './src';
+
 import {styleGuide} from './src/constants';
 
 enableScreens();
@@ -13,6 +19,7 @@ export type AppStackNavigatorType = {
   Examples: undefined;
   WorkletsAndSharedValues: undefined;
   PanGesture: undefined;
+  Transitions: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -45,6 +52,13 @@ const AppNavigator = () => (
       component={PanGesture}
       options={{
         title: 'Pan Gesture',
+      }}
+    />
+    <Stack.Screen
+      name="Transitions"
+      component={Transitions}
+      options={{
+        title: 'Transitions',
       }}
     />
   </Stack.Navigator>
