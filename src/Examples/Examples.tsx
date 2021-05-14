@@ -14,24 +14,6 @@ export const examples = [
   },
 ];
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: styleGuide.palette.background,
-  },
-  content: {
-    paddingBottom: 32,
-  },
-  thumbnail: {
-    backgroundColor: 'white',
-    padding: styleGuide.spacing * 2,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: styleGuide.palette.background,
-  },
-  title: {
-    ...styleGuide.typography.headline,
-  },
-});
-
 const Examples = () => {
   const {navigate} =
     useNavigation<StackNavigationProp<AppStackNavigatorType, 'Examples'>>();
@@ -53,3 +35,21 @@ const Examples = () => {
 };
 
 export default Examples;
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: styleGuide.palette.background,
+  },
+  content: {
+    paddingBottom: 32,
+  },
+  thumbnail: {
+    backgroundColor: 'white',
+    padding: styleGuide.spacing * 2,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: styleGuide.palette.background,
+  },
+  title: {
+    ...styleGuide.typography.headline,
+  },
+});
