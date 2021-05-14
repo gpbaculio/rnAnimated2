@@ -1,12 +1,26 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 
-const PanGesture = () => {
+import {Card, Cards} from '../components';
+
+interface GestureProps {
+  width: number;
+  height: number;
+}
+
+const Gesture = ({width, height}: GestureProps) => {
+  console.log({width, height});
   return (
-    <View>
-      <Text>PanGesture</Text>
+    <View style={styles.container}>
+      <Card card={Cards.Card1} />
     </View>
   );
 };
 
-export default PanGesture;
+export default Gesture;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
