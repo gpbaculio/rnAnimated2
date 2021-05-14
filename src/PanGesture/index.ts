@@ -1,1 +1,1 @@
-export {default as PanGesture} from './PanGesture';
+export {default} from './PanGesture';
