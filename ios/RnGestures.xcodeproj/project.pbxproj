@@ -11,12 +11,12 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		172213191DF4430FA92126D6 /* SF-Pro-Text-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6C30026244D848908D29CA7B /* SF-Pro-Text-Semibold.otf */; };
 		4D019260D2D9D4302F006A73 /* libPods-RnGestures.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31A12E4A17087B74D4E44AFB /* libPods-RnGestures.a */; };
+		521C0E774D7C461C84A96C4B /* SF-Pro-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 04C33E672DB54FC4939208FC /* SF-Pro-Text-Regular.otf */; };
+		55B292E7B42D4470874E45EC /* SF-Pro-Text-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1AFA64211C6943D795CA2F4C /* SF-Pro-Text-Bold.otf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		C7D07515D337E7CE48A007FB /* libPods-RnGestures-RnGesturesTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 162E00402D1244D0C4F146BA /* libPods-RnGestures-RnGesturesTests.a */; };
-		55B292E7B42D4470874E45EC /* SF-Pro-Text-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1AFA64211C6943D795CA2F4C /* SF-Pro-Text-Bold.otf */; };
-		521C0E774D7C461C84A96C4B /* SF-Pro-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 04C33E672DB54FC4939208FC /* SF-Pro-Text-Regular.otf */; };
-		172213191DF4430FA92126D6 /* SF-Pro-Text-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6C30026244D848908D29CA7B /* SF-Pro-Text-Semibold.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +33,7 @@
 		00E356EE1AD99517003FC87E /* RnGesturesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RnGesturesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* RnGesturesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RnGesturesTests.m; sourceTree = "<group>"; };
+		04C33E672DB54FC4939208FC /* SF-Pro-Text-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Pro-Text-Regular.otf"; path = "../assets/fonts/SF-Pro-Text-Regular.otf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* RnGestures.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RnGestures.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = RnGestures/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = RnGestures/AppDelegate.m; sourceTree = "<group>"; };
@@ -41,15 +42,14 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = RnGestures/main.m; sourceTree = "<group>"; };
 		14944D34C01D7A0094C8F114 /* Pods-RnGestures.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RnGestures.debug.xcconfig"; path = "Target Support Files/Pods-RnGestures/Pods-RnGestures.debug.xcconfig"; sourceTree = "<group>"; };
 		162E00402D1244D0C4F146BA /* libPods-RnGestures-RnGesturesTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RnGestures-RnGesturesTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AFA64211C6943D795CA2F4C /* SF-Pro-Text-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Pro-Text-Bold.otf"; path = "../assets/fonts/SF-Pro-Text-Bold.otf"; sourceTree = "<group>"; };
 		31A12E4A17087B74D4E44AFB /* libPods-RnGestures.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RnGestures.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6C30026244D848908D29CA7B /* SF-Pro-Text-Semibold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Pro-Text-Semibold.otf"; path = "../assets/fonts/SF-Pro-Text-Semibold.otf"; sourceTree = "<group>"; };
 		71A19F12D4832FC3C9CE3D6D /* Pods-RnGestures-RnGesturesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RnGestures-RnGesturesTests.debug.xcconfig"; path = "Target Support Files/Pods-RnGestures-RnGesturesTests/Pods-RnGestures-RnGesturesTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = RnGestures/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BF27923C0C01E99E0E3EDA65 /* Pods-RnGestures-RnGesturesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RnGestures-RnGesturesTests.release.xcconfig"; path = "Target Support Files/Pods-RnGestures-RnGesturesTests/Pods-RnGestures-RnGesturesTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EE72D12F0C546534B16B8370 /* Pods-RnGestures.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RnGestures.release.xcconfig"; path = "Target Support Files/Pods-RnGestures/Pods-RnGestures.release.xcconfig"; sourceTree = "<group>"; };
-		1AFA64211C6943D795CA2F4C /* SF-Pro-Text-Bold.otf */ = {isa = PBXFileReference; name = "SF-Pro-Text-Bold.otf"; path = "../assets/fonts/SF-Pro-Text-Bold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		04C33E672DB54FC4939208FC /* SF-Pro-Text-Regular.otf */ = {isa = PBXFileReference; name = "SF-Pro-Text-Regular.otf"; path = "../assets/fonts/SF-Pro-Text-Regular.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		6C30026244D848908D29CA7B /* SF-Pro-Text-Semibold.otf */ = {isa = PBXFileReference; name = "SF-Pro-Text-Semibold.otf"; path = "../assets/fonts/SF-Pro-Text-Semibold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +100,17 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
 			name = RnGestures;
+			sourceTree = "<group>";
+		};
+		26F7B79C577C425EB4F2F590 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1AFA64211C6943D795CA2F4C /* SF-Pro-Text-Bold.otf */,
+				04C33E672DB54FC4939208FC /* SF-Pro-Text-Regular.otf */,
+				6C30026244D848908D29CA7B /* SF-Pro-Text-Semibold.otf */,
+			);
+			name = Resources;
+			path = "";
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -155,17 +166,6 @@
 			);
 			name = Products;
 			sourceTree = "<group>";
-		};
-		26F7B79C577C425EB4F2F590 /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-				1AFA64211C6943D795CA2F4C /* SF-Pro-Text-Bold.otf */,
-				04C33E672DB54FC4939208FC /* SF-Pro-Text-Regular.otf */,
-				6C30026244D848908D29CA7B /* SF-Pro-Text-Semibold.otf */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 
