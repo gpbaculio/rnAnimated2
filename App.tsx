@@ -9,6 +9,7 @@ import {
   PanGesture,
   Transitions,
   WorkletsAndSharedValues,
+  HigherOrder,
 } from './src';
 
 import {styleGuide} from './src/constants';
@@ -20,6 +21,7 @@ export type AppStackNavigatorType = {
   WorkletsAndSharedValues: undefined;
   PanGesture: undefined;
   Transitions: undefined;
+  HigherOrder: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -59,6 +61,13 @@ const AppNavigator = () => (
       component={Transitions}
       options={{
         title: 'Transitions',
+      }}
+    />
+    <Stack.Screen
+      name="HigherOrder"
+      component={HigherOrder}
+      options={{
+        title: 'HigherOrder',
       }}
     />
   </Stack.Navigator>
