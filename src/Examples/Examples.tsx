@@ -10,7 +10,7 @@ import {styleGuide} from '../constants';
 export const examples = [
   {
     screen: 'WorkletsAndSharedValues',
-    title: '👩‍🏭 Worklets And SharedValues',
+    title: '👩‍🏭  Worklets And SharedValues',
   },
   {
     screen: 'PanGesture',
@@ -18,7 +18,11 @@ export const examples = [
   },
   {
     screen: 'Transitions',
-    title: '🔁 Transitions',
+    title: '🔁  Transitions',
+  },
+  {
+    screen: 'HigherOrder',
+    title: '🐎  Higher Order',
   },
 ];
 

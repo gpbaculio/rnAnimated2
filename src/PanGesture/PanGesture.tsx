@@ -12,6 +12,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import {Card, Cards, CARD_HEIGHT, CARD_WIDTH} from '../components';
+import {withBounce} from './constants';
 
 export const clamp = (
   value: number,
@@ -48,15 +49,23 @@ const Gesture = () => {
       translateY.value = clamp(ctx.offsetY + event.translationY, 0, boundY);
     },
     onEnd: event => {
-      translateX.value = withDecay({
-        velocity: event.velocityX,
-        clamp: [0, boundX],
-      });
+      translateX.value = withBounce(
+        withDecay({
+          velocity: event.velocityX,
+          clamp: [0, boundX],
+        }),
+        0,
+        boundX,
+      );
 
-      translateY.value = withDecay({
-        velocity: event.velocityY,
-        clamp: [0, boundY],
-      });
+      translateY.value = withBounce(
+        withDecay({
+          velocity: event.velocityY,
+          clamp: [0, boundY],
+        }),
+        0,
+        boundY,
+      );
     },
   });
 
