@@ -10,6 +10,7 @@ import {
   Transitions,
   WorkletsAndSharedValues,
   HigherOrder,
+  CircularSlider,
 } from './src';
 
 import {styleGuide} from './src/constants';
@@ -22,6 +23,7 @@ export type AppStackNavigatorType = {
   PanGesture: undefined;
   Transitions: undefined;
   HigherOrder: undefined;
+  CircularSlider: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -68,6 +70,13 @@ const AppNavigator = () => (
       component={HigherOrder}
       options={{
         title: 'HigherOrder',
+      }}
+    />
+    <Stack.Screen
+      name="CircularSlider"
+      component={CircularSlider}
+      options={{
+        title: 'CircularSlider',
       }}
     />
   </Stack.Navigator>
