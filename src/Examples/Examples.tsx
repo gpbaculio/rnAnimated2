@@ -24,6 +24,10 @@ export const examples = [
     screen: 'HigherOrder',
     title: '🐎  Higher Order',
   },
+  {
+    screen: 'CircularSlider',
+    title: '⭕️ Circular Slider',
+  },
 ];
 
 const Examples = () => {
