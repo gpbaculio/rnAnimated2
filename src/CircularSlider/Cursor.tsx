@@ -4,7 +4,10 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 import {StyleSheet} from 'react-native';
-import {PanGestureHandler} from 'react-native-gesture-handler';
+import {
+  PanGestureHandler,
+  PanGestureHandlerGestureEvent,
+} from 'react-native-gesture-handler';
 import {canvas2Polar, styleGuide, polar2Canvas} from '../constants';
 
 interface CursorProps {
@@ -15,13 +18,26 @@ interface CursorProps {
 
 const Cursor = ({strokeWidth, theta, r}: CursorProps) => {
   const center = {x: r, y: r};
-  const onGestureEvent = useAnimatedGestureHandler({
+
+  const onGestureEvent = useAnimatedGestureHandler<
+    PanGestureHandlerGestureEvent,
+    {offset: {x: number; y: number}}
+  >({
+    onStart: (_event, ctx) => {
+      const {x, y} = polar2Canvas(
+        {
+          theta: theta.value,
+          radius: r,
+        },
+        center,
+      );
+      ctx.offset = {x, y};
+    },
     onActive: (event, ctx) => {
       const {translationX, translationY} = event;
-      theta.value = canvas2Polar(
-        {x: translationX, y: translationY},
-        center,
-      ).theta;
+      const x = ctx.offset.x + translationX;
+      const y = ctx.offset.y + translationY;
+      theta.value = canvas2Polar({x, y}, center).theta;
     },
   });
 
@@ -37,6 +53,7 @@ const Cursor = ({strokeWidth, theta, r}: CursorProps) => {
       transform: [{translateX}, {translateY}],
     };
   });
+
   return (
     <PanGestureHandler {...{onGestureEvent}}>
       <Animated.View
