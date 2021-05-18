@@ -9,11 +9,12 @@ import {
   PanGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
 import {canvas2Polar, styleGuide, polar2Canvas} from '../constants';
+import {clamp} from '../PanGesture/PanGesture';
 
 interface CursorProps {
   r: number;
   strokeWidth: number;
-  theta: any;
+  theta: Animated.SharedValue<number>;
 }
 
 const Cursor = ({strokeWidth, theta, r}: CursorProps) => {
@@ -36,8 +37,19 @@ const Cursor = ({strokeWidth, theta, r}: CursorProps) => {
     onActive: (event, ctx) => {
       const {translationX, translationY} = event;
       const x = ctx.offset.x + translationX;
-      const y = ctx.offset.y + translationY;
-      theta.value = canvas2Polar({x, y}, center).theta;
+      const y1 = ctx.offset.y + translationY;
+      const y =
+        x < r
+          ? y1
+          : theta.value < Math.PI
+          ? clamp(y1, 0, r - 0.001)
+          : clamp(y1, r, 2 * r);
+      const value = canvas2Polar({x, y}, center).theta;
+      theta.value = value > 0 ? value : 2 * Math.PI + value;
+      console.log({
+        before: value,
+        after: theta.value,
+      });
     },
   });
 
