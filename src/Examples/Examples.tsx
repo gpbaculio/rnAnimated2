@@ -28,6 +28,10 @@ export const examples = [
     screen: 'CircularSlider',
     title: '⭕️ Circular Slider',
   },
+  {
+    screen: 'GraphInteractions',
+    title: '📈 Graph Interactions',
+  },
 ];
 
 const Examples = () => {
