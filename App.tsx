@@ -11,6 +11,7 @@ import {
   WorkletsAndSharedValues,
   HigherOrder,
   CircularSlider,
+  GraphInteractions,
 } from './src';
 
 import {styleGuide} from './src/constants';
@@ -24,6 +25,7 @@ export type AppStackNavigatorType = {
   Transitions: undefined;
   HigherOrder: undefined;
   CircularSlider: undefined;
+  GraphInteractions: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -77,6 +79,13 @@ const AppNavigator = () => (
       component={CircularSlider}
       options={{
         title: 'CircularSlider',
+      }}
+    />
+    <Stack.Screen
+      name="GraphInteractions"
+      component={GraphInteractions}
+      options={{
+        title: 'GraphInteractions',
       }}
     />
   </Stack.Navigator>
