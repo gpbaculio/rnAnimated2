@@ -7,3 +7,4 @@ export {default as CircularSlider} from './CircularSlider';
 export {default as GraphInteractions} from './GraphInteractions';
 export {default as Swiping} from './Swiping';
 export {default as DynamicSprings} from './DynamicSprings';
+export {default as DragToSort} from './DragToSort';
