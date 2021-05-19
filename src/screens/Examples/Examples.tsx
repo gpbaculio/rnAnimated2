@@ -36,6 +36,10 @@ export const examples = [
     screen: 'Swiping',
     title: '💚  Swiping',
   },
+  {
+    screen: 'DynamicSprings',
+    title: '👨‍🔬  Dynamic Springs',
+  },
 ];
 
 const Examples = () => {
