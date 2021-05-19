@@ -21,7 +21,7 @@ const DragToSort = () => {
   return (
     <SortableList item={{width, height: CARD_HEIGHT + 32}}>
       {cards.map((card, index) => (
-        <View style={styles.card} key={index}>
+        <View style={styles.card} key={`${Date.now()}-${index}`}>
           <Card card={card} />
         </View>
       ))}

@@ -45,7 +45,14 @@ interface CardProps {
 }
 
 const Card = ({card}: CardProps) => {
-  return <Image style={styles.card} source={assets[card]} />;
+  return (
+    <Image
+      resizeMethod="scale"
+      resizeMode="contain"
+      style={styles.card}
+      source={assets[card]}
+    />
+  );
 };
 
 export default Card;
