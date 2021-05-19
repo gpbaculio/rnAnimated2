@@ -1,3 +1,4 @@
+import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {StatusBar} from 'react-native';
@@ -11,6 +12,7 @@ import {
   HigherOrder,
   CircularSlider,
   GraphInteractions,
+  Swiping,
 } from '../screens';
 
 export type AppStackNavigatorType = {
@@ -21,6 +23,7 @@ export type AppStackNavigatorType = {
   HigherOrder: undefined;
   CircularSlider: undefined;
   GraphInteractions: undefined;
+  Swiping: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -83,6 +86,13 @@ const AppNavigator = () => (
         component={GraphInteractions}
         options={{
           title: 'GraphInteractions',
+        }}
+      />
+      <Stack.Screen
+        name="Swiping"
+        component={Swiping}
+        options={{
+          title: 'Swiping',
         }}
       />
     </Stack.Navigator>

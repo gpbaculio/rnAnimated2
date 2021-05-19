@@ -5,3 +5,4 @@ export {default as Transitions} from './Transitions';
 export {default as HigherOrder} from './HigherOrder';
 export {default as CircularSlider} from './CircularSlider';
 export {default as GraphInteractions} from './GraphInteractions';
+export {default as Swiping} from './Swiping';
