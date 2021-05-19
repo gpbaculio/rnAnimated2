@@ -3,7 +3,6 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {StatusBar} from 'react-native';
 
-import {styleGuide} from '../screens/constants';
 import {
   Examples,
   PanGesture,
@@ -13,7 +12,9 @@ import {
   CircularSlider,
   GraphInteractions,
   Swiping,
+  DynamicSprings,
 } from '../screens';
+import {styleGuide} from '../screens/constants';
 
 export type AppStackNavigatorType = {
   Examples: undefined;
@@ -24,6 +25,7 @@ export type AppStackNavigatorType = {
   CircularSlider: undefined;
   GraphInteractions: undefined;
   Swiping: undefined;
+  DynamicSprings: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -93,6 +95,13 @@ const AppNavigator = () => (
         component={Swiping}
         options={{
           title: 'Swiping',
+        }}
+      />
+      <Stack.Screen
+        name="DynamicSprings"
+        component={DynamicSprings}
+        options={{
+          title: 'DynamicSprings',
         }}
       />
     </Stack.Navigator>
