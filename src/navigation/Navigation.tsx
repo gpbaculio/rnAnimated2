@@ -12,7 +12,7 @@ import {
   HigherOrder,
   CircularSlider,
   GraphInteractions,
-  Swipe,
+  Swiping,
 } from '../screens';
 
 export type AppStackNavigatorType = {
@@ -23,7 +23,7 @@ export type AppStackNavigatorType = {
   HigherOrder: undefined;
   CircularSlider: undefined;
   GraphInteractions: undefined;
-  Swipe: undefined;
+  Swiping: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -89,10 +89,10 @@ const AppNavigator = () => (
         }}
       />
       <Stack.Screen
-        name="Swipe"
-        component={Swipe}
+        name="Swiping"
+        component={Swiping}
         options={{
-          title: 'Swipe',
+          title: 'Swiping',
         }}
       />
     </Stack.Navigator>

@@ -33,8 +33,8 @@ export const examples = [
     title: '📈  Graph Interactions',
   },
   {
-    screen: 'Swipe',
-    title: '💚  Swipe',
+    screen: 'Swiping',
+    title: '💚  Swiping',
   },
 ];
 
