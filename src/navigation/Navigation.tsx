@@ -1,6 +1,8 @@
 import {createStackNavigator} from '@react-navigation/stack';
-import {styleGuide} from '../screens/constants';
+import {NavigationContainer} from '@react-navigation/native';
+import {StatusBar} from 'react-native';
 
+import {styleGuide} from '../screens/constants';
 import {
   Examples,
   PanGesture,
@@ -10,8 +12,6 @@ import {
   CircularSlider,
   GraphInteractions,
 } from '../screens';
-import {NavigationContainer} from '@react-navigation/native';
-import {StatusBar} from 'react-native';
 
 export type AppStackNavigatorType = {
   Examples: undefined;
