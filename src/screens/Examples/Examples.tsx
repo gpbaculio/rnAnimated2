@@ -4,8 +4,8 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native';
 import {RectButton} from 'react-native-gesture-handler';
 
-import {AppStackNavigatorType} from '../../App';
 import {styleGuide} from '../constants';
+import {AppStackNavigatorType} from '../../navigation/Navigation';
 
 export const examples = [
   {
@@ -26,11 +26,15 @@ export const examples = [
   },
   {
     screen: 'CircularSlider',
-    title: '⭕️ Circular Slider',
+    title: '⭕️  Circular Slider',
   },
   {
     screen: 'GraphInteractions',
-    title: '📈 Graph Interactions',
+    title: '📈  Graph Interactions',
+  },
+  {
+    screen: 'Swipe',
+    title: '💚  Swipe',
   },
 ];
 
