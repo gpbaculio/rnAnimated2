@@ -28,6 +28,7 @@ const SortableItem = ({
   height,
 }: SortableItemProps) => {
   const activeCard = useSharedValue(-1);
+
   const isGestureActive = useSharedValue(false);
 
   const x = useSharedValue(0);
@@ -64,14 +65,6 @@ const SortableItem = ({
     },
   });
 
-  const translateY = useDerivedValue(() => {
-    if (isGestureActive.value) {
-      return y.value;
-    } else {
-      return withSpring(currentOffset.y.value);
-    }
-  });
-
   const style = useAnimatedStyle(() => ({
     position: 'absolute',
     top: 0,
@@ -80,7 +73,11 @@ const SortableItem = ({
     height,
     zIndex: activeCard.value === index ? 100 : 1,
     transform: [
-      {translateY: translateY.value},
+      {
+        translateY: isGestureActive.value
+          ? y.value
+          : withSpring(currentOffset.y.value),
+      },
       {translateX: x.value},
       {scale: withSpring(isGestureActive.value ? 1.05 : 1)},
     ],
