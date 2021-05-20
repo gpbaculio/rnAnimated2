@@ -14,6 +14,7 @@ import {
   Swiping,
   DynamicSprings,
   DragToSort,
+  CubicBezier,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -28,6 +29,7 @@ export type AppStackNavigatorType = {
   Swiping: undefined;
   DynamicSprings: undefined;
   DragToSort: undefined;
+  CubicBezier: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -75,21 +77,21 @@ const AppNavigator = () => (
         name="HigherOrder"
         component={HigherOrder}
         options={{
-          title: 'HigherOrder',
+          title: 'Higher Order',
         }}
       />
       <Stack.Screen
         name="CircularSlider"
         component={CircularSlider}
         options={{
-          title: 'CircularSlider',
+          title: 'Circular Slider',
         }}
       />
       <Stack.Screen
         name="GraphInteractions"
         component={GraphInteractions}
         options={{
-          title: 'GraphInteractions',
+          title: 'Graph Interactions',
         }}
       />
       <Stack.Screen
@@ -103,14 +105,21 @@ const AppNavigator = () => (
         name="DynamicSprings"
         component={DynamicSprings}
         options={{
-          title: 'DynamicSprings',
+          title: 'Dynamic Springs',
         }}
       />
       <Stack.Screen
         name="DragToSort"
         component={DragToSort}
         options={{
-          title: 'DragToSort',
+          title: 'Drag To Sort',
+        }}
+      />
+      <Stack.Screen
+        name="CubicBezier"
+        component={CubicBezier}
+        options={{
+          title: 'Cubic Bezier',
         }}
       />
     </Stack.Navigator>
