@@ -12,6 +12,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
+import {snapPoint} from '../constants';
 
 import Profile, {A, ProfileModel} from './Profile';
 
@@ -22,21 +23,6 @@ interface SwiperProps {
   onTop: boolean;
   scale: Animated.SharedValue<number>;
 }
-/**
- * @summary Select a point where the animation should snap to given the value of the gesture and it's velocity.
- * @worklet
- */
-export const snapPoint = (
-  value: number,
-  velocity: number,
-  points: ReadonlyArray<number>,
-): number => {
-  'worklet';
-  const point = value + 0.2 * velocity;
-  const deltas = points.map(p => Math.abs(point - p));
-  const minDelta = Math.min.apply(null, deltas);
-  return points.filter(p => Math.abs(point - p) === minDelta)[0];
-};
 
 const snapPoints = [-A, 0, A];
 

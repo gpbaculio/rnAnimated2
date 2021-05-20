@@ -1,5 +1,4 @@
 import React, {ReactNode} from 'react';
-import {View} from 'react-native';
 import {
   PanGestureHandler,
   PanGestureHandlerGestureEvent,
@@ -7,7 +6,6 @@ import {
 import Animated, {
   useAnimatedGestureHandler,
   useAnimatedStyle,
-  useDerivedValue,
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
@@ -41,7 +39,7 @@ const SortableItem = ({
     PanGestureHandlerGestureEvent,
     {offsetX: number; offsetY: number}
   >({
-    onStart: (event, ctx) => {
+    onStart: (_, ctx) => {
       isGestureActive.value = true;
       activeCard.value = index;
       ctx.offsetY = currentOffset.y.value;

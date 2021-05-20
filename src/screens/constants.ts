@@ -1,9 +1,55 @@
 // eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="constants.d.ts"/>
+import {interpolate, Extrapolate} from 'react-native-reanimated';
 
 import parseSVG from 'parse-svg-path';
 import absSVG from 'abs-svg-path';
 import normalizeSVG from 'normalize-svg-path';
+
+/**
+ * @summary Select a point where the animation should snap to given the value of the gesture and it's velocity.
+ * @worklet
+ */
+export const snapPoint = (
+  value: number,
+  velocity: number,
+  points: ReadonlyArray<number>,
+): number => {
+  'worklet';
+  const point = value + 0.2 * velocity;
+  const deltas = points.map(p => Math.abs(point - p));
+  const minDelta = Math.min.apply(null, deltas);
+  return points.filter(p => Math.abs(point - p) === minDelta)[0];
+};
+
+/**
+ * @summary Computes animation node rounded to precision.
+ * @worklet
+ */
+export const round = (value: number, precision = 0) => {
+  'worklet';
+  const p = Math.pow(10, precision);
+  return Math.round(value * p) / p;
+};
+
+export const scale = (v: number, d: number[], r: number[]) => {
+  'worklet';
+  return interpolate(v, d, r, Extrapolate.CLAMP);
+};
+
+export const scaleInvert = (y: number, d: number[], r: number[]) => {
+  'worklet';
+  return interpolate(y, r, d, Extrapolate.CLAMP);
+};
+
+export const clamp = (
+  value: number,
+  lowerBound: number,
+  upperBound: number,
+) => {
+  'worklet';
+  return Math.min(Math.max(lowerBound, value), upperBound);
+};
 
 /**
  * @summary Type representing a vector

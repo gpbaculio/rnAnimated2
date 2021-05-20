@@ -1,13 +1,10 @@
 /* eslint-disable react-native/no-unused-styles */
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import Animated, {
-  useDerivedValue,
-  useSharedValue,
-} from 'react-native-reanimated';
-import {ReText} from '../components';
+import Animated, {useDerivedValue} from 'react-native-reanimated';
 
-import {styleGuide} from '../constants';
+import {ReText} from '../components';
+import {round, styleGuide} from '../constants';
 
 const styles = StyleSheet.create({
   date: {
@@ -43,16 +40,6 @@ interface LabelProps {
     };
   }>;
 }
-
-/**
- * @summary Computes animation node rounded to precision.
- * @worklet
- */
-export const round = (value: number, precision = 0) => {
-  'worklet';
-  const p = Math.pow(10, precision);
-  return Math.round(value * p) / p;
-};
 
 const Label = ({point}: LabelProps) => {
   const date = useDerivedValue(() => {

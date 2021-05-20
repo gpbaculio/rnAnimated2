@@ -12,16 +12,8 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import {Card, Cards, CARD_HEIGHT, CARD_WIDTH} from '../components';
+import {clamp} from '../constants';
 import {withBounce} from './constants';
-
-export const clamp = (
-  value: number,
-  lowerBound: number,
-  upperBound: number,
-) => {
-  'worklet';
-  return Math.min(Math.max(lowerBound, value), upperBound);
-};
 
 const {width, height} = Dimensions.get('window');
 

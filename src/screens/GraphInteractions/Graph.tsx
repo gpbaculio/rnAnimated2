@@ -2,16 +2,11 @@ import React from 'react';
 import {View, Dimensions, StyleSheet} from 'react-native';
 import Svg, {Path, Defs, Stop, LinearGradient} from 'react-native-svg';
 import * as shape from 'd3-shape';
-import {
-  interpolate,
-  Extrapolate,
-  useSharedValue,
-  useDerivedValue,
-} from 'react-native-reanimated';
+import {useSharedValue, useDerivedValue} from 'react-native-reanimated';
 
 import Cursor from './Cursor';
 import Label from './Label';
-import {parsePath, getPointAtLength} from '../constants';
+import {parsePath, getPointAtLength, scale, scaleInvert} from '../constants';
 
 const {width} = Dimensions.get('window');
 const height = width;
@@ -32,16 +27,6 @@ const domain = {
 const range = {
   x: [0, width],
   y: [height, 0],
-};
-
-const scale = (v: number, d: number[], r: number[]) => {
-  'worklet';
-  return interpolate(v, d, r, Extrapolate.CLAMP);
-};
-
-const scaleInvert = (y: number, d: number[], r: number[]) => {
-  'worklet';
-  return interpolate(y, r, d, Extrapolate.CLAMP);
 };
 
 const d = shape
