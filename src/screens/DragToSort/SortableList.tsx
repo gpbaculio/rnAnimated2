@@ -1,5 +1,6 @@
 import React, {ReactElement} from 'react';
 import {ScrollView} from 'react-native';
+import {FlatList} from 'react-native-gesture-handler';
 import {useSharedValue} from 'react-native-reanimated';
 
 import SortableItem from './SortableItem';
