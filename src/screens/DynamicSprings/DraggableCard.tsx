@@ -7,12 +7,11 @@ import {
 import Animated, {
   useAnimatedGestureHandler,
   useAnimatedStyle,
-  useSharedValue,
   withDecay,
 } from 'react-native-reanimated';
 
 import {Card, Cards, CARD_HEIGHT, CARD_WIDTH} from '../components';
-import {clamp} from '../PanGesture/PanGesture';
+import {clamp} from '../constants';
 
 const {width, height} = Dimensions.get('window');
 interface GestureProps {
