@@ -5,66 +5,6 @@ import parseSVG from 'parse-svg-path';
 import absSVG from 'abs-svg-path';
 import normalizeSVG from 'normalize-svg-path';
 
-export const styleGuide = {
-  spacing: 8,
-  palette: {
-    primary: '#3884ff',
-    secondary: '#FF6584',
-    tertiary: '#38ffb3',
-    backgroundPrimary: '#d5e5ff', // === rgba(primary, 0.1)
-    background: '#f2f2f2',
-    border: '#f2f2f2',
-  },
-  typography: {
-    body: {
-      fontSize: 17,
-      lineHeight: 20,
-      fontFamily: 'SFProText-Regular',
-    },
-    callout: {
-      fontSize: 16,
-      lineHeight: 20,
-      fontFamily: 'SFProText-Regular',
-    },
-    caption: {
-      fontSize: 11,
-      lineHeight: 13,
-      fontFamily: 'SFProText-Regular',
-    },
-    footnote: {
-      fontSize: 13,
-      lineHeight: 18,
-      fontFamily: 'SFProText-Regular',
-      color: '#999999',
-    },
-    headline: {
-      fontSize: 17,
-      lineHeight: 22,
-      fontFamily: 'SFProText-Semibold',
-    },
-    subhead: {
-      fontSize: 15,
-      lineHeight: 20,
-      fontFamily: 'SFProText-Bold',
-    },
-    title1: {
-      fontSize: 34,
-      lineHeight: 41,
-      fontFamily: 'SFProText-Bold',
-    },
-    title2: {
-      fontSize: 28,
-      lineHeight: 34,
-      fontFamily: 'SFProText-Bold',
-    },
-    title3: {
-      fontSize: 22,
-      lineHeight: 26,
-      fontFamily: 'SFProText-Bold',
-    },
-  },
-};
-
 /**
  * @summary Type representing a vector
  * @example
@@ -159,6 +99,66 @@ export interface BezierCurve {
   start: number;
   end: number;
 }
+
+export const styleGuide = {
+  spacing: 8,
+  palette: {
+    primary: '#3884ff',
+    secondary: '#FF6584',
+    tertiary: '#38ffb3',
+    backgroundPrimary: '#d5e5ff', // === rgba(primary, 0.1)
+    background: '#f2f2f2',
+    border: '#f2f2f2',
+  },
+  typography: {
+    body: {
+      fontSize: 17,
+      lineHeight: 20,
+      fontFamily: 'SFProText-Regular',
+    },
+    callout: {
+      fontSize: 16,
+      lineHeight: 20,
+      fontFamily: 'SFProText-Regular',
+    },
+    caption: {
+      fontSize: 11,
+      lineHeight: 13,
+      fontFamily: 'SFProText-Regular',
+    },
+    footnote: {
+      fontSize: 13,
+      lineHeight: 18,
+      fontFamily: 'SFProText-Regular',
+      color: '#999999',
+    },
+    headline: {
+      fontSize: 17,
+      lineHeight: 22,
+      fontFamily: 'SFProText-Semibold',
+    },
+    subhead: {
+      fontSize: 15,
+      lineHeight: 20,
+      fontFamily: 'SFProText-Bold',
+    },
+    title1: {
+      fontSize: 34,
+      lineHeight: 41,
+      fontFamily: 'SFProText-Bold',
+    },
+    title2: {
+      fontSize: 28,
+      lineHeight: 34,
+      fontFamily: 'SFProText-Bold',
+    },
+    title3: {
+      fontSize: 22,
+      lineHeight: 26,
+      fontFamily: 'SFProText-Bold',
+    },
+  },
+};
 
 type CtrlPoint = [number, number, number, number];
 
