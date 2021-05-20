@@ -40,6 +40,10 @@ export const examples = [
     screen: 'DynamicSprings',
     title: '👨‍🔬  Dynamic Springs',
   },
+  {
+    screen: 'DragToSort',
+    title: '📤  Drag To Sort',
+  },
 ];
 
 const Examples = () => {

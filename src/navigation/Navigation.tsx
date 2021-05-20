@@ -13,6 +13,7 @@ import {
   GraphInteractions,
   Swiping,
   DynamicSprings,
+  DragToSort,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -26,6 +27,7 @@ export type AppStackNavigatorType = {
   GraphInteractions: undefined;
   Swiping: undefined;
   DynamicSprings: undefined;
+  DragToSort: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -102,6 +104,13 @@ const AppNavigator = () => (
         component={DynamicSprings}
         options={{
           title: 'DynamicSprings',
+        }}
+      />
+      <Stack.Screen
+        name="DragToSort"
+        component={DragToSort}
+        options={{
+          title: 'DragToSort',
         }}
       />
     </Stack.Navigator>
