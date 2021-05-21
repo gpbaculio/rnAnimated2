@@ -44,6 +44,10 @@ export const examples = [
     screen: 'DragToSort',
     title: '📤  Drag To Sort',
   },
+  {
+    screen: 'CubicBezier',
+    title: '⤴️  Cubic Bézier',
+  },
 ];
 
 const Examples = () => {
