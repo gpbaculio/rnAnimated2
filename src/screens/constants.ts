@@ -32,6 +32,15 @@ export const addCurve = (path: Path, c: Curve) => {
 };
 
 /**
+ * @summary Add a close command to a path.
+ * @worklet
+ */
+export const close = (path: Path) => {
+  'worklet';
+  path.close = true;
+};
+
+/**
  * @summary Select a point where the animation should snap to given the value of the gesture and it's velocity.
  * @worklet
  */
