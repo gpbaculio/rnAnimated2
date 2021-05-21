@@ -8,6 +8,7 @@ import Animated, {
   useAnimatedGestureHandler,
   useAnimatedStyle,
 } from 'react-native-reanimated';
+import {clamp} from '../constants';
 
 const {width} = Dimensions.get('window');
 const CURSOR_SIZE = 40;
@@ -26,8 +27,8 @@ const Slider = ({translateX}: SliderProps) => {
     onStart: (_, ctx) => {
       ctx.x = translateX.value;
     },
-    onActive: ({translationX, translationY}, ctx) => {
-      translateX.value = translationX + ctx.x;
+    onActive: ({translationX}, ctx) => {
+      translateX.value = clamp(translationX + ctx.x, 0, SLIDER_WIDTH);
     },
   });
 
