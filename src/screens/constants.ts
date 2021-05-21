@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="constants.d.ts"/>
-import {interpolate, Extrapolate} from 'react-native-reanimated';
+import Animated, {interpolate, Extrapolate} from 'react-native-reanimated';
 
 import parseSVG from 'parse-svg-path';
 import absSVG from 'abs-svg-path';
@@ -62,6 +62,81 @@ export const serialize = (path: Path) => {
   return `M${path.move.x},${path.move.y} ${path.curves
     .map(c => `C${c.c1.x},${c.c1.y} ${c.c2.x},${c.c2.y} ${c.to.x},${c.to.y}`)
     .join(' ')}${path.close ? 'Z' : ''}`;
+};
+
+/**
+ * @summary Interpolate between paths.
+ * @worklet
+ */
+export const interpolatePath = (
+  value: number,
+  inputRange: number[],
+  outputRange: Path[],
+  extrapolate = Animated.Extrapolate.CLAMP,
+) => {
+  'worklet';
+  const path = {
+    move: {
+      x: interpolate(
+        value,
+        inputRange,
+        outputRange.map(p => p.move.x),
+        extrapolate,
+      ),
+      y: interpolate(
+        value,
+        inputRange,
+        outputRange.map(p => p.move.y),
+        extrapolate,
+      ),
+    },
+    curves: outputRange[0].curves.map((_, index) => ({
+      c1: {
+        x: interpolate(
+          value,
+          inputRange,
+          outputRange.map(p => p.curves[index].c1.x),
+          extrapolate,
+        ),
+        y: interpolate(
+          value,
+          inputRange,
+          outputRange.map(p => p.curves[index].c1.y),
+          extrapolate,
+        ),
+      },
+      c2: {
+        x: interpolate(
+          value,
+          inputRange,
+          outputRange.map(p => p.curves[index].c2.x),
+          extrapolate,
+        ),
+        y: interpolate(
+          value,
+          inputRange,
+          outputRange.map(p => p.curves[index].c2.y),
+          extrapolate,
+        ),
+      },
+      to: {
+        x: interpolate(
+          value,
+          inputRange,
+          outputRange.map(p => p.curves[index].to.x),
+          extrapolate,
+        ),
+        y: interpolate(
+          value,
+          inputRange,
+          outputRange.map(p => p.curves[index].to.y),
+          extrapolate,
+        ),
+      },
+    })),
+    close: outputRange[0].close,
+  };
+  return serialize(path);
 };
 
 /**
