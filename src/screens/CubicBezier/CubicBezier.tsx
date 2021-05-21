@@ -1,5 +1,9 @@
 import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
+import Animated, {
+  useAnimatedProps,
+  useSharedValue,
+} from 'react-native-reanimated';
 import Svg, {Line, Path, Circle} from 'react-native-svg';
 
 import ControlPoint, {CONTROL_POINT_RADIUS} from './ControlPoint';
@@ -19,54 +23,82 @@ const end = {
   y: min,
 };
 
+const AnimatedPath = Animated.createAnimatedComponent(Path);
+
+const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+
+const AnimatedLine = Animated.createAnimatedComponent(Line);
+
 const BezierCurves = () => {
-  const c1x = min;
-  const c1y = min;
-  const c2x = max;
-  const c2y = max;
-  const d = `M ${start.x} ${start.y} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${end.x} ${end.y}`;
+  const c1x = useSharedValue(min);
+
+  const c1y = useSharedValue(min);
+
+  const c2x = useSharedValue(max);
+
+  const c2y = useSharedValue(max);
+
+  const pathProps = useAnimatedProps(() => ({
+    d: `M ${start.x} ${start.y} C ${c1x.value} ${c1y.value}, ${c2x.value} ${c2y.value}, ${end.x} ${end.y}`,
+  }));
+
+  const line1 = useAnimatedProps(() => ({
+    x2: c1x.value,
+    y2: c1y.value,
+  }));
+
+  const line2 = useAnimatedProps(() => ({
+    x2: c2x.value,
+    y2: c2y.value,
+  }));
+
+  const circle1 = useAnimatedProps(() => ({
+    cx: c1x.value,
+    cy: c1y.value,
+  }));
+
+  const circle2 = useAnimatedProps(() => ({
+    cx: c2x.value,
+    cy: c2y.value,
+  }));
 
   return (
     <View style={styles.container}>
       <View style={styles.content}>
         <Svg style={StyleSheet.absoluteFill}>
-          <Path
+          <AnimatedPath
             fill="transparent"
             stroke="black"
             strokeWidth={STROKE_WIDTH}
-            d={d}
+            {...{animatedProps: pathProps}}
           />
-          <Line
+          <AnimatedLine
             x1={start.x}
             y1={start.y}
-            x2={c1x}
-            y2={c1y}
+            {...{animatedProps: line1}}
             stroke="black"
             strokeWidth={STROKE_WIDTH / 2}
           />
-          <Line
+          <AnimatedLine
             x1={end.x}
             y1={end.y}
-            x2={c2x}
-            y2={c2y}
+            {...{animatedProps: line2}}
             stroke="black"
             strokeWidth={STROKE_WIDTH / 2}
           />
-          <Circle
-            cx={c1x}
-            cy={c1y}
+          <AnimatedCircle
             fill="#38ffb3"
             stroke="black"
             strokeWidth={STROKE_WIDTH}
             r={CONTROL_POINT_RADIUS}
+            {...{animatedProps: circle1}}
           />
-          <Circle
-            cx={c2x}
-            cy={c2y}
+          <AnimatedCircle
             fill="#FF6584"
             stroke="black"
             strokeWidth={STROKE_WIDTH}
             r={CONTROL_POINT_RADIUS}
+            {...{animatedProps: circle2}}
           />
         </Svg>
         <ControlPoint x={c1x} y={c1y} min={min} max={max} />
