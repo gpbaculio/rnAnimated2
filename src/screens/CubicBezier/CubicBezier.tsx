@@ -1,10 +1,10 @@
-import React from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
-import Svg, { Line, Path, Circle } from "react-native-svg";
+import React from 'react';
+import {Dimensions, StyleSheet, View} from 'react-native';
+import Svg, {Line, Path, Circle} from 'react-native-svg';
 
-import ControlPoint, { CONTROL_POINT_RADIUS } from "./ControlPoint";
+import ControlPoint, {CONTROL_POINT_RADIUS} from './ControlPoint';
 
-const { width } = Dimensions.get("window");
+const {width} = Dimensions.get('window');
 const PADDING = 24;
 const SIZE = width;
 const STROKE_WIDTH = 4;
@@ -18,17 +18,6 @@ const end = {
   x: max,
   y: min,
 };
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  content: {
-    width: SIZE + STROKE_WIDTH,
-    height: SIZE + STROKE_WIDTH,
-  },
-});
 
 const BezierCurves = () => {
   const c1x = min;
@@ -88,3 +77,15 @@ const BezierCurves = () => {
 };
 
 export default BezierCurves;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  content: {
+    width: SIZE + STROKE_WIDTH,
+    height: SIZE + STROKE_WIDTH,
+  },
+});
