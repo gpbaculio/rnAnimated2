@@ -41,6 +41,19 @@ export const close = (path: Path) => {
 };
 
 /**
+ * @summary Create a new path
+ * @worklet
+ */
+export const createPath = (move: Vector): Path => {
+  'worklet';
+  return {
+    move,
+    curves: [],
+    close: false,
+  };
+};
+
+/**
  * @summary Select a point where the animation should snap to given the value of the gesture and it's velocity.
  * @worklet
  */
