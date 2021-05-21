@@ -1,10 +1,143 @@
 // eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="constants.d.ts"/>
-import {interpolate, Extrapolate} from 'react-native-reanimated';
+import Animated, {interpolate, Extrapolate} from 'react-native-reanimated';
 
 import parseSVG from 'parse-svg-path';
 import absSVG from 'abs-svg-path';
 import normalizeSVG from 'normalize-svg-path';
+
+interface Curve {
+  to: Vector;
+  c1: Vector;
+  c2: Vector;
+}
+
+export type Path = {
+  move: Vector;
+  curves: Curve[];
+  close: boolean;
+};
+
+/**
+ * @summary Add a cubic Bèzier curve command to a path.
+ * @worklet
+ */
+export const addCurve = (path: Path, c: Curve) => {
+  'worklet';
+  path.curves.push({
+    c1: c.c1,
+    c2: c.c2,
+    to: c.to,
+  });
+};
+
+/**
+ * @summary Add a close command to a path.
+ * @worklet
+ */
+export const close = (path: Path) => {
+  'worklet';
+  path.close = true;
+};
+
+/**
+ * @summary Create a new path
+ * @worklet
+ */
+export const createPath = (move: Vector): Path => {
+  'worklet';
+  return {
+    move,
+    curves: [],
+    close: false,
+  };
+};
+
+/**
+ * @summary Serialize a path into an SVG path string
+ * @worklet
+ */
+export const serialize = (path: Path) => {
+  'worklet';
+  return `M${path.move.x},${path.move.y} ${path.curves
+    .map(c => `C${c.c1.x},${c.c1.y} ${c.c2.x},${c.c2.y} ${c.to.x},${c.to.y}`)
+    .join(' ')}${path.close ? 'Z' : ''}`;
+};
+
+/**
+ * @summary Interpolate between paths.
+ * @worklet
+ */
+export const interpolatePath = (
+  value: number,
+  inputRange: number[],
+  outputRange: Path[],
+  extrapolate = Animated.Extrapolate.CLAMP,
+) => {
+  'worklet';
+  const path = {
+    move: {
+      x: interpolate(
+        value,
+        inputRange,
+        outputRange.map(p => p.move.x),
+        extrapolate,
+      ),
+      y: interpolate(
+        value,
+        inputRange,
+        outputRange.map(p => p.move.y),
+        extrapolate,
+      ),
+    },
+    curves: outputRange[0].curves.map((_, index) => ({
+      c1: {
+        x: interpolate(
+          value,
+          inputRange,
+          outputRange.map(p => p.curves[index].c1.x),
+          extrapolate,
+        ),
+        y: interpolate(
+          value,
+          inputRange,
+          outputRange.map(p => p.curves[index].c1.y),
+          extrapolate,
+        ),
+      },
+      c2: {
+        x: interpolate(
+          value,
+          inputRange,
+          outputRange.map(p => p.curves[index].c2.x),
+          extrapolate,
+        ),
+        y: interpolate(
+          value,
+          inputRange,
+          outputRange.map(p => p.curves[index].c2.y),
+          extrapolate,
+        ),
+      },
+      to: {
+        x: interpolate(
+          value,
+          inputRange,
+          outputRange.map(p => p.curves[index].to.x),
+          extrapolate,
+        ),
+        y: interpolate(
+          value,
+          inputRange,
+          outputRange.map(p => p.curves[index].to.y),
+          extrapolate,
+        ),
+      },
+    })),
+    close: outputRange[0].close,
+  };
+  return serialize(path);
+};
 
 /**
  * @summary Select a point where the animation should snap to given the value of the gesture and it's velocity.
@@ -132,7 +265,7 @@ type SVGMove = ['M', number, number];
 type SVGCurve = ['C', number, number, number, number, number, number];
 type SVGPath = [SVGMove, ...SVGCurve[]];
 
-export interface Path {
+export interface BezierCurvePath {
   curves: BezierCurve[];
   length: number;
 }
@@ -207,6 +340,45 @@ export const styleGuide = {
 };
 
 type CtrlPoint = [number, number, number, number];
+
+// LUT for binomial coefficient arrays per curve order 'n'
+const binomialCoefficients = [[1], [1, 1], [1, 2, 1], [1, 3, 3, 1]];
+
+// Look up what the binomial coefficient is for pair {n,k}
+const binomials = (n: number, k: number) => binomialCoefficients[n][k];
+
+const getDerivative = (derivative: number, t: number, vs: number[]): number => {
+  // the derivative of any 't'-less function is zero.
+  const n = vs.length - 1;
+  let value;
+  let k;
+  if (n === 0) {
+    return 0;
+  }
+
+  // direct values? compute!
+  if (derivative === 0) {
+    value = 0;
+    for (k = 0; k <= n; k += 1) {
+      value += binomials(n, k) * (1 - t ** n - k) * t ** k * vs[k];
+    }
+    return value;
+  }
+  // Still some derivative? go down one order, then try
+  // for the lower order curve's.
+  const vs1 = new Array(n);
+  for (k = 0; k < n; k += 1) {
+    vs1[k] = n * (vs[k + 1] - vs[k]);
+  }
+  return getDerivative(derivative - 1, t, vs1);
+};
+
+function B(xs: CtrlPoint, ys: CtrlPoint, t: number) {
+  const xbase = getDerivative(1, t, xs);
+  const ybase = getDerivative(1, t, ys);
+  const combined = xbase * xbase + ybase * ybase;
+  return Math.sqrt(combined);
+}
 
 // Cubic bezier curve length from http://bl.ocks.org/hnakamur/e7efd0602bfc15f66fc5
 // Legendre-Gauss abscissae (xi values, defined at i=n as the roots of the nth order Legendre polynomial Pn(x))
@@ -897,45 +1069,6 @@ const cValues = [
   ],
 ];
 
-// LUT for binomial coefficient arrays per curve order 'n'
-const binomialCoefficients = [[1], [1, 1], [1, 2, 1], [1, 3, 3, 1]];
-
-// Look up what the binomial coefficient is for pair {n,k}
-const binomials = (n: number, k: number) => binomialCoefficients[n][k];
-
-const getDerivative = (derivative: number, t: number, vs: number[]): number => {
-  // the derivative of any 't'-less function is zero.
-  const n = vs.length - 1;
-  let value;
-  let k;
-  if (n === 0) {
-    return 0;
-  }
-
-  // direct values? compute!
-  if (derivative === 0) {
-    value = 0;
-    for (k = 0; k <= n; k += 1) {
-      value += binomials(n, k) * (1 - t ** n - k) * t ** k * vs[k];
-    }
-    return value;
-  }
-  // Still some derivative? go down one order, then try
-  // for the lower order curve's.
-  const vs1 = new Array(n);
-  for (k = 0; k < n; k += 1) {
-    vs1[k] = n * (vs[k + 1] - vs[k]);
-  }
-  return getDerivative(derivative - 1, t, vs1);
-};
-
-function B(xs: CtrlPoint, ys: CtrlPoint, t: number) {
-  const xbase = getDerivative(1, t, xs);
-  const ybase = getDerivative(1, t, ys);
-  const combined = xbase * xbase + ybase * ybase;
-  return Math.sqrt(combined);
-}
-
 const getArcLength = (xs: CtrlPoint, ys: CtrlPoint, t = 1, n = 20) => {
   if (xs.length >= tValues.length) {
     throw new Error('too high n bezier');
@@ -961,7 +1094,7 @@ export const cubicBezierLength = (
   return getArcLength(xs, ys);
 };
 
-export const parsePath = (d: string): Path => {
+export const parsePath = (d: string): BezierCurvePath => {
   let length = 0;
   const [move, ...rawCurves]: SVGPath = normalizeSVG(absSVG(parseSVG(d)));
   const curves: BezierCurve[] = rawCurves.map((curve, index) => {
@@ -1013,7 +1146,7 @@ export const cubicBezier = (
   return a + b + c + d;
 };
 
-export const getPointAtLength = (path: Path, length: number) => {
+export const getPointAtLength = (path: BezierCurvePath, length: number) => {
   'worklet';
   const c = path.curves.find(
     curve => length >= curve.start && length <= curve.end,

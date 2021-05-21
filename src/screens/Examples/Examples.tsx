@@ -48,6 +48,10 @@ export const examples = [
     screen: 'CubicBezier',
     title: '⤴️  Cubic Bézier',
   },
+  {
+    screen: 'MorphingShapes',
+    title: '☺️ Morphing Shapes',
+  },
 ];
 
 const Examples = () => {

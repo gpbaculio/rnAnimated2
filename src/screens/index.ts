@@ -9,3 +9,4 @@ export {default as Swiping} from './Swiping';
 export {default as DynamicSprings} from './DynamicSprings';
 export {default as DragToSort} from './DragToSort';
 export {default as CubicBezier} from './CubicBezier';
+export {default as MorphingShapes} from './MorphingShapes';

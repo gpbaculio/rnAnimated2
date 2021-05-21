@@ -15,6 +15,7 @@ import {
   DynamicSprings,
   DragToSort,
   CubicBezier,
+  MorphingShapes,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -30,6 +31,7 @@ export type AppStackNavigatorType = {
   DynamicSprings: undefined;
   DragToSort: undefined;
   CubicBezier: undefined;
+  MorphingShapes: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -120,6 +122,13 @@ const AppNavigator = () => (
         component={CubicBezier}
         options={{
           title: 'Cubic Bezier',
+        }}
+      />
+      <Stack.Screen
+        name="MorphingShapes"
+        component={MorphingShapes}
+        options={{
+          title: 'Morphing Shapes',
         }}
       />
     </Stack.Navigator>
