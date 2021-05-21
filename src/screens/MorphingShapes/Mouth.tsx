@@ -23,8 +23,6 @@ addCurve(angryPath, {
   c2: {x: 72.99, y: -10.46},
 });
 
-console.log('angryPath: ', JSON.stringify(angryPath));
-
 const normalPath = createPath({x: 1, y: 5});
 
 addCurve(normalPath, {
@@ -38,7 +36,6 @@ addCurve(normalPath, {
   c1: {x: 74.3732915, y: 17.51666758},
   c2: {x: 98.6375271, y: 19.805606623},
 });
-console.log('normalPath: ', JSON.stringify(normalPath));
 
 const goodPath = createPath({x: 1, y: 2});
 
@@ -53,8 +50,6 @@ addCurve(goodPath, {
   c1: {x: 70.7689993, y: 41.59982822},
   c2: {x: 97.4902012, y: 38.64845107},
 });
-
-console.log('goodPath: ', JSON.stringify(goodPath));
 
 const Mouth = ({progress}: MouthProps) => {
   const animatedProps = useAnimatedProps(() => ({
