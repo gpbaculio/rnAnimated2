@@ -15,6 +15,7 @@ interface WordListProps {
 
 const WordList = ({children}: WordListProps) => {
   const [ready, setReady] = useState(false);
+
   const offsets = children.map(() => ({
     order: useSharedValue(0),
     width: useSharedValue(0),
@@ -24,6 +25,7 @@ const WordList = ({children}: WordListProps) => {
     originalX: useSharedValue(0),
     originalY: useSharedValue(0),
   }));
+
   if (!ready) {
     return (
       <View style={styles.row}>
@@ -33,6 +35,7 @@ const WordList = ({children}: WordListProps) => {
       </View>
     );
   }
+
   return (
     <View style={styles.container}>
       <Lines />
