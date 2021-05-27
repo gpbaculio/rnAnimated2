@@ -16,6 +16,7 @@ import {
   DragToSort,
   CubicBezier,
   MorphingShapes,
+  Duolingo,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -32,6 +33,7 @@ export type AppStackNavigatorType = {
   DragToSort: undefined;
   CubicBezier: undefined;
   MorphingShapes: undefined;
+  Duolingo: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -129,6 +131,13 @@ const AppNavigator = () => (
         component={MorphingShapes}
         options={{
           title: 'Morphing Shapes',
+        }}
+      />
+      <Stack.Screen
+        name="Duolingo"
+        component={Duolingo}
+        options={{
+          title: 'Duolingo',
         }}
       />
     </Stack.Navigator>
