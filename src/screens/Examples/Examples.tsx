@@ -1,5 +1,12 @@
 import * as React from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  ImageSourcePropType,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native';
 import {RectButton} from 'react-native-gesture-handler';
@@ -7,7 +14,13 @@ import {RectButton} from 'react-native-gesture-handler';
 import {styleGuide} from '../constants';
 import {AppStackNavigatorType} from '../../navigation/Navigation';
 
-export const examples = [
+const duolingoIcon = require('../../../assets/duolingo.png');
+
+export const examples: {
+  screen: string;
+  title: string;
+  icon?: ImageSourcePropType;
+}[] = [
   {
     screen: 'WorkletsAndSharedValues',
     title: '👩‍🏭  Worklets And SharedValues',
@@ -52,6 +65,11 @@ export const examples = [
     screen: 'MorphingShapes',
     title: '☺️ Morphing Shapes',
   },
+  {
+    screen: 'Duolingo',
+    title: 'Duolingo',
+    icon: duolingoIcon,
+  },
 ];
 
 const Examples = () => {
@@ -66,6 +84,9 @@ const Examples = () => {
             navigate(thumbnail.screen as keyof AppStackNavigatorType)
           }>
           <View style={styles.thumbnail}>
+            {!!thumbnail.icon && (
+              <Image source={thumbnail.icon} style={styles.icon} />
+            )}
             <Text style={styles.title}>{thumbnail.title}</Text>
           </View>
         </RectButton>
@@ -88,6 +109,12 @@ const styles = StyleSheet.create({
     padding: styleGuide.spacing * 2,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: styleGuide.palette.background,
+    flexDirection: 'row',
+  },
+  icon: {
+    width: 25,
+    height: 25,
+    marginRight: 5,
   },
   title: {
     ...styleGuide.typography.headline,
