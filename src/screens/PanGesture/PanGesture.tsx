@@ -44,7 +44,6 @@ const Gesture = () => {
       translateX.value = withBounce(
         withDecay({
           velocity: event.velocityX,
-          clamp: [0, boundX],
         }),
         0,
         boundX,
@@ -53,7 +52,6 @@ const Gesture = () => {
       translateY.value = withBounce(
         withDecay({
           velocity: event.velocityY,
-          clamp: [0, boundY],
         }),
         0,
         boundY,

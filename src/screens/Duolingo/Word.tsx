@@ -1,6 +1,24 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
+export interface WordProps {
+  id: number;
+  word: string;
+}
+
+const Word = ({word}: WordProps) => (
+  <View style={styles.root}>
+    <View>
+      <View style={styles.container}>
+        <Text style={styles.text}>{word}</Text>
+      </View>
+      <View style={styles.shadow} />
+    </View>
+  </View>
+);
+
+export default Word;
+
 const styles = StyleSheet.create({
   root: {
     padding: 4,
@@ -23,21 +41,3 @@ const styles = StyleSheet.create({
     top: 4,
   },
 });
-
-export interface WordProps {
-  id: number;
-  word: string;
-}
-
-const Word = ({word}: WordProps) => (
-  <View style={styles.root}>
-    <View>
-      <View style={styles.container}>
-        <Text style={styles.text}>{word}</Text>
-      </View>
-      <View style={styles.shadow} />
-    </View>
-  </View>
-);
-
-export default Word;

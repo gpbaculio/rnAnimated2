@@ -1,6 +1,5 @@
 import Animated from 'react-native-reanimated';
-import {clamp} from './PanGesture';
-
+import {clamp} from '../constants';
 declare let _WORKLET: boolean;
 export interface AnimationState {
   current: number;
@@ -12,15 +11,16 @@ interface PhysicsAnimationState extends AnimationState {
 
 export type Animation<
   State extends AnimationState = AnimationState,
-  PrevState extends AnimationState = AnimationState,
+  PrevState = State,
 > = {
-  animation: (animation: State, now: number) => boolean;
-  start: (
+  onFrame: (animation: State, now: number) => boolean;
+  onStart: (
     animation: State,
     value: number,
     now: number,
     lastAnimation: PrevState,
   ) => void;
+  callback?: () => void;
 } & State;
 
 export type AnimationParameter<State extends AnimationState = AnimationState> =
@@ -76,114 +76,48 @@ interface DecayAnimationState extends PhysicsAnimationState {
 }
 export const VELOCITY_EPS = 5;
 export const deceleration = 0.997;
-export const withDecay = (initialVelocity: number) => {
-  'worklet';
-  return defineAnimation<DecayAnimationState>(() => {
-    'worklet';
-    const animation = (state: DecayAnimationState, now: number) => {
-      const {velocity, lastTimestamp, current} = state;
-      const dt = now - lastTimestamp;
-      const v0 = velocity / 1000;
-      const kv = Math.pow(deceleration, dt);
-      const v = v0 * kv * 1000;
-      const x = current + (v0 * (deceleration * (1 - kv))) / (1 - deceleration);
-      state.velocity = v;
-      state.current = x;
-      state.lastTimestamp = now;
-      if (Math.abs(v) < VELOCITY_EPS) {
-        return true;
-      }
-      return false;
-    };
-    const start = (
-      state: DecayAnimationState,
-      current: number,
-      now: number,
-    ) => {
-      state.current = current;
-      state.velocity = initialVelocity;
-      state.lastTimestamp = now;
-    };
-    return {
-      animation,
-      start,
-    };
-  });
-};
+/**
+ *  @summary Add a bouncing behavior to a physics-based animation.
+ *  An animation is defined as being physics-based if it contains a velocity in its state.
+ *  @example
+    // will bounce if the animations hits the position 0 or 100
+    withBouncing(withDecay({ velocity }), 0, 100)
+ * @worklet
+ */
 export const withBounce = (
   animationParam: AnimationParameter<PhysicsAnimationState>,
   lowerBound: number,
   upperBound: number,
-) => {
+): number => {
   'worklet';
-  return defineAnimation<PhysicsAnimationState, AnimationState>(() => {
+  return defineAnimation<PhysicsAnimationState, PhysicsAnimationState>(() => {
     'worklet';
     const nextAnimation = animationParameter(animationParam);
-    const animation = (state: PhysicsAnimationState, now: number) => {
-      const finished = nextAnimation.animation(nextAnimation, now);
+    const onFrame = (state: PhysicsAnimationState, now: number) => {
+      const finished = nextAnimation.onFrame(nextAnimation, now);
       const {velocity, current} = nextAnimation;
-      if (
-        (velocity < 0 && current < lowerBound) ||
-        (velocity > 0 && current > upperBound)
-      ) {
-        nextAnimation.velocity *= -0.5;
-        nextAnimation.current = clamp(current, lowerBound, upperBound);
-      }
       state.current = current;
-      return finished;
-    };
-    const start = (
-      state: PhysicsAnimationState,
-      value: number,
-      now: number,
-      previousAnimation: AnimationState,
-    ) => {
-      nextAnimation.start(nextAnimation, value, now, previousAnimation);
-    };
-    return {
-      animation,
-      start,
-    };
-  });
-};
-interface PausableAnimationState extends AnimationState {
-  lastTimestamp: number;
-  elapsed: number;
-}
-export const withPause = (
-  animationParam: AnimationParameter,
-  paused: Animated.SharedValue<boolean>,
-) => {
-  'worklet';
-  return defineAnimation<PausableAnimationState, AnimationState>(() => {
-    'worklet';
-    const nextAnimation = animationParameter(animationParam);
-    const animation = (state: PausableAnimationState, now: number) => {
-      if (paused.value) {
-        state.elapsed = now - state.lastTimestamp;
-        return false;
+      if (
+        (velocity < 0 && state.current <= lowerBound) ||
+        (velocity > 0 && state.current >= upperBound)
+      ) {
+        state.current = velocity < 0 ? lowerBound : upperBound;
+        nextAnimation.velocity *= -0.5;
       }
-      const finished = nextAnimation.animation(
-        nextAnimation,
-        now - state.elapsed,
-      );
-      state.current = nextAnimation.current;
-      state.lastTimestamp = now;
       return finished;
     };
-    const start = (
-      state: PausableAnimationState,
+    const onStart = (
+      _state: PhysicsAnimationState,
       value: number,
       now: number,
-      previousAnimation: AnimationState,
+      previousState: PhysicsAnimationState,
     ) => {
-      state.elapsed = 0;
-      state.lastTimestamp = now;
-      nextAnimation.start(nextAnimation, value, now, previousAnimation);
+      nextAnimation.onStart(nextAnimation, value, now, previousState);
     };
     return {
-      animation,
-      start,
+      onFrame,
+      onStart,
+      callback: nextAnimation.callback,
     };
   });
 };

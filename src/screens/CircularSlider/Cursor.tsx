@@ -8,8 +8,7 @@ import {
   PanGestureHandler,
   PanGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
-import {canvas2Polar, styleGuide, polar2Canvas} from '../constants';
-import {clamp} from '../PanGesture/PanGesture';
+import {canvas2Polar, styleGuide, polar2Canvas, clamp} from '../constants';
 
 interface CursorProps {
   r: number;
