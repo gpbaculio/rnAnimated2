@@ -8,17 +8,6 @@ import Lines from './components/Lines';
 
 const margin = 32;
 const containerWidth = Dimensions.get('window').width - margin * 2;
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    margin,
-  },
-  row: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  },
-});
 
 interface WordListProps {
   children: ReactElement<{id: number}>[];
@@ -61,3 +50,15 @@ const WordList = ({children}: WordListProps) => {
 };
 
 export default WordList;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    margin,
+  },
+  row: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  },
+});

@@ -6,21 +6,6 @@ import Heart from './Heart';
 import Progress from './Progress';
 import Character from './Character';
 
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    padding: 16,
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-  },
-  title: {
-    fontWeight: '700',
-    fontSize: 24,
-    paddingLeft: 16,
-    marginBottom: 16,
-  },
-});
-
 const Header = () => {
   return (
     <View>
@@ -36,3 +21,18 @@ const Header = () => {
 };
 
 export default Header;
+
+const styles = StyleSheet.create({
+  row: {
+    flexDirection: 'row',
+    padding: 16,
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+  },
+  title: {
+    fontWeight: '700',
+    fontSize: 24,
+    paddingLeft: 16,
+    marginBottom: 16,
+  },
+});
