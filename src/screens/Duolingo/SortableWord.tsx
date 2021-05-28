@@ -14,7 +14,7 @@ import {
 
 import {calculateLayout, lastOrder, Offset, remove, reOrder} from './Layout';
 import Placeholder, {MARGIN_TOP, MARGIN_LEFT} from './components/Placeholder';
-import {useVector, between, move} from '../constants';
+import {useVector, between} from '../constants';
 
 interface SortableWordProps {
   offsets: Offset[];
@@ -45,57 +45,70 @@ const SortableWord = ({
     }
   >({
     onStart: (_, ctx) => {
-      isGestureActive.value = true;
       if (isInBank.value) {
         translation.x.value = offset.originalX.value - MARGIN_LEFT;
+
         translation.y.value = offset.originalY.value + MARGIN_TOP;
       } else {
         translation.x.value = offset.x.value;
+
         translation.y.value = offset.y.value;
       }
+
       ctx.x = translation.x.value;
+
       ctx.y = translation.y.value;
+
       isGestureActive.value = true;
     },
     onActive: ({translationX, translationY}, ctx) => {
       translation.x.value = ctx.x + translationX;
+
       translation.y.value = ctx.y + translationY;
+
+      // puts word on lines
       if (isInBank.value && translation.y.value < 100) {
         offset.order.value = lastOrder(offsets);
-        calculateLayout(offsets, containerWidth);
-      } else if (!isInBank.value && translation.y.value > 100) {
-        offset.order.value = -1;
-        remove(offsets, index);
+
         calculateLayout(offsets, containerWidth);
       }
+      // puts word on wordbank
+      else if (!isInBank.value && translation.y.value > 100) {
+        offset.order.value = -1;
+
+        remove(offsets, index);
+
+        calculateLayout(offsets, containerWidth);
+      }
+
       for (let i = 0; i < offsets.length; i++) {
         const o = offsets[i];
 
-        if (i === index && o.order.value !== -1) {
-          continue;
-        }
+        if (i === index && o.order.value !== -1) continue;
 
         if (
           between(translation.x.value, o.x.value, o.x.value + o.width.value) &&
           between(translation.y.value, o.y.value, o.y.value + o.height.value)
         ) {
           reOrder(offsets, offset.order.value, o.order.value);
+
           calculateLayout(offsets, containerWidth);
+
           break;
         }
       }
     },
     onEnd: () => {
       isGestureActive.value = false;
+
       translation.x.value = withSpring(offset.x.value);
+
       translation.y.value = withSpring(offset.y.value);
     },
   });
 
   const translateX = useDerivedValue(() => {
-    if (isGestureActive.value) {
-      return translation.x.value;
-    }
+    if (isGestureActive.value) return translation.x.value;
 
     return withSpring(
       isInBank.value ? offset.originalX.value - MARGIN_LEFT : offset.x.value,
@@ -103,33 +116,22 @@ const SortableWord = ({
   });
 
   const translateY = useDerivedValue(() => {
-    if (isGestureActive.value) {
-      return translation.y.value;
-    }
+    if (isGestureActive.value) return translation.y.value;
 
     return withSpring(
       isInBank.value ? offset.originalY.value + MARGIN_TOP : offset.y.value,
     );
   });
 
-  const style = useAnimatedStyle(() => {
-    return {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: offset.width.value,
-      height: offset.height.value,
-      zIndex: isGestureActive.value ? 1 : 0,
-      transform: [
-        {
-          translateX: translateX.value,
-        },
-        {
-          translateY: translateY.value,
-        },
-      ],
-    };
-  });
+  const style = useAnimatedStyle(() => ({
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: offset.width.value,
+    height: offset.height.value,
+    zIndex: isGestureActive.value ? 1 : 0,
+    transform: [{translateX: translateX.value}, {translateY: translateY.value}],
+  }));
 
   return (
     <>
