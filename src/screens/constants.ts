@@ -1,11 +1,61 @@
 // eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="constants.d.ts"/>
-import Animated, {interpolate, Extrapolate} from 'react-native-reanimated';
+import Animated, {
+  interpolate,
+  Extrapolate,
+  useSharedValue,
+} from 'react-native-reanimated';
 
 import parseSVG from 'parse-svg-path';
 import absSVG from 'abs-svg-path';
 import normalizeSVG from 'normalize-svg-path';
 
+/**
+ * @summary Type representing a vector
+ * @example
+   export interface Vector<T = number> {
+    x: T;
+    y: T;
+  }
+ */
+export interface Vector<T = number> {
+  x: T;
+  y: T;
+}
+
+/**
+ * @summary Returns a vector of shared values
+ */
+export const useVector = (
+  x1 = 0,
+  y1?: number,
+): Vector<Animated.SharedValue<number>> => {
+  const x = useSharedValue(x1);
+  const y = useSharedValue(y1 ?? x1);
+  return {x, y};
+};
+
+/**
+ * @worklet
+ */
+export const move = <T>(input: T[], from: number, to: number) => {
+  'worklet';
+  const offsets = input.slice();
+  while (from < 0) {
+    from += offsets.length;
+  }
+  while (to < 0) {
+    to += offsets.length;
+  }
+  if (to >= offsets.length) {
+    let k = to - offsets.length;
+    while (k-- + 1) {
+      offsets.push();
+    }
+  }
+  offsets.splice(to, 0, offsets.splice(from, 1)[0]);
+  return offsets;
+};
 interface Curve {
   to: Vector;
   c1: Vector;

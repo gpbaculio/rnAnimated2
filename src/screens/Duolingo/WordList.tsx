@@ -9,6 +9,7 @@ import Animated, {
 
 import SortableWord from './SortableWord';
 import Lines from './components/Lines';
+import {calculateLayout} from './Layout';
 
 const margin = 32;
 const containerWidth = Dimensions.get('window').width - margin * 2;
@@ -42,9 +43,11 @@ const WordList = ({children}: WordListProps) => {
       originalY: Animated.SharedValue<number>;
     }[],
   ) => {
-    const isInitialized = currentOffsets.every(o => o.order.value === -1);
+    const isInitialized =
+      currentOffsets.filter(o => o.order.value !== -1).length === 0;
 
     if (isInitialized) {
+      calculateLayout(offsets, containerWidth);
       setReady(true);
     }
   };
