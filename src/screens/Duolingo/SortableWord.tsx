@@ -12,9 +12,9 @@ import {
   PanGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
 
-import {calculateLayout, lastOrder, Offset} from './Layout';
+import {calculateLayout, lastOrder, Offset, remove, reOrder} from './Layout';
 import Placeholder, {MARGIN_TOP, MARGIN_LEFT} from './components/Placeholder';
-import {useVector} from '../constants';
+import {useVector, between, move} from '../constants';
 
 interface SortableWordProps {
   offsets: Offset[];
@@ -65,7 +65,24 @@ const SortableWord = ({
         calculateLayout(offsets, containerWidth);
       } else if (!isInBank.value && translation.y.value > 100) {
         offset.order.value = -1;
+        remove(offsets, index);
         calculateLayout(offsets, containerWidth);
+      }
+      for (let i = 0; i < offsets.length; i++) {
+        const o = offsets[i];
+
+        if (i === index && o.order.value !== -1) {
+          continue;
+        }
+
+        if (
+          between(translation.x.value, o.x.value, o.x.value + o.width.value) &&
+          between(translation.y.value, o.y.value, o.y.value + o.height.value)
+        ) {
+          reOrder(offsets, offset.order.value, o.order.value);
+          calculateLayout(offsets, containerWidth);
+          break;
+        }
       }
     },
     onEnd: () => {
