@@ -30,7 +30,9 @@ const byOrder = (a: Offset, b: Offset) => {
 export const reOrder = (offsets: Offset[], from: number, to: number) => {
   'worklet';
   const sortedOffsets = offsets.filter(isNotInWordBank).sort(byOrder);
+
   const newOffsets = move(sortedOffsets, from, to);
+
   newOffsets.map((offset, index) => (offset.order.value = index));
 };
 
@@ -55,7 +57,7 @@ export const calculateLayout = (input: Offset[], containerWidth: number) => {
       .slice(lineBreak, index)
       .reduce((acc, o) => acc + o.width.value, 0);
 
-    // if true, make lineBreak
+    // if true, make lineBreak, puts word in next line
     if (total + offset.width.value > containerWidth) {
       lineNumber += 1;
       lineBreak = index;
@@ -79,8 +81,6 @@ export const remove = (offsets: Offset[], index: number) => {
     .filter((o, i) => i !== index)
     .filter(isNotInWordBank)
     .sort(byOrder);
-
-  sortedOffsets.slice(index, 1);
 
   sortedOffsets.map((offset, i) => (offset.order.value = i));
 };
