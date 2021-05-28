@@ -12,9 +12,9 @@ import {
   PanGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
 
-import {Offset} from './Layout';
+import {calculateLayout, lastOrder, Offset, remove, reOrder} from './Layout';
 import Placeholder, {MARGIN_TOP, MARGIN_LEFT} from './components/Placeholder';
-import {useVector} from '../constants';
+import {useVector, between, move} from '../constants';
 
 interface SortableWordProps {
   offsets: Offset[];
@@ -30,7 +30,9 @@ const SortableWord = ({
   containerWidth,
 }: SortableWordProps) => {
   const offset = offsets[index];
+
   const translation = useVector();
+
   const isGestureActive = useSharedValue(false);
 
   const isInBank = useDerivedValue(() => offset.order.value === -1);
@@ -58,9 +60,35 @@ const SortableWord = ({
     onActive: ({translationX, translationY}, ctx) => {
       translation.x.value = ctx.x + translationX;
       translation.y.value = ctx.y + translationY;
+      if (isInBank.value && translation.y.value < 100) {
+        offset.order.value = lastOrder(offsets);
+        calculateLayout(offsets, containerWidth);
+      } else if (!isInBank.value && translation.y.value > 100) {
+        offset.order.value = -1;
+        remove(offsets, index);
+        calculateLayout(offsets, containerWidth);
+      }
+      for (let i = 0; i < offsets.length; i++) {
+        const o = offsets[i];
+
+        if (i === index && o.order.value !== -1) {
+          continue;
+        }
+
+        if (
+          between(translation.x.value, o.x.value, o.x.value + o.width.value) &&
+          between(translation.y.value, o.y.value, o.y.value + o.height.value)
+        ) {
+          reOrder(offsets, offset.order.value, o.order.value);
+          calculateLayout(offsets, containerWidth);
+          break;
+        }
+      }
     },
     onEnd: () => {
       isGestureActive.value = false;
+      translation.x.value = withSpring(offset.x.value);
+      translation.y.value = withSpring(offset.y.value);
     },
   });
 

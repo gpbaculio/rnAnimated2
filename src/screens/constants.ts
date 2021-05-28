@@ -11,6 +11,23 @@ import absSVG from 'abs-svg-path';
 import normalizeSVG from 'normalize-svg-path';
 
 /**
+ * @summary Returns true if node is within lowerBound and upperBound.
+ * @worklet
+ */
+export const between = (
+  value: number,
+  lowerBound: number,
+  upperBound: number,
+  inclusive = true,
+) => {
+  'worklet';
+  if (inclusive) {
+    return value >= lowerBound && value <= upperBound;
+  }
+  return value > lowerBound && value < upperBound;
+};
+
+/**
  * @summary Type representing a vector
  * @example
    export interface Vector<T = number> {

@@ -66,3 +66,21 @@ export const calculateLayout = (input: Offset[], containerWidth: number) => {
     offset.y.value = height * lineNumber;
   });
 };
+
+export const lastOrder = (offsets: Offset[]) => {
+  'worklet';
+  return offsets.filter(isNotInWordBank).length;
+};
+
+export const remove = (offsets: Offset[], index: number) => {
+  'worklet';
+
+  const sortedOffsets = offsets
+    .filter((o, i) => i !== index)
+    .filter(isNotInWordBank)
+    .sort(byOrder);
+
+  sortedOffsets.slice(index, 1);
+
+  sortedOffsets.map((offset, i) => (offset.order.value = i));
+};
