@@ -63,6 +63,9 @@ const SortableWord = ({
       if (isInBank.value && translation.y.value < 100) {
         offset.order.value = lastOrder(offsets);
         calculateLayout(offsets, containerWidth);
+      } else if (!isInBank.value && translation.y.value > 100) {
+        offset.order.value = -1;
+        calculateLayout(offsets, containerWidth);
       }
     },
     onEnd: () => {
