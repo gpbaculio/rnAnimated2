@@ -66,3 +66,8 @@ export const calculateLayout = (input: Offset[], containerWidth: number) => {
     offset.y.value = height * lineNumber;
   });
 };
+
+export const lastOrder = (offsets: Offset[]) => {
+  'worklet';
+  return offsets.filter(isNotInWordBank).length;
+};
