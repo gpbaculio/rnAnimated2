@@ -35,6 +35,7 @@ const SortableWord = ({
 
   const isGestureActive = useSharedValue(false);
 
+  // isInBank means the word is below the lines, at the gray container
   const isInBank = useDerivedValue(() => offset.order.value === -1);
 
   const onGestureEvent = useAnimatedGestureHandler<
@@ -68,6 +69,7 @@ const SortableWord = ({
 
       // puts word on lines
       if (isInBank.value && translation.y.value < 100) {
+        // assigns last order animationg the word to last item on lines
         offset.order.value = lastOrder(offsets);
 
         calculateLayout(offsets, containerWidth);
@@ -82,6 +84,7 @@ const SortableWord = ({
       }
 
       for (let i = 0; i < offsets.length; i++) {
+        // o is current offset from the loop
         const o = offsets[i];
 
         if (i === index && o.order.value !== -1) continue;
@@ -90,6 +93,7 @@ const SortableWord = ({
           between(translation.x.value, o.x.value, o.x.value + o.width.value) &&
           between(translation.y.value, o.y.value, o.y.value + o.height.value)
         ) {
+          // offset is the current word being dragged
           reOrder(offsets, offset.order.value, o.order.value);
 
           calculateLayout(offsets, containerWidth);
