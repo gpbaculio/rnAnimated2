@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
+import { Dimensions, Image, Platform, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import Animated, {
   Extrapolate,
   interpolate,
@@ -13,7 +13,7 @@ export interface ProfileModel {
   profile: number;
 }
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export const α = Math.PI / 12;
 
@@ -27,22 +27,26 @@ interface CardProps {
   scale: Animated.SharedValue<number>;
 }
 
-const Profile = ({profile, translateX, translateY, scale}: CardProps) => {
-  const style = useAnimatedStyle(() => ({
-    transform: [
-      {translateX: translateX.value},
-      {translateY: translateY.value},
-      {
-        rotate: `${interpolate(
-          translateX.value,
-          [-width / 2, 0, width / 2],
-          [α, 0, -α],
-          Extrapolate.CLAMP,
-        )}`,
-      },
-      {scale: scale.value},
-    ],
-  }));
+const Profile = ({ profile, translateX, translateY, scale }: CardProps) => {
+
+
+  const style = useAnimatedStyle(() => {
+    const rotate = interpolate(
+      translateX.value,
+      [-width / 2, 0, width / 2],
+      [Platform.OS === 'ios' ? α : α * 12, 0, Platform.OS === 'ios' ? -α : -α * 12],
+      Extrapolate.CLAMP,
+    )
+
+    return {
+      transform: [
+        { translateX: translateX.value },
+        { translateY: translateY.value },
+        { rotate: Platform.OS === 'ios' ? rotate : `${rotate}deg`, },
+        { scale: scale.value },
+      ],
+    } as ViewStyle
+  });
 
   const like = useAnimatedStyle(() => ({
     opacity: interpolate(
