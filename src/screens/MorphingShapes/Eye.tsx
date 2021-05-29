@@ -116,23 +116,24 @@ const Eye = ({progress, flip}: EyeProps) => {
           {...{animatedProps}}
         />
       </Svg>
-      <View
-        style={{
-          ...StyleSheet.absoluteFillObject,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <View
-          style={{
-            width: 10,
-            height: 10,
-            borderRadius: 5,
-            backgroundColor: 'black',
-          }}
-        />
+      <View style={[styles.eyeContainer, StyleSheet.absoluteFillObject]}>
+        <View style={styles.eyeLens} />
       </View>
     </View>
   );
 };
 
 export default Eye;
+
+const styles = StyleSheet.create({
+  eyeContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  eyeLens: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: 'black',
+  },
+});
