@@ -7,12 +7,12 @@ import {
   View,
   Image,
 } from 'react-native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {useNavigation} from '@react-navigation/native';
-import {RectButton} from 'react-native-gesture-handler';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
+import { RectButton } from 'react-native-gesture-handler';
 
-import {styleGuide} from '../constants';
-import {AppStackNavigatorType} from '../../navigation/Navigation';
+import { styleGuide } from '../constants';
+import { AppStackNavigatorType } from '../../navigation/Navigation';
 
 const duolingoIcon = require('../../../assets/duolingo.png');
 
@@ -21,59 +21,63 @@ export const examples: {
   title: string;
   icon?: ImageSourcePropType;
 }[] = [
-  {
-    screen: 'WorkletsAndSharedValues',
-    title: '👩‍🏭  Worklets And SharedValues',
-  },
-  {
-    screen: 'PanGesture',
-    title: '💳  Pan Gesture',
-  },
-  {
-    screen: 'Transitions',
-    title: '🔁  Transitions',
-  },
-  {
-    screen: 'HigherOrder',
-    title: '🐎  Higher Order',
-  },
-  {
-    screen: 'CircularSlider',
-    title: '⭕️  Circular Slider',
-  },
-  {
-    screen: 'GraphInteractions',
-    title: '📈  Graph Interactions',
-  },
-  {
-    screen: 'Swiping',
-    title: '💚  Swiping',
-  },
-  {
-    screen: 'DynamicSprings',
-    title: '👨‍🔬  Dynamic Springs',
-  },
-  {
-    screen: 'DragToSort',
-    title: '📤  Drag To Sort',
-  },
-  {
-    screen: 'CubicBezier',
-    title: '⤴️  Cubic Bézier',
-  },
-  {
-    screen: 'MorphingShapes',
-    title: '☺️ Morphing Shapes',
-  },
-  {
-    screen: 'Duolingo',
-    title: 'Duolingo',
-    icon: duolingoIcon,
-  },
-];
+    {
+      screen: 'WorkletsAndSharedValues',
+      title: '👩‍🏭  Worklets And SharedValues',
+    },
+    {
+      screen: 'PanGesture',
+      title: '💳  Pan Gesture',
+    },
+    {
+      screen: 'Transitions',
+      title: '🔁  Transitions',
+    },
+    {
+      screen: 'HigherOrder',
+      title: '🐎  Higher Order',
+    },
+    {
+      screen: 'CircularSlider',
+      title: '⭕️  Circular Slider',
+    },
+    {
+      screen: 'GraphInteractions',
+      title: '📈  Graph Interactions',
+    },
+    {
+      screen: 'Swiping',
+      title: '💚  Swiping',
+    },
+    {
+      screen: 'DynamicSprings',
+      title: '👨‍🔬  Dynamic Springs',
+    },
+    {
+      screen: 'DragToSort',
+      title: '📤  Drag To Sort',
+    },
+    {
+      screen: 'CubicBezier',
+      title: '⤴️  Cubic Bézier',
+    },
+    {
+      screen: 'MorphingShapes',
+      title: '☺️ Morphing Shapes',
+    },
+    {
+      screen: 'Duolingo',
+      title: 'Duolingo',
+      icon: duolingoIcon,
+    },
+    {
+      screen: 'SvgAnimations',
+      title: 'SVG Svg Animations',
+    },
+  ];
 
 const Examples = () => {
-  const {navigate} =
+  const { navigate } =
     useNavigation<StackNavigationProp<AppStackNavigatorType, 'Examples'>>();
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>

@@ -1,7 +1,7 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-import {NavigationContainer} from '@react-navigation/native';
-import {StatusBar} from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { StatusBar } from 'react-native';
 
 import {
   Examples,
@@ -17,8 +17,9 @@ import {
   CubicBezier,
   MorphingShapes,
   Duolingo,
+  SvgAnimations
 } from '../screens';
-import {styleGuide} from '../screens/constants';
+import { styleGuide } from '../screens/constants';
 
 export type AppStackNavigatorType = {
   Examples: undefined;
@@ -34,6 +35,7 @@ export type AppStackNavigatorType = {
   CubicBezier: undefined;
   MorphingShapes: undefined;
   Duolingo: undefined;
+  SvgAnimations: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -138,6 +140,13 @@ const AppNavigator = () => (
         component={Duolingo}
         options={{
           title: 'Duolingo',
+        }}
+      />
+        <Stack.Screen
+        name="SvgAnimations"
+        component={SvgAnimations}
+        options={{
+          title: 'SvgAnimations',
         }}
       />
     </Stack.Navigator>
