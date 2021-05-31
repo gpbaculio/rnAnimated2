@@ -17,6 +17,7 @@ import {
   CubicBezier,
   MorphingShapes,
   Duolingo,
+  Rainbow,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -34,6 +35,7 @@ export type AppStackNavigatorType = {
   CubicBezier: undefined;
   MorphingShapes: undefined;
   Duolingo: undefined;
+  Rainbow: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -138,6 +140,13 @@ const AppNavigator = () => (
         component={Duolingo}
         options={{
           title: 'Duolingo',
+        }}
+      />
+      <Stack.Screen
+        name="Rainbow"
+        component={Rainbow}
+        options={{
+          title: 'Rainbow',
         }}
       />
     </Stack.Navigator>
