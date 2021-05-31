@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontFamily: 'GothamRounded-Medium',
+    fontWeight: '500',
     alignSelf: 'center',
   },
   action: {

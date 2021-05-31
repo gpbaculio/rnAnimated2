@@ -12,3 +12,4 @@ export {default as CubicBezier} from './CubicBezier';
 export {default as MorphingShapes} from './MorphingShapes';
 export {default as Duolingo} from './Duolingo';
 export {default as Rainbow} from './Rainbow';
+export {default as PhilzCoffee} from './PhilzCoffee';
