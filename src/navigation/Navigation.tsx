@@ -18,6 +18,7 @@ import {
   MorphingShapes,
   Duolingo,
   Rainbow,
+  PhilzCoffee,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -36,6 +37,7 @@ export type AppStackNavigatorType = {
   MorphingShapes: undefined;
   Duolingo: undefined;
   Rainbow: undefined;
+  PhilzCoffee: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -147,6 +149,13 @@ const AppNavigator = () => (
         component={Rainbow}
         options={{
           title: 'Rainbow',
+        }}
+      />
+      <Stack.Screen
+        name="PhilzCoffee"
+        component={PhilzCoffee}
+        options={{
+          title: '☕ PhilzCoffee',
         }}
       />
     </Stack.Navigator>

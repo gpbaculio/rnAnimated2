@@ -1,38 +1,38 @@
-import React from "react";
+import React from 'react';
 import {
   View,
   TouchableWithoutFeedback,
   Text,
   StyleSheet,
   Dimensions,
-} from "react-native";
+} from 'react-native';
 
 interface ButtonProps {
   label: string;
 }
 
-const width = (Dimensions.get("window").width - 64) / 2;
+const width = (Dimensions.get('window').width - 64) / 2;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#432406",
+    backgroundColor: '#432406',
     padding: 16,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignSelf: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignSelf: 'center',
     borderRadius: 27,
     height: 54,
     width: width,
   },
   label: {
-    color: "white",
+    color: 'white',
     fontSize: 16,
-    fontFamily: "GothamRounded-Bold",
-    alignSelf: "center",
+    fontWeight: '700',
+    alignSelf: 'center',
   },
 });
 
-const Button = ({ label }: ButtonProps) => {
+const Button = ({label}: ButtonProps) => {
   return (
     <TouchableWithoutFeedback>
       <View style={styles.container}>

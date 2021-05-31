@@ -1,11 +1,11 @@
-import React from "react";
-import { Dimensions, View, StyleSheet, Text } from "react-native";
+import React from 'react';
+import {Dimensions, View, StyleSheet, Text} from 'react-native';
 
-import { Product } from "./Model";
-import Button from "./components/Button";
-import CardHeader from "./components/CardHeader";
+import {Product} from './Model';
+import Button from './components/Button';
+import CardHeader from './components/CardHeader';
 
-const { width } = Dimensions.get("window");
+const {width} = Dimensions.get('window');
 export const CARD_HEIGHT = (width * 1564) / 974;
 const styles = StyleSheet.create({
   container: {
@@ -13,17 +13,17 @@ const styles = StyleSheet.create({
     height: CARD_HEIGHT,
   },
   title: {
-    fontFamily: "GothamRounded-Bold",
+    fontWeight: '700',
     fontSize: 28,
-    textAlign: "center",
-    color: "#432406",
+    textAlign: 'center',
+    color: '#432406',
     marginBottom: 16,
   },
   subtitle: {
-    fontFamily: "GothamRounded-Light",
+    fontWeight: '300',
     fontSize: 16,
-    textAlign: "center",
-    color: "#432406",
+    textAlign: 'center',
+    color: '#432406',
   },
 });
 
@@ -31,7 +31,7 @@ interface CardProps {
   product: Product;
 }
 
-const Card = ({ product: { color1, title, subtitle } }: CardProps) => {
+const Card = ({product: {color1, title, subtitle}}: CardProps) => {
   return (
     <View style={styles.container}>
       <View
@@ -41,9 +41,8 @@ const Card = ({ product: { color1, title, subtitle } }: CardProps) => {
           flex: 1,
           backgroundColor: color1,
           padding: 16,
-          justifyContent: "space-between",
-        }}
-      >
+          justifyContent: 'space-between',
+        }}>
         <View>
           <CardHeader />
           <Text style={styles.title}>{title}</Text>

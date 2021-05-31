@@ -71,6 +71,7 @@ export const examples: {
     icon: duolingoIcon,
   },
   {screen: 'Rainbow', title: '🌈  Rainbow Charts'},
+  {screen: 'PhilzCoffee', title: '☕ PhilzCoffee'},
 ];
 
 const Examples = () => {
