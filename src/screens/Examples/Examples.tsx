@@ -70,6 +70,7 @@ export const examples: {
     title: 'Duolingo',
     icon: duolingoIcon,
   },
+  {screen: 'Rainbow', title: '🌈  Rainbow Charts'},
 ];
 
 const Examples = () => {
