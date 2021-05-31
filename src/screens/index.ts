@@ -11,4 +11,3 @@ export {default as DragToSort} from './DragToSort';
 export {default as CubicBezier} from './CubicBezier';
 export {default as MorphingShapes} from './MorphingShapes';
 export {default as Duolingo} from './Duolingo';
-export {default as SvgAnimations} from './SvgAnimations';
