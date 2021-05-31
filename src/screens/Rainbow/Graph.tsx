@@ -4,7 +4,6 @@ import * as shape from 'd3-shape';
 import Animated, {
   useAnimatedProps,
   useAnimatedStyle,
-  useDerivedValue,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
@@ -16,26 +15,35 @@ import {Prices, DataPoints, SIZE} from './Model';
 import Header from './Header';
 import Cursor from './Cursor';
 import data from './data.json';
-import {serialize, parse, mixPath} from '../constants';
+import {parse, mixPath} from '../constants';
 
 const {width} = Dimensions.get('window');
 
 const values = data.data.prices as Prices;
+
 const POINTS = 60;
 
 const buildGraph = (datapoints: DataPoints, label: string) => {
   const priceList = datapoints.prices.slice(0, POINTS);
+
   const formattedValues = priceList.map(
     price => [parseFloat(price[0]), price[1]] as [number, number],
   );
+
   const prices = formattedValues.map(value => value[0]);
+
   const dates = formattedValues.map(value => value[1]);
+
   const scaleX = scaleLinear()
     .domain([Math.min(...dates), Math.max(...dates)])
     .range([0, SIZE]);
+
   const minPrice = Math.min(...prices);
+
   const maxPrice = Math.max(...prices);
+
   const scaleY = scaleLinear().domain([minPrice, maxPrice]).range([SIZE, 0]);
+
   return {
     label,
     minPrice,
@@ -86,6 +94,8 @@ const BUTTON_WIDTH = (width - 32) / graphs.length;
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 
 const Graph = () => {
+  const y = useSharedValue(0);
+
   const transition = useSharedValue(0);
 
   const selected = useSharedValue(0);
@@ -112,17 +122,17 @@ const Graph = () => {
 
   return (
     <View style={styles.container}>
-      <Header data={current.value.data} />
+      <Header data={current} y={y} />
       <View>
         <Svg width={SIZE} height={SIZE}>
           <AnimatedPath
             animatedProps={animatedProps}
             fill="transparent"
-            stroke="red"
+            stroke="black"
             strokeWidth={3}
           />
         </Svg>
-        <Cursor data={current} />
+        <Cursor data={current} y={y} />
       </View>
       <View style={styles.selection}>
         <View style={StyleSheet.absoluteFill}>
