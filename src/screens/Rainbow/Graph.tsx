@@ -122,7 +122,7 @@ const Graph = () => {
             strokeWidth={3}
           />
         </Svg>
-        {/* <Cursor data={current} /> */}
+        <Cursor data={current} />
       </View>
       <View style={styles.selection}>
         <View style={StyleSheet.absoluteFill}>
