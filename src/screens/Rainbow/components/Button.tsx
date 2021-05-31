@@ -15,6 +15,19 @@ interface ButtonProps {
 
 const width = (Dimensions.get('window').width - 64) / 2;
 
+const Button = ({icon, label}: ButtonProps) => {
+  return (
+    <TouchableWithoutFeedback>
+      <View style={styles.container}>
+        <Feather color="white" name={icon} size={18} style={styles.icon} />
+        <Text style={styles.label}>{label}</Text>
+      </View>
+    </TouchableWithoutFeedback>
+  );
+};
+
+export default Button;
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'black',
@@ -34,16 +47,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
-const Button = ({icon, label}: ButtonProps) => {
-  return (
-    <TouchableWithoutFeedback>
-      <View style={styles.container}>
-        <Feather color="white" name={icon} size={18} style={styles.icon} />
-        <Text style={styles.label}>{label}</Text>
-      </View>
-    </TouchableWithoutFeedback>
-  );
-};
-
-export default Button;

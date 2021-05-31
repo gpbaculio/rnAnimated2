@@ -1,14 +1,14 @@
 /* eslint-disable prefer-destructuring */
-import { Vector } from "react-native-redash";
+import {Vector} from '../constants';
 
 export const cubicBezier = (
   t: number,
   from: number,
   c1: number,
   c2: number,
-  to: number
+  to: number,
 ) => {
-  "worklet";
+  'worklet';
   const term = 1 - t;
   const a = 1 * term ** 3 * t ** 0 * from;
   const b = 3 * term ** 2 * t ** 1 * c1;
@@ -18,20 +18,20 @@ export const cubicBezier = (
 };
 
 export const round = (value: number, precision = 0) => {
-  "worklet";
+  'worklet';
   const p = Math.pow(10, precision);
   return Math.round(value * p) / p;
 };
 
 // https://stackoverflow.com/questions/27176423/function-to-solve-cubic-equation-analytically
 const cuberoot = (x: number) => {
-  "worklet";
+  'worklet';
   const y = Math.pow(Math.abs(x), 1 / 3);
   return x < 0 ? -y : y;
 };
 
 const solveCubic = (a: number, b: number, c: number, d: number) => {
-  "worklet";
+  'worklet';
   if (Math.abs(a) < 1e-8) {
     // Quadratic case, ax^2+bx+c=0
     a = b;
@@ -99,15 +99,15 @@ export const cubicBezierYForX = (
   a: Vector,
   b: Vector,
   c: Vector,
-  d: Vector
+  d: Vector,
 ) => {
-  "worklet";
+  'worklet';
   const pa = -a.x + 3 * b.x - 3 * c.x + d.x;
   const pb = 3 * a.x - 6 * b.x + 3 * c.x;
   const pc = -3 * a.x + 3 * b.x;
   const pd = a.x - x;
   const t = solveCubic(pa, pb, pc, pd).filter(
-    (root) => root >= 0 && root <= 1
+    root => root >= 0 && root <= 1,
   )[0];
   return cubicBezier(t, a.y, b.y, c.y, d.y);
 };

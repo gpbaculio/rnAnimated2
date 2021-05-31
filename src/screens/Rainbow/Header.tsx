@@ -1,27 +1,9 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { round } from "react-native-redash";
+import React from 'react';
+import {StyleSheet, Text, View} from 'react-native';
+import {round} from '../constants';
 
-import ETH from "./components/ETH";
-import { SIZE } from "./Model";
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-  },
-  values: {
-    marginTop: 16,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  value: {
-    fontWeight: "500",
-    fontSize: 24,
-  },
-  label: {
-    fontSize: 18,
-  },
-});
+import ETH from './components/ETH';
+import {SIZE} from './Model';
 
 interface HeaderProps {
   data: {
@@ -32,16 +14,16 @@ interface HeaderProps {
   };
 }
 
-const Header = ({ data }: HeaderProps) => {
-  const price = `$ ${round(data.maxPrice, 2).toLocaleString("en-US", {
-    currency: "USD",
+const Header = ({data}: HeaderProps) => {
+  const price = `$ ${round(data.maxPrice, 2).toLocaleString('en-US', {
+    currency: 'USD',
   })}`;
   const percentChange = `${round(data.percentChange, 3)}%`;
-  const { label } = data;
+  const {label} = data;
   const style = {
-    fontWeight: "500",
+    fontWeight: '500',
     fontSize: 24,
-    color: data.percentChange > 0 ? "green" : "red",
+    color: data.percentChange > 0 ? 'green' : 'red',
   } as const;
   return (
     <View style={styles.container}>
@@ -61,3 +43,21 @@ const Header = ({ data }: HeaderProps) => {
 };
 
 export default Header;
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+  },
+  values: {
+    marginTop: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  value: {
+    fontWeight: '500',
+    fontSize: 24,
+  },
+  label: {
+    fontSize: 18,
+  },
+});
