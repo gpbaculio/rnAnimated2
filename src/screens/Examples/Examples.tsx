@@ -72,11 +72,13 @@ export const examples: {
   },
   {screen: 'Rainbow', title: '🌈  Rainbow Charts'},
   {screen: 'PhilzCoffee', title: '☕ PhilzCoffee'},
+  {screen: 'Pizza', title: '🍕 Pizza'},
 ];
 
 const Examples = () => {
   const {navigate} =
     useNavigation<StackNavigationProp<AppStackNavigatorType, 'Examples'>>();
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       {examples.map(thumbnail => (
