@@ -5,10 +5,17 @@ import Animated, {
   Extrapolate,
   useSharedValue,
 } from 'react-native-reanimated';
-
 import parseSVG from 'parse-svg-path';
 import absSVG from 'abs-svg-path';
 import normalizeSVG from 'normalize-svg-path';
+
+type SVGCloseCommand = ['Z'];
+type SVGMoveCommand = ['M', number, number];
+type SVGCurveCommand = ['C', number, number, number, number, number, number];
+type SVGNormalizedCommands = [
+  SVGMoveCommand,
+  ...(SVGCurveCommand | SVGCloseCommand)[]
+];
 
 /**
  * @summary Returns true if node is within lowerBound and upperBound.
@@ -204,6 +211,20 @@ export const interpolatePath = (
     close: outputRange[0].close,
   };
   return serialize(path);
+};
+
+/**
+ * @summary Interpolate two paths with an animation value that goes from 0 to 1
+ * @worklet
+ */
+export const mixPath = (
+  value: number,
+  p1: Path,
+  p2: Path,
+  extrapolate = Animated.Extrapolate.CLAMP,
+) => {
+  'worklet';
+  return interpolatePath(value, [0, 1], [p1, p2], extrapolate);
 };
 
 /**
@@ -1226,4 +1247,36 @@ export const getPointAtLength = (path: BezierCurvePath, length: number) => {
     x: cubicBezier(t, c.from.x, c.c1.x, c.c2.x, c.to.x),
     y: cubicBezier(t, c.from.y, c.c1.y, c.c2.y, c.to.y),
   };
+};
+
+/**
+ * @description ⚠️ this function cannot run on the UI thread. It must be executed on the JS thread
+ * @summary Parse an SVG path into a sequence of Bèzier curves.
+ * The SVG is normalized to have absolute values and to be approximated to a sequence of Bèzier curves.
+ */
+
+export const parse = (d: string): Path => {
+  const segments: SVGNormalizedCommands = normalizeSVG(absSVG(parseSVG(d)));
+  const path = createPath({x: segments[0][1], y: segments[0][2]});
+  segments.forEach(segment => {
+    if (segment[0] === 'Z') {
+      close(path);
+    } else if (segment[0] === 'C') {
+      addCurve(path, {
+        c1: {
+          x: segment[1],
+          y: segment[2],
+        },
+        c2: {
+          x: segment[3],
+          y: segment[4],
+        },
+        to: {
+          x: segment[5],
+          y: segment[6],
+        },
+      });
+    }
+  });
+  return path;
 };

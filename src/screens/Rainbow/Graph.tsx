@@ -1,6 +1,13 @@
 import React, {useState} from 'react';
 import {Text, View, StyleSheet, Dimensions} from 'react-native';
 import * as shape from 'd3-shape';
+import Animated, {
+  useAnimatedProps,
+  useAnimatedStyle,
+  useDerivedValue,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 import Svg, {Path} from 'react-native-svg';
 import {scaleLinear} from 'd3-scale';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
@@ -9,11 +16,7 @@ import {Prices, DataPoints, SIZE} from './Model';
 import Header from './Header';
 import Cursor from './Cursor';
 import data from './data.json';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
+import {serialize, parse, mixPath} from '../constants';
 
 const {width} = Dimensions.get('window');
 
@@ -38,11 +41,13 @@ const buildGraph = (datapoints: DataPoints, label: string) => {
     minPrice,
     maxPrice,
     percentChange: datapoints.percent_change,
-    path: shape
-      .line()
-      .x(([, x]) => scaleX(x) as number)
-      .y(([y]) => scaleY(y) as number)
-      .curve(shape.curveBasis)(formattedValues) as string,
+    path: parse(
+      shape
+        .line()
+        .x(([, x]) => scaleX(x) as number)
+        .y(([y]) => scaleY(y) as number)
+        .curve(shape.curveBasis)(formattedValues) as string,
+    ),
   };
 };
 
@@ -75,30 +80,49 @@ const graphs = [
 ];
 
 const SELECTION_WIDTH = width - 32;
+
 const BUTTON_WIDTH = (width - 32) / graphs.length;
 
+const AnimatedPath = Animated.createAnimatedComponent(Path);
+
 const Graph = () => {
+  const transition = useSharedValue(0);
+
   const selected = useSharedValue(0);
 
-  const current = graphs[0].data;
+  const previous = useSharedValue({data: graphs[0].data});
+
+  const current = useSharedValue({data: graphs[0].data});
 
   const style = useAnimatedStyle(() => ({
     transform: [{translateX: BUTTON_WIDTH * selected.value}],
   }));
 
+  const animatedProps = useAnimatedProps(() => {
+    const d = mixPath(
+      transition.value,
+      previous.value.data.path,
+      current.value.data.path,
+    );
+
+    return {
+      d,
+    };
+  });
+
   return (
     <View style={styles.container}>
-      <Header data={current} />
+      <Header data={current.value.data} />
       <View>
         <Svg width={SIZE} height={SIZE}>
-          <Path
-            d={current.path}
+          <AnimatedPath
+            animatedProps={animatedProps}
             fill="transparent"
-            stroke="black"
+            stroke="red"
             strokeWidth={3}
           />
         </Svg>
-        <Cursor data={current} />
+        {/* <Cursor data={current} /> */}
       </View>
       <View style={styles.selection}>
         <View style={StyleSheet.absoluteFill}>
@@ -109,7 +133,11 @@ const Graph = () => {
             <TouchableWithoutFeedback
               key={graph.label}
               onPress={() => {
+                previous.value = current.value;
+                current.value = {data: graphs[index].data};
                 selected.value = withTiming(index);
+                transition.value = 0;
+                transition.value = withTiming(1);
               }}>
               <View style={[styles.labelContainer]}>
                 <Text style={styles.label}>{graph.label}</Text>
