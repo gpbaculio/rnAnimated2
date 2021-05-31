@@ -1,16 +1,24 @@
-import React, { useState } from "react";
-import { Text, View, StyleSheet, Dimensions } from "react-native";
-import * as shape from "d3-shape";
-import Svg, { Path } from "react-native-svg";
-import { scaleLinear } from "d3-scale";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import React, {useState} from 'react';
+import {Text, View, StyleSheet, Dimensions} from 'react-native';
+import * as shape from 'd3-shape';
+import Animated, {
+  useAnimatedProps,
+  useAnimatedStyle,
+  useDerivedValue,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
+import Svg, {Path} from 'react-native-svg';
+import {scaleLinear} from 'd3-scale';
+import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
-import { Prices, DataPoints, SIZE } from "./Model";
-import Header from "./Header";
-import Cursor from "./Cursor";
-import data from "./data.json";
+import {Prices, DataPoints, SIZE} from './Model';
+import Header from './Header';
+import Cursor from './Cursor';
+import data from './data.json';
+import {serialize, parse, mixPath} from '../constants';
 
-const { width } = Dimensions.get("window");
+const {width} = Dimensions.get('window');
 
 const values = data.data.prices as Prices;
 const POINTS = 60;
@@ -18,10 +26,10 @@ const POINTS = 60;
 const buildGraph = (datapoints: DataPoints, label: string) => {
   const priceList = datapoints.prices.slice(0, POINTS);
   const formattedValues = priceList.map(
-    (price) => [parseFloat(price[0]), price[1]] as [number, number]
+    price => [parseFloat(price[0]), price[1]] as [number, number],
   );
-  const prices = formattedValues.map((value) => value[0]);
-  const dates = formattedValues.map((value) => value[1]);
+  const prices = formattedValues.map(value => value[0]);
+  const dates = formattedValues.map(value => value[1]);
   const scaleX = scaleLinear()
     .domain([Math.min(...dates), Math.max(...dates)])
     .range([0, SIZE]);
@@ -33,84 +41,84 @@ const buildGraph = (datapoints: DataPoints, label: string) => {
     minPrice,
     maxPrice,
     percentChange: datapoints.percent_change,
-    path: shape
-      .line()
-      .x(([, x]) => scaleX(x) as number)
-      .y(([y]) => scaleY(y) as number)
-      .curve(shape.curveBasis)(formattedValues) as string,
+    path: parse(
+      shape
+        .line()
+        .x(([, x]) => scaleX(x) as number)
+        .y(([y]) => scaleY(y) as number)
+        .curve(shape.curveBasis)(formattedValues) as string,
+    ),
   };
 };
 
 const graphs = [
   {
-    label: "1H",
+    label: '1H',
     value: 0,
-    data: buildGraph(values.hour, "Last Hour"),
+    data: buildGraph(values.hour, 'Last Hour'),
   },
   {
-    label: "1D",
+    label: '1D',
     value: 1,
-    data: buildGraph(values.day, "Today"),
+    data: buildGraph(values.day, 'Today'),
   },
   {
-    label: "1M",
+    label: '1M',
     value: 2,
-    data: buildGraph(values.month, "Last Month"),
+    data: buildGraph(values.month, 'Last Month'),
   },
   {
-    label: "1Y",
+    label: '1Y',
     value: 3,
-    data: buildGraph(values.year, "This Year"),
+    data: buildGraph(values.year, 'This Year'),
   },
   {
-    label: "all",
+    label: 'all',
     value: 4,
-    data: buildGraph(values.all, "All time"),
+    data: buildGraph(values.all, 'All time'),
   },
 ];
 
 const SELECTION_WIDTH = width - 32;
+
 const BUTTON_WIDTH = (width - 32) / graphs.length;
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-  },
-  backgroundSelection: {
-    backgroundColor: "#f3f3f3",
-    ...StyleSheet.absoluteFillObject,
-    width: BUTTON_WIDTH,
-    borderRadius: 8,
-  },
-  selection: {
-    flexDirection: "row",
-    width: SELECTION_WIDTH,
-    alignSelf: "center",
-  },
-  labelContainer: {
-    padding: 16,
-    width: BUTTON_WIDTH,
-  },
-  label: {
-    fontSize: 16,
-    color: "black",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-});
+
+const AnimatedPath = Animated.createAnimatedComponent(Path);
 
 const Graph = () => {
-  const [selected, setSelected] = useState(0);
-  const current = graphs[selected].data;
+  const transition = useSharedValue(0);
+
+  const selected = useSharedValue(0);
+
+  const previous = useSharedValue({data: graphs[0].data});
+
+  const current = useSharedValue({data: graphs[0].data});
+
+  const style = useAnimatedStyle(() => ({
+    transform: [{translateX: BUTTON_WIDTH * selected.value}],
+  }));
+
+  const animatedProps = useAnimatedProps(() => {
+    const d = mixPath(
+      transition.value,
+      previous.value.data.path,
+      current.value.data.path,
+    );
+
+    return {
+      d,
+    };
+  });
+
   return (
     <View style={styles.container}>
-      <Header data={current} />
+      <Header data={current.value.data} />
       <View>
         <Svg width={SIZE} height={SIZE}>
-          <Path
-            d={current.path}
+          <AnimatedPath
+            animatedProps={animatedProps}
             fill="transparent"
-            stroke="black"
+            stroke="red"
             strokeWidth={3}
           />
         </Svg>
@@ -118,21 +126,19 @@ const Graph = () => {
       </View>
       <View style={styles.selection}>
         <View style={StyleSheet.absoluteFill}>
-          <View
-            style={[
-              styles.backgroundSelection,
-              { transform: [{ translateX: BUTTON_WIDTH * selected }] },
-            ]}
-          />
+          <Animated.View style={[styles.backgroundSelection, style]} />
         </View>
         {graphs.map((graph, index) => {
           return (
             <TouchableWithoutFeedback
               key={graph.label}
               onPress={() => {
-                setSelected(index);
-              }}
-            >
+                previous.value = current.value;
+                current.value = {data: graphs[index].data};
+                selected.value = withTiming(index);
+                transition.value = 0;
+                transition.value = withTiming(1);
+              }}>
               <View style={[styles.labelContainer]}>
                 <Text style={styles.label}>{graph.label}</Text>
               </View>
@@ -145,3 +151,31 @@ const Graph = () => {
 };
 
 export default Graph;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  backgroundSelection: {
+    backgroundColor: '#f3f3f3',
+    ...StyleSheet.absoluteFillObject,
+    width: BUTTON_WIDTH,
+    borderRadius: 8,
+  },
+  selection: {
+    flexDirection: 'row',
+    width: SELECTION_WIDTH,
+    alignSelf: 'center',
+  },
+  labelContainer: {
+    padding: 16,
+    width: BUTTON_WIDTH,
+  },
+  label: {
+    fontSize: 16,
+    color: 'black',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+});
