@@ -63,7 +63,7 @@ const PhilzCoffee = () => {
               <Card {...{key: index, product}} />
             ))}
           </Animated.ScrollView>
-          <Products />
+          <Products {...{x: translateX}} />
         </View>
         <Cards />
       </ScrollView>
