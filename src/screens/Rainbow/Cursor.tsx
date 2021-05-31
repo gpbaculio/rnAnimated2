@@ -13,6 +13,7 @@ import {getYForX, Path} from '../constants';
 const CURSOR = 50;
 
 interface CursorProps {
+  y: Animated.SharedValue<number>;
   data: Animated.SharedValue<{
     data: {
       label: string;
@@ -24,7 +25,7 @@ interface CursorProps {
   }>;
 }
 
-const Cursor = ({data}: CursorProps) => {
+const Cursor = ({data, y}: CursorProps) => {
   const active = useSharedValue(false);
 
   const x = useSharedValue(0);
@@ -35,6 +36,7 @@ const Cursor = ({data}: CursorProps) => {
     },
     onActive: event => {
       x.value = event.x;
+      y.value = getYForX(data.value.data.path, x.value) as number;
     },
     onEnd: () => {
       active.value = false;
@@ -43,12 +45,9 @@ const Cursor = ({data}: CursorProps) => {
 
   const style = useAnimatedStyle(() => {
     const translateX = x.value - CURSOR / 2;
-    const translateY = getYForX(data.value.data.path, x.value);
+    const translateY = y.value - CURSOR / 2;
     return {
-      transform: [
-        {translateX},
-        {translateY: (translateY as number) - CURSOR / 2},
-      ],
+      transform: [{translateX}, {translateY}],
       opacity: withTiming(active.value ? 1 : 0),
     };
   });

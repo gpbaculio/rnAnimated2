@@ -1,41 +1,67 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {round} from '../constants';
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+  useDerivedValue,
+} from 'react-native-reanimated';
+import {ReText} from '../components';
+import {Path, round} from '../constants';
 
 import ETH from './components/ETH';
 import {SIZE} from './Model';
 
 interface HeaderProps {
-  data: {
-    minPrice: number;
-    maxPrice: number;
-    percentChange: number;
-    label: string;
-  };
+  y: Animated.SharedValue<number>;
+  data: Animated.SharedValue<{
+    data: {
+      label: string;
+      minPrice: number;
+      maxPrice: number;
+      percentChange: number;
+      path: Path;
+    };
+  }>;
 }
 
-const Header = ({data}: HeaderProps) => {
-  const price = `$ ${round(data.maxPrice, 2).toLocaleString('en-US', {
-    currency: 'USD',
-  })}`;
-  const percentChange = `${round(data.percentChange, 3)}%`;
-  const {label} = data;
-  const style = {
+const Header = ({data, y}: HeaderProps) => {
+  const price = useDerivedValue(
+    () =>
+      `$ ${round(
+        interpolate(
+          y.value,
+          [SIZE, 0],
+          [data.value.data.minPrice, data.value.data.maxPrice],
+        ),
+        2,
+      ).toLocaleString('en-US', {
+        currency: 'USD',
+      })}`,
+  );
+
+  const percentChange = useDerivedValue(
+    () => `${round(data.value.data.percentChange, 3)}%`,
+  );
+
+  const label = useDerivedValue(() => data.value.data.label);
+
+  const style = useAnimatedStyle(() => ({
     fontWeight: '500',
     fontSize: 24,
-    color: data.percentChange > 0 ? 'green' : 'red',
-  } as const;
+    color: data.value.data.percentChange > 0 ? 'green' : 'red',
+  }));
+
   return (
     <View style={styles.container}>
       <ETH />
       <View style={styles.values}>
         <View>
-          <Text style={styles.value}>{price}</Text>
+          <ReText style={styles.value} text={price} />
           <Text style={styles.label}>Etherum</Text>
         </View>
         <View>
-          <Text style={style}>{percentChange}</Text>
-          <Text style={styles.label}>{label}</Text>
+          <ReText style={style} text={percentChange} />
+          <ReText style={styles.label} text={label} />
         </View>
       </View>
     </View>
