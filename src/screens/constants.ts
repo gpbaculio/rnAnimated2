@@ -381,48 +381,48 @@ export const styleGuide = {
     body: {
       fontSize: 17,
       lineHeight: 20,
-      fontFamily: 'SFProText-Regular',
+      fontWeight: '500',
     },
     callout: {
       fontSize: 16,
       lineHeight: 20,
-      fontFamily: 'SFProText-Regular',
+      fontWeight: '500',
     },
     caption: {
       fontSize: 11,
       lineHeight: 13,
-      fontFamily: 'SFProText-Regular',
+      fontWeight: '500',
     },
     footnote: {
       fontSize: 13,
       lineHeight: 18,
-      fontFamily: 'SFProText-Regular',
+      fontWeight: '500',
       color: '#999999',
     },
     headline: {
       fontSize: 17,
       lineHeight: 22,
-      fontFamily: 'SFProText-Semibold',
+      fontWeight: '600',
     },
     subhead: {
       fontSize: 15,
       lineHeight: 20,
-      fontFamily: 'SFProText-Bold',
+      fontWeight: '700',
     },
     title1: {
       fontSize: 34,
       lineHeight: 41,
-      fontFamily: 'SFProText-Bold',
+      fontWeight: '700',
     },
     title2: {
       fontSize: 28,
       lineHeight: 34,
-      fontFamily: 'SFProText-Bold',
+      fontWeight: '700',
     },
     title3: {
       fontSize: 22,
       lineHeight: 26,
-      fontFamily: 'SFProText-Bold',
+      fontWeight: '700',
     },
   },
 };
@@ -1455,4 +1455,16 @@ export const getYForX = (path: Path, x: number, precision = 2) => {
     c.curve.to,
     precision,
   );
+};
+
+/**
+ * Linear interpolation
+ * @param value
+ * @param x
+ * @param y
+ * @worklet
+ */
+export const mix = (value: number, x: number, y: number) => {
+  'worklet';
+  return x * (1 - value) + y * value;
 };

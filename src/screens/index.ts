@@ -13,3 +13,4 @@ export {default as MorphingShapes} from './MorphingShapes';
 export {default as Duolingo} from './Duolingo';
 export {default as Rainbow} from './Rainbow';
 export {default as PhilzCoffee} from './PhilzCoffee';
+export {default as Pizza} from './Pizza';

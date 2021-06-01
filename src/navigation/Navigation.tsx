@@ -19,6 +19,7 @@ import {
   Duolingo,
   Rainbow,
   PhilzCoffee,
+  Pizza,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -38,6 +39,7 @@ export type AppStackNavigatorType = {
   Duolingo: undefined;
   Rainbow: undefined;
   PhilzCoffee: undefined;
+  Pizza: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -156,6 +158,13 @@ const AppNavigator = () => (
         component={PhilzCoffee}
         options={{
           title: '☕ PhilzCoffee',
+        }}
+      />
+      <Stack.Screen
+        name="Pizza"
+        component={Pizza}
+        options={{
+          title: '🍕 Pizza',
         }}
       />
     </Stack.Navigator>
