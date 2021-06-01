@@ -21,24 +21,14 @@ interface IngredientSelectionProps {
   asset: ReturnType<typeof require>;
   ingredient: keyof State;
   state: [State, Dispatch<SetStateAction<State>>];
+  selected: Animated.SharedValue<boolean>;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: '#F3E9C6',
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 16,
-  },
-});
 
 const IngredientSelection = ({
   asset,
   state: [state, setState],
   ingredient,
+  selected,
 }: IngredientSelectionProps) => {
   const opacity = useSharedValue(1);
 
@@ -72,6 +62,7 @@ const IngredientSelection = ({
       // move the ingredient
       translateX.value = translationX;
       translateY.value = translationY;
+      selected.value = translateY.value < -HEADER_HEIGHT;
     },
     onEnd: ({velocityY}) => {
       const dest = snapPoint(translateY.value, velocityY, [0, -HEADER_HEIGHT]);
@@ -81,6 +72,7 @@ const IngredientSelection = ({
       // after ingredient has been returned, show opacity
       translateY.value = withTiming(0, {}, () => {
         opacity.value = 1;
+        selected.value = false;
       });
 
       if (dest !== 0) {
@@ -114,3 +106,15 @@ const IngredientSelection = ({
 };
 
 export default IngredientSelection;
+
+const styles = StyleSheet.create({
+  container: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: '#F3E9C6',
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 16,
+  },
+});

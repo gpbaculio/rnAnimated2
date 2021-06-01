@@ -52,10 +52,17 @@ const styles = StyleSheet.create({
 });
 
 const PizzaChallenge = () => {
+  const selected = useSharedValue(false);
+
   const [state, setState] = useState(defaultState);
+
+  const style = useAnimatedStyle(() => ({
+    transform: [{scale: withTiming(selected.value ? 1.05 : 1)}],
+  }));
+
   return (
     <View style={styles.root}>
-      <View style={[styles.pizza]}>
+      <Animated.View style={[styles.pizza, style]}>
         <Image source={assets.plate} style={styles.plate} />
         <Image source={assets.bread[0]} style={styles.bread} />
         <Ingredients zIndex={state.basil} assets={assets.basil} />
@@ -64,7 +71,7 @@ const PizzaChallenge = () => {
         <Ingredients zIndex={state.onion} assets={assets.onion} />
         <Ingredients zIndex={state.broccoli} assets={assets.broccoli} />
         <Ingredients zIndex={state.mushroom} assets={assets.mushroom} />
-      </View>
+      </Animated.View>
       <Header />
       <View style={styles.container}>
         <ScrollView
@@ -72,29 +79,44 @@ const PizzaChallenge = () => {
           contentContainerStyle={styles.content}
           horizontal>
           <IngredientSelection
-            asset={assets.basil[2]}
-            ingredient="basil"
-            state={[state, setState]}
+            {...{
+              selected,
+              asset: assets.basil[2],
+              ingredient: 'basil',
+              state: [state, setState],
+            }}
           />
           <IngredientSelection
-            asset={assets.sausage[3]}
-            ingredient="sausage"
-            state={[state, setState]}
+            {...{
+              selected,
+              asset: assets.sausage[3],
+              ingredient: 'sausage',
+              state: [state, setState],
+            }}
           />
           <IngredientSelection
-            asset={assets.onion[1]}
-            ingredient="onion"
-            state={[state, setState]}
+            {...{
+              selected,
+              asset: assets.onion[1],
+              ingredient: 'onion',
+              state: [state, setState],
+            }}
           />
           <IngredientSelection
-            asset={assets.broccoli[1]}
-            ingredient="broccoli"
-            state={[state, setState]}
+            {...{
+              selected,
+              asset: assets.broccoli[1],
+              ingredient: 'broccoli',
+              state: [state, setState],
+            }}
           />
           <IngredientSelection
-            asset={assets.mushroom[1]}
-            ingredient="mushroom"
-            state={[state, setState]}
+            {...{
+              selected,
+              asset: assets.mushroom[1],
+              ingredient: 'mushroom',
+              state: [state, setState],
+            }}
           />
         </ScrollView>
       </View>
