@@ -1,6 +1,10 @@
 import React, {Dispatch, SetStateAction, useCallback} from 'react';
 import {Image, StyleSheet, View} from 'react-native';
-import {PanGestureHandler} from 'react-native-gesture-handler';
+import {
+  PanGestureHandler,
+  TapGestureHandler,
+  TapGestureHandlerGestureEvent,
+} from 'react-native-gesture-handler';
 import Animated, {
   runOnJS,
   useAnimatedGestureHandler,
@@ -37,43 +41,74 @@ const IngredientSelection = ({
   ingredient,
 }: IngredientSelectionProps) => {
   const opacity = useSharedValue(1);
+
   const translateX = useSharedValue(0);
+
   const translateY = useSharedValue(0);
+
   const {width, height} = Image.resolveAssetSource(asset);
+
   const aspectRatio = height / width;
+
   const setIngredient = useCallback(
     () =>
-      setState({...state, [ingredient]: Math.max(...Object.values(state)) + 1}),
-    [state, setState],
+      setState({
+        ...state,
+        [ingredient]:
+          state[ingredient] === 0 ? Math.max(...Object.values(state)) + 1 : 0,
+      }),
+    [ingredient, state, setState],
   );
+
+  const onTapEvent = useAnimatedGestureHandler<TapGestureHandlerGestureEvent>({
+    onEnd: () => {
+      // tapping removes the ingredient
+      runOnJS(setIngredient)();
+    },
+  });
+
   const onGestureEvent = useAnimatedGestureHandler({
     onActive: ({translationX, translationY}) => {
+      // move the ingredient
       translateX.value = translationX;
       translateY.value = translationY;
     },
     onEnd: ({velocityY}) => {
       const dest = snapPoint(translateY.value, velocityY, [0, -HEADER_HEIGHT]);
+
+      // always return the ingredient to the button container
       translateX.value = withTiming(0);
+      // after ingredient has been returned, show opacity
       translateY.value = withTiming(0, {}, () => {
         opacity.value = 1;
       });
+
       if (dest !== 0) {
         opacity.value = 0;
         runOnJS(setIngredient)();
       }
     },
   });
+
   const style = useAnimatedStyle(() => ({
     opacity: opacity.value,
     transform: [{translateX: translateX.value}, {translateY: translateY.value}],
   }));
+
   return (
     <View style={styles.container}>
-      <PanGestureHandler {...{onGestureEvent}}>
-        <Animated.View {...{style}}>
-          <Image source={asset} style={{width: 50, height: 50 * aspectRatio}} />
+      <TapGestureHandler {...{onGestureEvent: onTapEvent}}>
+        <Animated.View>
+          <PanGestureHandler {...{onGestureEvent}}>
+            <Animated.View {...{style}}>
+              <Image
+                source={asset}
+                style={{width: 50, height: 50 * aspectRatio}}
+              />
+            </Animated.View>
+          </PanGestureHandler>
         </Animated.View>
-      </PanGestureHandler>
+      </TapGestureHandler>
     </View>
   );
 };
