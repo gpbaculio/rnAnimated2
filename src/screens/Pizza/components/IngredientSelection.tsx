@@ -62,6 +62,7 @@ const IngredientSelection = ({
       // move the ingredient
       translateX.value = translationX;
       translateY.value = translationY;
+      selected.value = translateY.value < -HEADER_HEIGHT;
     },
     onEnd: ({velocityY}) => {
       const dest = snapPoint(translateY.value, velocityY, [0, -HEADER_HEIGHT]);
@@ -71,6 +72,7 @@ const IngredientSelection = ({
       // after ingredient has been returned, show opacity
       translateY.value = withTiming(0, {}, () => {
         opacity.value = 1;
+        selected.value = false;
       });
 
       if (dest !== 0) {

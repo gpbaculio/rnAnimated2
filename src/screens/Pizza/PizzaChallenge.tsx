@@ -57,7 +57,7 @@ const PizzaChallenge = () => {
   const [state, setState] = useState(defaultState);
 
   const style = useAnimatedStyle(() => ({
-    transform: [{scale: withTiming(selected.value ? 1.1 : 1)}],
+    transform: [{scale: withTiming(selected.value ? 1.05 : 1)}],
   }));
 
   return (
