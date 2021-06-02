@@ -1,16 +1,16 @@
 import React from 'react';
-import { StyleSheet, Image, View, Dimensions, Platform } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import {StyleSheet, Image, View, Dimensions, Platform} from 'react-native';
+import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import Animated, {
   Extrapolate,
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import { useNavigation } from '@react-navigation/native';
-import { assets, BREAD_PADDING, PIZZA_SIZE } from './Config';
-import { SharedElement } from 'react-navigation-shared-element';
+import {useNavigation} from '@react-navigation/native';
+import {assets, BREAD_PADDING, PIZZA_SIZE} from './Config';
+import {SharedElement} from 'react-navigation-shared-element';
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 interface PizzaProps {
   id: string;
@@ -19,8 +19,8 @@ interface PizzaProps {
   x: Animated.SharedValue<number>;
 }
 
-const Pizza = ({ id, index, asset, x }: PizzaProps) => {
-  const { navigate } = useNavigation();
+const Pizza = ({id, index, asset, x}: PizzaProps) => {
+  const {navigate} = useNavigation();
 
   const style = useAnimatedStyle(() => {
     const inputRange = [
@@ -42,11 +42,11 @@ const Pizza = ({ id, index, asset, x }: PizzaProps) => {
       [width / 2, 0, width / 2],
       Extrapolate.CLAMP,
     );
-
+    const scaleOutputRangeItem = Platform.OS === 'ios' ? 0.3 : 0.175;
     const scale = interpolate(
       x.value,
       inputRange,
-      [0.175, 1, 0.175],
+      [scaleOutputRangeItem, 1, scaleOutputRangeItem],
       Extrapolate.CLAMP,
     );
 
@@ -67,7 +67,7 @@ const Pizza = ({ id, index, asset, x }: PizzaProps) => {
     return {
       width: Platform.OS === 'ios' ? PIZZA_SIZE : pizzaWidth,
       height: Platform.OS === 'ios' ? PIZZA_SIZE : pizzaHeight,
-      transform: [{ translateX }, { translateY }, { scale }],
+      transform: [{translateX}, {translateY}, {scale}],
     };
   });
 
@@ -80,9 +80,9 @@ const Pizza = ({ id, index, asset, x }: PizzaProps) => {
 
   return (
     <View style={styles.container}>
-      <TouchableWithoutFeedback onPress={() => navigate('Pizza', { id })}>
-        <SharedElement {...{ id }}>
-          <Animated.View {...{ style }}>
+      <TouchableWithoutFeedback onPress={() => navigate('Pizza', {id})}>
+        <SharedElement {...{id}}>
+          <Animated.View {...{style}}>
             <Animated.Image
               source={assets.plate}
               style={[styles.plate, plateStyle]}
