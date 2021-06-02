@@ -1,1 +1,1 @@
-export {default} from './PizzaChallenge';
+export {default} from './Pizzas';
