@@ -6,23 +6,6 @@ import {polar2Canvas} from '../../constants';
 import {assets, PIZZA_SIZE} from '../Config';
 
 const {width} = Dimensions.get('window');
-const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  pizza: {
-    width: width + 50,
-    height: width + 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  plate: {
-    width: PIZZA_SIZE,
-    height: PIZZA_SIZE,
-  },
-});
 
 const images = [
   assets.basil[0],
@@ -57,19 +40,10 @@ const Ingredient = ({index, source, total}: IngredientProps) => {
   return <Image source={source} style={style} />;
 };
 
-interface BackgroundProps {
-  x: Animated.SharedValue<number>;
-}
-
-const Background = ({x}: BackgroundProps) => {
-  const style = useAnimatedStyle(() => ({
-    transform: [
-      {rotate: `${interpolate(x.value, [0, width], [0, 2 * Math.PI])}rad`},
-    ],
-  }));
+const Background = () => {
   return (
     <View style={styles.container}>
-      <Animated.View style={[styles.pizza, style]}>
+      <View style={[styles.pizza]}>
         {images.map((image, index) => (
           <Ingredient
             key={index}
@@ -79,9 +53,27 @@ const Background = ({x}: BackgroundProps) => {
           />
         ))}
         <Image source={assets.plate} style={styles.plate} />
-      </Animated.View>
+      </View>
     </View>
   );
 };
 
 export default Background;
+
+const styles = StyleSheet.create({
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  pizza: {
+    width: width + 50,
+    height: width + 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  plate: {
+    width: PIZZA_SIZE,
+    height: PIZZA_SIZE,
+  },
+});
