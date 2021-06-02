@@ -40,10 +40,22 @@ const Ingredient = ({index, source, total}: IngredientProps) => {
   return <Image source={source} style={style} />;
 };
 
-const Background = () => {
+interface BackgroundProps {
+  x: Animated.SharedValue<number>;
+}
+
+const Background = ({x}: BackgroundProps) => {
+  const style = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {rotate: `${interpolate(x.value, [0, width], [0, Math.PI])}rad`},
+      ],
+    };
+  });
+
   return (
     <View style={styles.container}>
-      <View style={[styles.pizza]}>
+      <Animated.View style={[styles.pizza, style]}>
         {images.map((image, index) => (
           <Ingredient
             key={index}
@@ -53,7 +65,7 @@ const Background = () => {
           />
         ))}
         <Image source={assets.plate} style={styles.plate} />
-      </View>
+      </Animated.View>
     </View>
   );
 };

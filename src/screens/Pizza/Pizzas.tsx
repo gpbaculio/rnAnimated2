@@ -28,12 +28,6 @@ const pizza = [
     asset: assets.pizza[4],
   },
 ];
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F9F5F2',
-  },
-});
 
 const Pizzas = () => {
   const x = useSharedValue(0);
@@ -46,7 +40,7 @@ const Pizzas = () => {
 
   return (
     <View style={styles.container}>
-      <Background />
+      <Background {...{x}} />
       <Animated.ScrollView
         {...{
           onScroll,
@@ -70,3 +64,10 @@ const Pizzas = () => {
 };
 
 export default Pizzas;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F9F5F2',
+  },
+});

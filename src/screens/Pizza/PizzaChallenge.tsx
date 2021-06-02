@@ -1,3 +1,4 @@
+import {RouteProp} from '@react-navigation/core';
 import React, {useState} from 'react';
 import {View, Image, StyleSheet, ScrollView} from 'react-native';
 import Animated, {
@@ -5,6 +6,8 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import {SharedElement} from 'react-navigation-shared-element';
+import {PizzaChallengeRoutes} from '.';
 
 import Header, {HEADER_HEIGHT} from './components/Header';
 import Ingredients from './components/Ingredients';
@@ -16,42 +19,12 @@ import {
   assets,
   defaultState,
 } from './Config';
+interface PizzaChallengeProps {
+  route: RouteProp<PizzaChallengeRoutes, 'Pizza'>;
+}
+const PizzaChallenge = ({route}: PizzaChallengeProps) => {
+  const {id} = route.params;
 
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: '#F9F5F2',
-    alignItems: 'center',
-  },
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    flex: 1,
-  },
-  content: {
-    marginTop: PIZZA_SIZE + PADDING * 2 + HEADER_HEIGHT,
-  },
-  pizza: {
-    margin: 32,
-    width: PIZZA_SIZE,
-    height: PIZZA_SIZE,
-  },
-  plate: {
-    ...StyleSheet.absoluteFillObject,
-    width: undefined,
-    height: undefined,
-  },
-  bread: {
-    ...StyleSheet.absoluteFillObject,
-    width: undefined,
-    height: undefined,
-    top: BREAD_PADDING,
-    left: BREAD_PADDING,
-    right: BREAD_PADDING,
-    bottom: BREAD_PADDING,
-  },
-});
-
-const PizzaChallenge = () => {
   const selected = useSharedValue(false);
 
   const [state, setState] = useState(defaultState);
@@ -62,16 +35,18 @@ const PizzaChallenge = () => {
 
   return (
     <View style={styles.root}>
-      <Animated.View style={[styles.pizza, style]}>
-        <Image source={assets.plate} style={styles.plate} />
-        <Image source={assets.bread[0]} style={styles.bread} />
-        <Ingredients zIndex={state.basil} assets={assets.basil} />
-        <Ingredients zIndex={state.sausage} assets={assets.sausage} />
-        <Ingredients zIndex={state.sausage} assets={assets.sausage} />
-        <Ingredients zIndex={state.onion} assets={assets.onion} />
-        <Ingredients zIndex={state.broccoli} assets={assets.broccoli} />
-        <Ingredients zIndex={state.mushroom} assets={assets.mushroom} />
-      </Animated.View>
+      <SharedElement {...{id}}>
+        <Animated.View style={[styles.pizza, style]}>
+          <Image source={assets.plate} style={styles.plate} />
+          <Image source={assets.bread[0]} style={styles.bread} />
+          <Ingredients zIndex={state.basil} assets={assets.basil} />
+          <Ingredients zIndex={state.sausage} assets={assets.sausage} />
+          <Ingredients zIndex={state.sausage} assets={assets.sausage} />
+          <Ingredients zIndex={state.onion} assets={assets.onion} />
+          <Ingredients zIndex={state.broccoli} assets={assets.broccoli} />
+          <Ingredients zIndex={state.mushroom} assets={assets.mushroom} />
+        </Animated.View>
+      </SharedElement>
       <Header />
       <View style={styles.container}>
         <ScrollView
@@ -125,3 +100,37 @@ const PizzaChallenge = () => {
 };
 
 export default PizzaChallenge;
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: '#F9F5F2',
+    alignItems: 'center',
+  },
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    flex: 1,
+  },
+  content: {
+    marginTop: PIZZA_SIZE + PADDING * 2 + HEADER_HEIGHT,
+  },
+  pizza: {
+    margin: 32,
+    width: PIZZA_SIZE,
+    height: PIZZA_SIZE,
+  },
+  plate: {
+    ...StyleSheet.absoluteFillObject,
+    width: undefined,
+    height: undefined,
+  },
+  bread: {
+    ...StyleSheet.absoluteFillObject,
+    width: undefined,
+    height: undefined,
+    top: BREAD_PADDING,
+    left: BREAD_PADDING,
+    right: BREAD_PADDING,
+    bottom: BREAD_PADDING,
+  },
+});
