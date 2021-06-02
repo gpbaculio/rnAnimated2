@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Image, View, Dimensions} from 'react-native';
+import {StyleSheet, Image, View, Dimensions, Platform} from 'react-native';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import Animated, {
   Extrapolate,
@@ -29,13 +29,6 @@ const Pizza = ({id, index, asset, x}: PizzaProps) => {
       (index + 1) * width,
     ];
 
-    const scale = interpolate(
-      x.value,
-      inputRange,
-      [0.3, 1, 0.3],
-      Extrapolate.CLAMP,
-    );
-
     const translateX = interpolate(
       x.value,
       inputRange,
@@ -49,8 +42,31 @@ const Pizza = ({id, index, asset, x}: PizzaProps) => {
       [width / 2, 0, width / 2],
       Extrapolate.CLAMP,
     );
+    const scaleOutputRangeItem = Platform.OS === 'ios' ? 0.3 : 0.175;
+    const scale = interpolate(
+      x.value,
+      inputRange,
+      [scaleOutputRangeItem, 1, scaleOutputRangeItem],
+      Extrapolate.CLAMP,
+    );
+
+    const pizzaWidth = interpolate(
+      x.value,
+      inputRange,
+      [PIZZA_SIZE * 2, PIZZA_SIZE, PIZZA_SIZE * 2],
+      Extrapolate.CLAMP,
+    );
+
+    const pizzaHeight = interpolate(
+      x.value,
+      inputRange,
+      [PIZZA_SIZE * 2, PIZZA_SIZE, PIZZA_SIZE * 2],
+      Extrapolate.CLAMP,
+    );
 
     return {
+      width: Platform.OS === 'ios' ? PIZZA_SIZE : pizzaWidth,
+      height: Platform.OS === 'ios' ? PIZZA_SIZE : pizzaHeight,
       transform: [{translateX}, {translateY}, {scale}],
     };
   });
@@ -66,7 +82,7 @@ const Pizza = ({id, index, asset, x}: PizzaProps) => {
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={() => navigate('Pizza', {id})}>
         <SharedElement {...{id}}>
-          <Animated.View style={[styles.pizza, style]}>
+          <Animated.View {...{style}}>
             <Animated.Image
               source={assets.plate}
               style={[styles.plate, plateStyle]}
@@ -85,10 +101,6 @@ const styles = StyleSheet.create({
   container: {
     width: width,
     alignItems: 'center',
-  },
-  pizza: {
-    width: PIZZA_SIZE,
-    height: PIZZA_SIZE,
   },
   plate: {
     ...StyleSheet.absoluteFillObject,
