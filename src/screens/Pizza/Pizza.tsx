@@ -1,16 +1,16 @@
 import React from 'react';
-import {StyleSheet, Image, View, Dimensions} from 'react-native';
-import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import { StyleSheet, Image, View, Dimensions, Platform } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Animated, {
   Extrapolate,
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import {useNavigation} from '@react-navigation/native';
-import {assets, BREAD_PADDING, PIZZA_SIZE} from './Config';
-import {SharedElement} from 'react-navigation-shared-element';
+import { useNavigation } from '@react-navigation/native';
+import { assets, BREAD_PADDING, PIZZA_SIZE } from './Config';
+import { SharedElement } from 'react-navigation-shared-element';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 interface PizzaProps {
   id: string;
@@ -19,8 +19,8 @@ interface PizzaProps {
   x: Animated.SharedValue<number>;
 }
 
-const Pizza = ({id, index, asset, x}: PizzaProps) => {
-  const {navigate} = useNavigation();
+const Pizza = ({ id, index, asset, x }: PizzaProps) => {
+  const { navigate } = useNavigation();
 
   const style = useAnimatedStyle(() => {
     const inputRange = [
@@ -28,13 +28,6 @@ const Pizza = ({id, index, asset, x}: PizzaProps) => {
       index * width,
       (index + 1) * width,
     ];
-
-    const scale = interpolate(
-      x.value,
-      inputRange,
-      [0.3, 1, 0.3],
-      Extrapolate.CLAMP,
-    );
 
     const translateX = interpolate(
       x.value,
@@ -50,8 +43,31 @@ const Pizza = ({id, index, asset, x}: PizzaProps) => {
       Extrapolate.CLAMP,
     );
 
+    const scale = interpolate(
+      x.value,
+      inputRange,
+      [0.175, 1, 0.175],
+      Extrapolate.CLAMP,
+    );
+
+    const pizzaWidth = interpolate(
+      x.value,
+      inputRange,
+      [PIZZA_SIZE * 2, PIZZA_SIZE, PIZZA_SIZE * 2],
+      Extrapolate.CLAMP,
+    );
+
+    const pizzaHeight = interpolate(
+      x.value,
+      inputRange,
+      [PIZZA_SIZE * 2, PIZZA_SIZE, PIZZA_SIZE * 2],
+      Extrapolate.CLAMP,
+    );
+
     return {
-      transform: [{translateX}, {translateY}, {scale}],
+      width: Platform.OS === 'ios' ? PIZZA_SIZE : pizzaWidth,
+      height: Platform.OS === 'ios' ? PIZZA_SIZE : pizzaHeight,
+      transform: [{ translateX }, { translateY }, { scale }],
     };
   });
 
@@ -64,9 +80,9 @@ const Pizza = ({id, index, asset, x}: PizzaProps) => {
 
   return (
     <View style={styles.container}>
-      <TouchableWithoutFeedback onPress={() => navigate('Pizza', {id})}>
-        <SharedElement {...{id}}>
-          <Animated.View style={[styles.pizza, style]}>
+      <TouchableWithoutFeedback onPress={() => navigate('Pizza', { id })}>
+        <SharedElement {...{ id }}>
+          <Animated.View {...{ style }}>
             <Animated.Image
               source={assets.plate}
               style={[styles.plate, plateStyle]}
@@ -85,10 +101,6 @@ const styles = StyleSheet.create({
   container: {
     width: width,
     alignItems: 'center',
-  },
-  pizza: {
-    width: PIZZA_SIZE,
-    height: PIZZA_SIZE,
   },
   plate: {
     ...StyleSheet.absoluteFillObject,
