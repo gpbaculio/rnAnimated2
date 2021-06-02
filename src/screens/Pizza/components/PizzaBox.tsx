@@ -1,10 +1,14 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Image} from 'react-native';
 import {useModel} from '../constants';
+const topGltf = require('../assets/Pizza_Box_Top3.gltf');
+const bottomGltf = require('../assets/Pizza_Box_Bottom3.gltf');
 
 const PizzaBox = () => {
-  const top = useModel(require('../assets/Pizza_Box_Top3.gltf'));
-  const bottom = useModel(require('../assets/Pizza_Box_Bottom3.gltf'));
+  const {uri: topUri} = Image.resolveAssetSource(topGltf);
+  const {uri: bottomUri} = Image.resolveAssetSource(bottomGltf);
+  const top = useModel(topUri);
+  const bottom = useModel(bottomUri);
   return null;
 };
 
