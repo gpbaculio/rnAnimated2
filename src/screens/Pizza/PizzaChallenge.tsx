@@ -12,6 +12,7 @@ import {PizzaChallengeRoutes} from '.';
 import Header, {HEADER_HEIGHT} from './components/Header';
 import Ingredients from './components/Ingredients';
 import IngredientSelection from './components/IngredientSelection';
+import PizzaBox from './components/PizzaBox';
 import {
   PIZZA_SIZE,
   BREAD_PADDING,
@@ -35,18 +36,23 @@ const PizzaChallenge = ({route}: PizzaChallengeProps) => {
 
   return (
     <View style={styles.root}>
-      <SharedElement {...{id}}>
-        <Animated.View style={[styles.pizza, style]}>
-          <Image source={assets.plate} style={styles.plate} />
-          <Image source={assets.bread[0]} style={styles.bread} />
-          <Ingredients zIndex={state.basil} assets={assets.basil} />
-          <Ingredients zIndex={state.sausage} assets={assets.sausage} />
-          <Ingredients zIndex={state.sausage} assets={assets.sausage} />
-          <Ingredients zIndex={state.onion} assets={assets.onion} />
-          <Ingredients zIndex={state.broccoli} assets={assets.broccoli} />
-          <Ingredients zIndex={state.mushroom} assets={assets.mushroom} />
+      <View>
+        <SharedElement {...{id}}>
+          <Animated.View style={[styles.pizza, style]}>
+            <Image source={assets.plate} style={styles.plate} />
+            <Image source={assets.bread[0]} style={styles.bread} />
+            <Ingredients zIndex={state.basil} assets={assets.basil} />
+            <Ingredients zIndex={state.sausage} assets={assets.sausage} />
+            <Ingredients zIndex={state.sausage} assets={assets.sausage} />
+            <Ingredients zIndex={state.onion} assets={assets.onion} />
+            <Ingredients zIndex={state.broccoli} assets={assets.broccoli} />
+            <Ingredients zIndex={state.mushroom} assets={assets.mushroom} />
+          </Animated.View>
+        </SharedElement>
+        <Animated.View {...{style: StyleSheet.absoluteFillObject}}>
+          <PizzaBox />
         </Animated.View>
-      </SharedElement>
+      </View>
       <Header />
       <View style={styles.container}>
         <ScrollView
