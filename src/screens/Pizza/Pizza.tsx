@@ -18,16 +18,49 @@ interface PizzaProps {
   x: Animated.SharedValue<number>;
 }
 
-const Pizza = ({id, index, asset}: PizzaProps) => {
+const Pizza = ({id, index, asset, x}: PizzaProps) => {
   const {navigate} = useNavigation();
+
+  const style = useAnimatedStyle(() => {
+    const inputRange = [
+      (index - 1) * width,
+      index * width,
+      (index + 1) * width,
+    ];
+
+    const scale = interpolate(
+      x.value,
+      inputRange,
+      [0.3, 1, 0.3],
+      Extrapolate.CLAMP,
+    );
+
+    const translateX = interpolate(
+      x.value,
+      inputRange,
+      [-width / 2, 0, width / 2],
+      Extrapolate.CLAMP,
+    );
+
+    const translateY = interpolate(
+      x.value,
+      inputRange,
+      [width / 2, 0, width / 2],
+      Extrapolate.CLAMP,
+    );
+
+    return {
+      transform: [{translateX}, {translateY}, {scale}],
+    };
+  });
 
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={() => navigate('Pizza', {id})}>
-        <View style={[styles.pizza]}>
+        <Animated.View style={[styles.pizza, style]}>
           <Image source={assets.plate} style={[styles.plate]} />
           <Image source={asset} style={styles.bread} />
-        </View>
+        </Animated.View>
       </TouchableWithoutFeedback>
     </View>
   );
