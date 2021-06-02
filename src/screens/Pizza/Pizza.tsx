@@ -8,6 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import {useNavigation} from '@react-navigation/native';
 import {assets, BREAD_PADDING, PIZZA_SIZE} from './Config';
+import {SharedElement} from 'react-navigation-shared-element';
 
 const {width} = Dimensions.get('window');
 
@@ -54,13 +55,25 @@ const Pizza = ({id, index, asset, x}: PizzaProps) => {
     };
   });
 
+  //only make the plate visible on current pizza
+  const plateStyle = useAnimatedStyle(() => {
+    return {
+      opacity: x.value === index * width ? 1 : 0,
+    };
+  });
+
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={() => navigate('Pizza', {id})}>
-        <Animated.View style={[styles.pizza, style]}>
-          <Image source={assets.plate} style={[styles.plate]} />
-          <Image source={asset} style={styles.bread} />
-        </Animated.View>
+        <SharedElement {...{id}}>
+          <Animated.View style={[styles.pizza, style]}>
+            <Animated.Image
+              source={assets.plate}
+              style={[styles.plate, plateStyle]}
+            />
+            <Image source={asset} style={styles.bread} />
+          </Animated.View>
+        </SharedElement>
       </TouchableWithoutFeedback>
     </View>
   );
