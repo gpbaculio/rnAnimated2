@@ -3,8 +3,6 @@ import {Image, StyleSheet} from 'react-native';
 import {Canvas, useFrame} from 'react-three-fiber';
 import {Group, Vector3} from 'three';
 import {pivotMatrix, useModel} from '../constants';
-const topGltf = require('../assets/Pizza_Box_Top3.gltf');
-const bottomGltf = require('../assets/Pizza_Box_Bottom3.gltf');
 const SIZE = new Vector3(263.2, 29.606, 257.882);
 const TOTAL_FRAMES = 30;
 interface BoxProps {
@@ -53,9 +51,13 @@ interface PizzaBoxProps {
   active: boolean;
 }
 const PizzaBox = ({active}: PizzaBoxProps) => {
-  const {uri: topUri} = Image.resolveAssetSource(topGltf);
+  const {uri: topUri} = Image.resolveAssetSource(
+    require('../assets/Pizza_Box_Top3.gltf'),
+  );
 
-  const {uri: bottomUri} = Image.resolveAssetSource(bottomGltf);
+  const {uri: bottomUri} = Image.resolveAssetSource(
+    require('../assets/Pizza_Box_Bottom3.gltf'),
+  );
 
   const top = useModel(topUri);
 
