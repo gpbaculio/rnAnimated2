@@ -140,7 +140,7 @@ const PizzaChallenge = ({route}: PizzaChallengeProps) => {
             primary: true,
             label: 'Checkout',
             onPress: () => {
-              closing.value = withTiming(1, {duration: 1000}, () => {
+              closing.value = withTiming(1, {duration: 2000}, () => {
                 adding.value = withSpring(1);
               });
             },
