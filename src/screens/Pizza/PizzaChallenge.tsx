@@ -2,12 +2,20 @@ import {RouteProp} from '@react-navigation/core';
 import React, {useState} from 'react';
 import {View, Image, StyleSheet, ScrollView} from 'react-native';
 import Animated, {
+  Extrapolate,
+  interpolate,
+  runOnJS,
+  useAnimatedReaction,
   useAnimatedStyle,
   useSharedValue,
+  withSpring,
   withTiming,
 } from 'react-native-reanimated';
 import {SharedElement} from 'react-navigation-shared-element';
 import {PizzaChallengeRoutes} from '.';
+import {Button} from '../components';
+import {mix} from '../constants';
+import Checkout from './components/Checkout';
 
 import Header, {HEADER_HEIGHT} from './components/Header';
 import Ingredients from './components/Ingredients';
@@ -24,19 +32,49 @@ interface PizzaChallengeProps {
   route: RouteProp<PizzaChallengeRoutes, 'Pizza'>;
 }
 const PizzaChallenge = ({route}: PizzaChallengeProps) => {
+  const [active, setActive] = useState(false);
+
+  const adding = useSharedValue(0);
+
+  const closing = useSharedValue(0);
+
   const {id} = route.params;
 
   const selected = useSharedValue(false);
 
   const [state, setState] = useState(defaultState);
 
-  const style = useAnimatedStyle(() => ({
-    transform: [{scale: withTiming(selected.value ? 1.05 : 1)}],
+  const box = useAnimatedStyle(() => ({
+    opacity:
+      closing.value === 0
+        ? 0
+        : interpolate(adding.value, [0.1, 1], [1, 0], Extrapolate.CLAMP),
+    transform: [
+      {translateX: mix(adding.value, 0, PIZZA_SIZE / 2)},
+      {translateY: mix(adding.value, 0, -PIZZA_SIZE / 2)},
+      {scale: mix(adding.value, 1, 0)},
+    ],
   }));
-
+  const style = useAnimatedStyle(() => ({
+    opacity: interpolate(closing.value, [0.1, 1], [1, 0], Extrapolate.CLAMP),
+    transform: [{scale: mix(closing.value, 1, 0)}],
+  }));
+  useAnimatedReaction(
+    () => closing.value > 0.5,
+    isClosing => {
+      if (isClosing) {
+        runOnJS(setActive)(true);
+      }
+    },
+  );
   return (
     <View style={styles.root}>
       <View>
+        <Checkout {...{progress: adding}} />
+
+        <Animated.View {...{style: [StyleSheet.absoluteFill, box]}}>
+          <PizzaBox {...{active}} />
+        </Animated.View>
         <SharedElement {...{id}}>
           <Animated.View style={[styles.pizza, style]}>
             <Image source={assets.plate} style={styles.plate} />
@@ -49,9 +87,6 @@ const PizzaChallenge = ({route}: PizzaChallengeProps) => {
             <Ingredients zIndex={state.mushroom} assets={assets.mushroom} />
           </Animated.View>
         </SharedElement>
-        <Animated.View {...{style: StyleSheet.absoluteFillObject}}>
-          <PizzaBox />
-        </Animated.View>
       </View>
       <Header />
       <View style={styles.container}>
@@ -100,6 +135,17 @@ const PizzaChallenge = ({route}: PizzaChallengeProps) => {
             }}
           />
         </ScrollView>
+        <Button
+          {...{
+            primary: true,
+            label: 'Checkout',
+            onPress: () => {
+              closing.value = withTiming(1, {duration: 1000}, () => {
+                adding.value = withSpring(1);
+              });
+            },
+          }}
+        />
       </View>
     </View>
   );
