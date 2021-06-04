@@ -1,4 +1,3 @@
-import {RouteProp} from '@react-navigation/core';
 import React from 'react';
 import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
 
@@ -31,7 +30,7 @@ const Navigator = () => {
         {...{
           name: 'Pizza',
           component: PizzaChallenge,
-          sharedElements: (route: RouteProp<PizzaChallengeRoutes, 'Pizza'>) => {
+          sharedElementsConfig: route => {
             const {id} = route.params;
             return [id];
           },
