@@ -1,57 +1,56 @@
-import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
-import { MARGIN, SIZE } from "./Config";
-import Tile from "./Tile";
-import SortableList from "./SortableList";
+import {MARGIN, SIZE} from './Config';
+import Tile from './Tile';
+import SortableList from './SortableList';
 
 const tiles = [
   {
-    id: "google",
-    uri: "https://google.com",
+    id: 'google',
+    uri: 'https://google.com',
   },
 
   {
-    id: "expo",
-    uri: "https://expo.io",
+    id: 'expo',
+    uri: 'https://expo.io',
   },
   {
-    id: "facebook",
-    uri: "https://facebook.com",
+    id: 'facebook',
+    uri: 'https://facebook.com',
   },
   {
-    id: "reanimated",
-    uri: "https://docs.swmansion.com/react-native-reanimated/",
+    id: 'reanimated',
+    uri: 'https://docs.swmansion.com/react-native-reanimated/',
   },
   {
-    id: "github",
-    uri: "https://github.com",
+    id: 'github',
+    uri: 'https://github.com',
   },
   {
-    id: "rnnavigation",
-    uri: "https://reactnavigation.org/",
+    id: 'rnnavigation',
+    uri: 'https://reactnavigation.org/',
   },
   {
-    id: "youtube",
-    uri: "https://youtube.com",
+    id: 'youtube',
+    uri: 'https://youtube.com',
   },
   {
-    id: "twitter",
-    uri: "https://twitter.com",
+    id: 'twitter',
+    uri: 'https://twitter.com',
   },
 ];
 
 const Chrome = () => {
   return (
     <SafeAreaView
-      style={{ flex: 1, backgroundColor: "black", paddingHorizontal: MARGIN }}
-    >
+      style={{flex: 1, backgroundColor: 'black', paddingHorizontal: MARGIN}}>
       <SortableList>
-        {tiles.map((tile) => (
+        {[...tiles, ...tiles, ...tiles].map((tile, index) => (
           <Tile
             onLongPress={() => true}
-            key={tile.id}
-            id={tile.id}
+            key={`${tile.id}:${index}`}
+            id={`${tile.id}:${index}`}
             uri={tile.uri}
           />
         ))}
