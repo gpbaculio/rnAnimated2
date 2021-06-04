@@ -21,6 +21,7 @@ import {
   PhilzCoffee,
   Pizza,
   Chrome,
+  SnapChat,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -42,6 +43,7 @@ export type AppStackNavigatorType = {
   PhilzCoffee: undefined;
   Pizza: undefined;
   Chrome: undefined;
+  SnapChat: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -174,6 +176,13 @@ const AppNavigator = () => (
         component={Chrome}
         options={{
           title: 'Chrome',
+        }}
+      />
+      <Stack.Screen
+        name="SnapChat"
+        component={SnapChat}
+        options={{
+          title: 'SnapChat',
         }}
       />
     </Stack.Navigator>
