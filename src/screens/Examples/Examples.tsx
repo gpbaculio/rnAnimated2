@@ -6,6 +6,8 @@ import {
   Text,
   View,
   Image,
+  ImageStyle,
+  TextStyle,
 } from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native';
@@ -15,6 +17,7 @@ import {styleGuide} from '../constants';
 import {AppStackNavigatorType} from '../../navigation/Navigation';
 
 const duolingoIcon = require('../../../assets/duolingo.png');
+const chromeIcon = require('../../../assets/chrome.png');
 
 export const examples: {
   screen: string;
@@ -73,6 +76,11 @@ export const examples: {
   {screen: 'Rainbow', title: '🌈  Rainbow Charts'},
   {screen: 'PhilzCoffee', title: '☕ PhilzCoffee'},
   {screen: 'Pizza', title: '🍕 Pizza'},
+  {
+    screen: 'Chrome',
+    title: 'Chrome',
+    icon: chromeIcon,
+  },
 ];
 
 const Examples = () => {
@@ -89,7 +97,10 @@ const Examples = () => {
           }>
           <View style={styles.thumbnail}>
             {!!thumbnail.icon && (
-              <Image source={thumbnail.icon} style={styles.icon} />
+              <Image
+                source={thumbnail.icon}
+                style={styles.icon as ImageStyle}
+              />
             )}
             <Text style={styles.title}>{thumbnail.title}</Text>
           </View>
@@ -122,5 +133,5 @@ const styles = StyleSheet.create({
   },
   title: {
     ...styleGuide.typography.headline,
-  },
+  } as TextStyle,
 });
