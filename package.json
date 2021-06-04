@@ -32,9 +32,10 @@
     "react-native-svg": "^12.1.1",
     "react-native-unimodules": "^0.13.3",
     "react-native-vector-icons": "^8.1.0",
+    "react-native-webview": "^11.6.2",
     "react-navigation-shared-element": "^5.0.0-alpha1",
     "react-three-fiber": "^5.3.18",
-    "three": "^0.129.0"
+    "three": "^0.125.2"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",

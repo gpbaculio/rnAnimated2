@@ -12,39 +12,12 @@ import Animated, {
 import {mix} from '../../constants';
 
 const SIZE = 20;
-const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    alignItems: 'flex-end',
-    padding: 16,
-  },
-  bubble: {
-    color: 'white',
-  },
-});
 
 interface CheckoutProps {
-  active: boolean;
+  progress: Animated.SharedValue<number>;
 }
 
-const Checkout = ({active}: CheckoutProps) => {
-  const progress = useSharedValue(0);
-  useEffect(() => {
-    if (active) {
-      progress.value = withDelay(500, withSpring(1));
-    }
-  }, [active, progress]);
-  const style = useAnimatedStyle(() => {
-    const scale = interpolate(
-      progress.value,
-      [0, 0.5, 1],
-      [1, 1.2, 1],
-      Extrapolate.CLAMP,
-    );
-    return {
-      transform: [{scale}],
-    };
-  });
+const Checkout = ({progress}: CheckoutProps) => {
   const bubble = useAnimatedStyle(() => ({
     position: 'absolute',
     top: SIZE / 2,
@@ -55,15 +28,27 @@ const Checkout = ({active}: CheckoutProps) => {
     backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',
-    opacity: mix(progress.value, 0, 1),
+    opacity: interpolate(progress.value, [0.5, 1], [0, 1], Extrapolate.CLAMP),
     transform: [{scale: mix(progress.value, 0, 1)}],
+  }));
+  const icon = useAnimatedStyle(() => ({
+    transform: [
+      {
+        scale: interpolate(
+          progress.value,
+          [1, 0.5, 1],
+          [1, 1.2, 1],
+          Extrapolate.CLAMP,
+        ),
+      },
+    ],
   }));
   return (
     <View style={styles.container}>
-      <Animated.View style={style}>
+      <Animated.View {...{style: icon}}>
         <AntDesign size={32} name="shoppingcart" />
       </Animated.View>
-      <Animated.View style={bubble}>
+      <Animated.View {...{style: bubble}}>
         <Text style={styles.bubble}>1</Text>
       </Animated.View>
     </View>
@@ -71,3 +56,14 @@ const Checkout = ({active}: CheckoutProps) => {
 };
 
 export default Checkout;
+
+const styles = StyleSheet.create({
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'flex-end',
+    padding: 16,
+  },
+  bubble: {
+    color: 'white',
+  },
+});

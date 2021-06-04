@@ -20,6 +20,7 @@ import {
   Rainbow,
   PhilzCoffee,
   Pizza,
+  Chrome,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -40,6 +41,7 @@ export type AppStackNavigatorType = {
   Rainbow: undefined;
   PhilzCoffee: undefined;
   Pizza: undefined;
+  Chrome: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -165,6 +167,13 @@ const AppNavigator = () => (
         component={Pizza}
         options={{
           title: '🍕 Pizza',
+        }}
+      />
+      <Stack.Screen
+        name="Chrome"
+        component={Chrome}
+        options={{
+          title: 'Chrome',
         }}
       />
     </Stack.Navigator>
