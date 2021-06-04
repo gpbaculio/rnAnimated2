@@ -7,6 +7,8 @@ import {Video} from 'expo-av';
 import {SnapchatRoutes} from './Model';
 import {SharedElement} from 'react-navigation-shared-element';
 import Animated, {
+  Extrapolate,
+  interpolate,
   runOnJS,
   useAnimatedGestureHandler,
   useAnimatedStyle,
@@ -57,10 +59,17 @@ const Story = ({route, navigation}: StoryProps) => {
   });
 
   const style = useAnimatedStyle(() => {
+    const scale = interpolate(
+      translateY.value,
+      [0, height],
+      [1, 0.5],
+      Extrapolate.CLAMP,
+    );
     return {
       transform: [
-        {translateX: translateX.value},
-        {translateY: translateY.value},
+        {translateX: translateX.value * scale},
+        {translateY: translateY.value * scale},
+        {scale},
       ],
     };
   });
