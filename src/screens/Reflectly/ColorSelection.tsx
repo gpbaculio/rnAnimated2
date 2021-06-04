@@ -1,5 +1,11 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
+import {
+  PanGestureHandler,
+  PanGestureHandlerGestureEvent,
+} from 'react-native-gesture-handler';
+import Animated, {useAnimatedGestureHandler} from 'react-native-reanimated';
+import {useSharedValue} from '../Chrome/Animations';
 import {Text} from '../components';
 import Color from './Color';
 
@@ -37,12 +43,28 @@ const colors = [
 ];
 
 const ColorSelection = () => {
+  const translateX = useSharedValue(0);
+
+  const onGestureEvent = useAnimatedGestureHandler<
+    PanGestureHandlerGestureEvent,
+    {x: number}
+  >({
+    onStart: (_, ctx) => {
+      ctx.x = translateX.value;
+    },
+    onActive: ({translationX}, ctx) => {
+      translateX.value = ctx.x + translationX;
+    },
+  });
+
   return (
-    <View {...{style: styles.container}}>
-      {colors.map((color, index) => {
-        return <Color {...{index, key: index, color}} />;
-      })}
-    </View>
+    <PanGestureHandler {...{onGestureEvent}}>
+      <Animated.View {...{style: styles.container}}>
+        {colors.map((color, index) => {
+          return <Color {...{index, key: index, color, translateX}} />;
+        })}
+      </Animated.View>
+    </PanGestureHandler>
   );
 };
 

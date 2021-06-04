@@ -1,6 +1,7 @@
 import {LinearGradient} from 'expo-linear-gradient';
 import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
+import Animated, {useAnimatedStyle} from 'react-native-reanimated';
 
 const {width} = Dimensions.get('window');
 
@@ -15,15 +16,22 @@ interface ColorProps {
     start: string;
     end: string;
   };
+  translateX: Animated.SharedValue<number>;
 }
 
-const Color = ({index, color}: ColorProps) => {
+const Color = ({index, color, translateX}: ColorProps) => {
+  const style = useAnimatedStyle(() => {
+    return {
+      transform: [{translateX: translateX.value}],
+    };
+  });
+
   return (
-    <View {...{style: styles.container}}>
+    <Animated.View {...{style: [styles.container, style]}}>
       <LinearGradient
         {...{colors: [color.start, color.end], style: styles.gradient}}
       />
-    </View>
+    </Animated.View>
   );
 };
 
