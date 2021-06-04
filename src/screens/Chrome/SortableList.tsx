@@ -1,17 +1,20 @@
-import React, { ReactElement } from "react";
-import { ScrollView } from "react-native-gesture-handler";
+import React, {ReactElement} from 'react';
+import {ScrollView} from 'react-native-gesture-handler';
 
-import Item from "./Item";
-import { COL, Positions, SIZE } from "./Config";
+import Item from './Item';
+import {COL, Positions, SIZE} from './Config';
+import {useSharedValue} from './Animations';
 
 interface ListProps {
-  children: ReactElement<{ id: string }>[];
+  children: ReactElement<{id: string}>[];
 }
 
-const List = ({ children }: ListProps) => {
-  const positions: Positions = Object.assign(
-    {},
-    ...children.map((child, index) => ({ [child.props.id]: index }))
+const List = ({children}: ListProps) => {
+  const positions = useSharedValue<Positions>(
+    Object.assign(
+      {},
+      ...children.map((child, index) => ({[child.props.id]: index})),
+    ),
   );
   return (
     <ScrollView
@@ -20,9 +23,8 @@ const List = ({ children }: ListProps) => {
       }}
       showsVerticalScrollIndicator={false}
       bounces={false}
-      scrollEventThrottle={16}
-    >
-      {children.map((child) => {
+      scrollEventThrottle={16}>
+      {children.map(child => {
         return (
           <Item key={child.props.id} id={child.props.id} positions={positions}>
             {child}
