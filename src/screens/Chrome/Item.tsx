@@ -6,6 +6,7 @@ import {
 } from 'react-native-gesture-handler';
 import Animated, {
   useAnimatedGestureHandler,
+  useAnimatedReaction,
   useAnimatedStyle,
   withTiming,
 } from 'react-native-reanimated';
@@ -29,15 +30,28 @@ interface ItemProps {
 
 const Item = ({children, positions, id}: ItemProps) => {
   const inset = useSafeAreaInsets();
+
   const isGestureActive = useSharedValue(false);
+
   const containerHeight =
     Dimensions.get('window').height - inset.top - inset.bottom;
+
   const contentHeight = (Object.keys(positions.value).length / COL) * SIZE;
+
   const position = getPosition(positions.value[id]);
 
   const translateX = useSharedValue(position.x);
 
   const translateY = useSharedValue(position.y);
+
+  useAnimatedReaction(
+    () => positions.value[id],
+    newOrder => {
+      const newPosition = getPosition(newOrder);
+      translateX.value = withTiming(newPosition.x, animationConfig);
+      translateY.value = withTiming(newPosition.y, animationConfig);
+    },
+  );
 
   const onGestureEvent = useAnimatedGestureHandler<
     PanGestureHandlerGestureEvent,
@@ -51,6 +65,19 @@ const Item = ({children, positions, id}: ItemProps) => {
     onActive: ({translationX, translationY}, ctx) => {
       translateX.value = ctx.x + translationX;
       translateY.value = ctx.y + translationY;
+      const oldOrder = positions.value[id];
+      const newOrder = getOrder(translateX.value, translateY.value);
+      if (oldOrder !== newOrder) {
+        const idToSwap = Object.keys(positions.value).find(
+          k => positions.value[k] === newOrder,
+        );
+        if (idToSwap) {
+          const newPositions = JSON.parse(JSON.stringify(positions.value));
+          newPositions[id] = newOrder;
+          newPositions[idToSwap] = oldOrder;
+          positions.value = newPositions;
+        }
+      }
     },
     onEnd: () => {
       const destination = getPosition(positions.value[id]);
@@ -78,6 +105,7 @@ const Item = ({children, positions, id}: ItemProps) => {
       ],
     };
   });
+
   return (
     <Animated.View {...{style}}>
       <PanGestureHandler {...{onGestureEvent}}>
