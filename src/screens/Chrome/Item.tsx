@@ -7,11 +7,19 @@ import {
 import Animated, {
   useAnimatedGestureHandler,
   useAnimatedStyle,
+  withTiming,
 } from 'react-native-reanimated';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useSharedValue} from './Animations';
 
-import {COL, getOrder, getPosition, Positions, SIZE} from './Config';
+import {
+  animationConfig,
+  COL,
+  getOrder,
+  getPosition,
+  Positions,
+  SIZE,
+} from './Config';
 
 interface ItemProps {
   children: ReactNode;
@@ -41,6 +49,11 @@ const Item = ({children, positions, id}: ItemProps) => {
     onActive: ({translationX, translationY}, ctx) => {
       translateX.value = ctx.x + translationX;
       translateY.value = ctx.y + translationY;
+    },
+    onEnd: () => {
+      const destination = getPosition(positions.value[id]);
+      translateX.value = withTiming(destination.x, animationConfig);
+      translateY.value = withTiming(destination.y, animationConfig);
     },
   });
 
