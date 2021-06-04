@@ -1,6 +1,7 @@
 import React from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Text} from '../components';
+import Color from './Color';
 
 const colors = [
   {
@@ -37,10 +38,20 @@ const colors = [
 
 const ColorSelection = () => {
   return (
-    <View>
-      <Text>Reflectly</Text>
+    <View {...{style: styles.container}}>
+      {colors.map((color, index) => {
+        return <Color {...{index, key: index, color}} />;
+      })}
     </View>
   );
 };
 
 export default ColorSelection;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+});
