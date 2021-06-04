@@ -19,6 +19,7 @@ import {AppStackNavigatorType} from '../../navigation/Navigation';
 const duolingoIcon = require('../../../assets/duolingo.png');
 const chromeIcon = require('../../../assets/chrome.png');
 const snapchatIcon = require('../../../assets/snapchat.png');
+const reflectlyIcon = require('../../../assets/reflectly.png');
 
 export const examples: {
   screen: string;
@@ -86,6 +87,11 @@ export const examples: {
     screen: 'SnapChat',
     title: 'SnapChat',
     icon: snapchatIcon,
+  },
+  {
+    screen: 'Reflectly',
+    title: 'Reflectly',
+    icon: reflectlyIcon,
   },
 ];
 
