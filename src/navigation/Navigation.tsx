@@ -22,6 +22,7 @@ import {
   Pizza,
   Chrome,
   SnapChat,
+  Reflectly,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -44,6 +45,7 @@ export type AppStackNavigatorType = {
   Pizza: undefined;
   Chrome: undefined;
   SnapChat: undefined;
+  Reflectly: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -183,6 +185,13 @@ const AppNavigator = () => (
         component={SnapChat}
         options={{
           title: 'SnapChat',
+        }}
+      />
+      <Stack.Screen
+        name="Reflectly"
+        component={Reflectly}
+        options={{
+          title: 'Reflectly',
         }}
       />
     </Stack.Navigator>

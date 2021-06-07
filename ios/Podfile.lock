@@ -23,6 +23,8 @@ PODS:
     - React-Core
     - UMCore
     - UMImageLoaderInterface
+  - EXLinearGradient (9.1.0):
+    - UMCore
   - EXPermissions (12.0.1):
     - UMCore
     - UMPermissionsInterface
@@ -450,6 +452,7 @@ DEPENDENCIES:
   - EXGL (from `../node_modules/expo-gl/ios`)
   - EXGL_CPP (from `../node_modules/expo-gl-cpp/cpp`)
   - EXImageLoader (from `../node_modules/expo-image-loader/ios`)
+  - EXLinearGradient (from `../node_modules/expo-linear-gradient/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
@@ -556,6 +559,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-gl-cpp/cpp"
   EXImageLoader:
     :path: "../node_modules/expo-image-loader/ios"
+  EXLinearGradient:
+    :path: "../node_modules/expo-linear-gradient/ios"
   EXPermissions:
     :path: "../node_modules/expo-permissions/ios"
   FBLazyVector:
@@ -669,6 +674,7 @@ SPEC CHECKSUMS:
   EXGL: fac76f1cbd0693ff3dffda33b2931f871636a800
   EXGL_CPP: 55e99fdb046274473d3d561ae4fce358d82949bb
   EXImageLoader: 1ad8b491fd0f3200b57b37ecb1801abeb6549926
+  EXLinearGradient: f11f3590a43f29049a7f9d458d3f4622ab3eb7e0
   EXPermissions: ea8d63dd052737765bd350b2ca7cee9bcfd5e18e
   FBLazyVector: 7b423f9e248eae65987838148c36eec1dbfe0b53
   FBReactNativeSpec: 0c12eec2913b56868c56dced190db0486145a30e

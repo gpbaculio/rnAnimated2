@@ -16,3 +16,4 @@ export {default as PhilzCoffee} from './PhilzCoffee';
 export {default as Pizza} from './Pizza';
 export {default as Chrome} from './Chrome';
 export {default as SnapChat} from './Snapchat';
+export {default as Reflectly} from './Reflectly';

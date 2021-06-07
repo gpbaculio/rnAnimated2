@@ -84,23 +84,25 @@ const Story = ({route, navigation}: StoryProps) => {
     <PanGestureHandler {...{onGestureEvent}}>
       <Animated.View style={[styles.container, style]}>
         <SharedElement {...{id: story.id, style: styles.container}}>
-          {!story.video && (
-            <Animated.Image
-              source={story.source}
-              style={[borderStyle, styles.image]}
-            />
-          )}
-          {story.video && (
-            <AnimatedVideo
-              source={story.video}
-              rate={1.0}
-              isMuted={false}
-              resizeMode="cover"
-              shouldPlay
-              isLooping
-              style={[StyleSheet.absoluteFill, borderStyle]}
-            />
-          )}
+          <>
+            {!story.video && (
+              <Animated.Image
+                source={story.source}
+                style={[borderStyle, styles.image]}
+              />
+            )}
+            {story.video && (
+              <AnimatedVideo
+                source={story.video}
+                rate={1.0}
+                isMuted={false}
+                resizeMode="cover"
+                shouldPlay
+                isLooping
+                style={[StyleSheet.absoluteFill, borderStyle]}
+              />
+            )}
+          </>
         </SharedElement>
       </Animated.View>
     </PanGestureHandler>

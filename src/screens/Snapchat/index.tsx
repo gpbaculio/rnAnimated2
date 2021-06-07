@@ -16,6 +16,10 @@ const Navigator = () => (
       headerShown: false,
       cardOverlayEnabled: true,
       cardStyle: {backgroundColor: 'transparent'},
+      cardStyleInterpolator: () => ({
+        containerStyle: {backgroundColor: 'transparent'},
+        cardStyle: {backgroundColor: 'transparent'},
+      }),
     }}
     mode="modal">
     <Stack.Screen name="Snapchat" component={Snapchat} />
