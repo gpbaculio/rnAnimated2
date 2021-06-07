@@ -6,6 +6,8 @@ import {
   TapGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
 import Animated, {
+  Extrapolate,
+  interpolate,
   runOnJS,
   useAnimatedGestureHandler,
   useAnimatedStyle,
@@ -28,7 +30,12 @@ interface ColorProps {
   onPress: (position: {x: number; y: number}) => void;
 }
 
-const Color = ({onPress, color, translateX}: ColorProps) => {
+const Color = ({index, onPress, color, translateX}: ColorProps) => {
+  const inputRange = [
+    -COLOR_WIDTH * (index + 1),
+    -COLOR_WIDTH * index,
+    -COLOR_WIDTH * (index - 1),
+  ];
   const onGestureEvent =
     useAnimatedGestureHandler<TapGestureHandlerGestureEvent>({
       onActive: ({absoluteX: x, absoluteY: y}) => {
@@ -37,8 +44,19 @@ const Color = ({onPress, color, translateX}: ColorProps) => {
     });
 
   const style = useAnimatedStyle(() => {
+    const angle = interpolate(
+      translateX.value,
+      inputRange,
+      [0, Math.PI / 2, Math.PI],
+      Extrapolate.CLAMP,
+    );
+
+    const translateY = 100 * Math.cos(angle);
+
+    const scale = 0.8 + 0.2 * Math.sin(angle);
+
     return {
-      transform: [{translateX: translateX.value}],
+      transform: [{translateX: translateX.value}, {translateY}, {scale}],
     };
   });
 

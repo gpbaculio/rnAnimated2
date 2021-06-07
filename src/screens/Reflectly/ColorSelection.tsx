@@ -12,6 +12,8 @@ import {useSharedValue} from '../Chrome/Animations';
 import {Text} from '../components';
 import {snapPoint} from '../constants';
 import Color, {COLOR_WIDTH} from './Color';
+import Background from './Background';
+import BackgroundGL from './BackgroundGL';
 
 const colors = [
   {
@@ -76,6 +78,8 @@ const ColorSelection = () => {
   return (
     <PanGestureHandler {...{onGestureEvent}}>
       <Animated.View {...{style: styles.container}}>
+        {/* <Background {...{colorSelection}} /> */}
+        <BackgroundGL {...{colorSelection}} />
         <View {...{style: styles.placeHolder}} />
         {colors.map((color, index) => {
           return (
@@ -87,6 +91,11 @@ const ColorSelection = () => {
                 translateX,
                 onPress: position => {
                   translateX.value = withSpring(-index * COLOR_WIDTH);
+                  setColorSelection({
+                    position,
+                    previous: colorSelection.current,
+                    current: color,
+                  });
                 },
               }}
             />
