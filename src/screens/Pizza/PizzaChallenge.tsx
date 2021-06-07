@@ -76,18 +76,16 @@ const PizzaChallenge = ({route}: PizzaChallengeProps) => {
           <PizzaBox {...{active}} />
         </Animated.View>
         <SharedElement {...{id}}>
-          <>
-            <Animated.View style={[styles.pizza, style]}>
-              <Image source={assets.plate} style={styles.plate} />
-              <Image source={assets.bread[0]} style={styles.bread} />
-              <Ingredients zIndex={state.basil} assets={assets.basil} />
-              <Ingredients zIndex={state.sausage} assets={assets.sausage} />
-              <Ingredients zIndex={state.sausage} assets={assets.sausage} />
-              <Ingredients zIndex={state.onion} assets={assets.onion} />
-              <Ingredients zIndex={state.broccoli} assets={assets.broccoli} />
-              <Ingredients zIndex={state.mushroom} assets={assets.mushroom} />
-            </Animated.View>
-          </>
+          <Animated.View style={[styles.pizza, style]}>
+            <Image source={assets.plate} style={styles.plate} />
+            <Image source={assets.bread[0]} style={styles.bread} />
+            <Ingredients zIndex={state.basil} assets={assets.basil} />
+            <Ingredients zIndex={state.sausage} assets={assets.sausage} />
+            <Ingredients zIndex={state.sausage} assets={assets.sausage} />
+            <Ingredients zIndex={state.onion} assets={assets.onion} />
+            <Ingredients zIndex={state.broccoli} assets={assets.broccoli} />
+            <Ingredients zIndex={state.mushroom} assets={assets.mushroom} />
+          </Animated.View>
         </SharedElement>
       </View>
       <Header />

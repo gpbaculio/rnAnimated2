@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Image,
-  View,
-  Dimensions,
-  Platform,
-  Pressable,
-} from 'react-native';
+import {StyleSheet, Image, View, Dimensions, Platform} from 'react-native';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import Animated, {
   Extrapolate,
@@ -27,7 +20,7 @@ interface PizzaProps {
 }
 
 const Pizza = ({id, index, asset, x}: PizzaProps) => {
-  const navigation = useNavigation();
+  const {navigate} = useNavigation();
 
   const style = useAnimatedStyle(() => {
     const inputRange = [
@@ -87,19 +80,17 @@ const Pizza = ({id, index, asset, x}: PizzaProps) => {
 
   return (
     <View style={styles.container}>
-      <Pressable onPress={() => navigation.navigate('Pizza', {id})}>
+      <TouchableWithoutFeedback onPress={() => navigate('Pizza', {id})}>
         <SharedElement {...{id}}>
-          <>
-            <Animated.View {...{style}}>
-              <Animated.Image
-                source={assets.plate}
-                style={[styles.plate, plateStyle]}
-              />
-              <Image source={asset} style={styles.bread} />
-            </Animated.View>
-          </>
+          <Animated.View {...{style}}>
+            <Animated.Image
+              source={assets.plate}
+              style={[styles.plate, plateStyle]}
+            />
+            <Image source={asset} style={styles.bread} />
+          </Animated.View>
         </SharedElement>
-      </Pressable>
+      </TouchableWithoutFeedback>
     </View>
   );
 };
