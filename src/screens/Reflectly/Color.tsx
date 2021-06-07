@@ -1,7 +1,15 @@
 import {LinearGradient} from 'expo-linear-gradient';
 import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import Animated, {useAnimatedStyle} from 'react-native-reanimated';
+import {
+  TapGestureHandler,
+  TapGestureHandlerGestureEvent,
+} from 'react-native-gesture-handler';
+import Animated, {
+  runOnJS,
+  useAnimatedGestureHandler,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
 
 const {width} = Dimensions.get('window');
 
@@ -17,9 +25,17 @@ interface ColorProps {
     end: string;
   };
   translateX: Animated.SharedValue<number>;
+  onPress: (position: {x: number; y: number}) => void;
 }
 
-const Color = ({index, color, translateX}: ColorProps) => {
+const Color = ({onPress, color, translateX}: ColorProps) => {
+  const onGestureEvent =
+    useAnimatedGestureHandler<TapGestureHandlerGestureEvent>({
+      onActive: ({absoluteX: x, absoluteY: y}) => {
+        runOnJS(onPress)({x, y});
+      },
+    });
+
   const style = useAnimatedStyle(() => {
     return {
       transform: [{translateX: translateX.value}],
@@ -28,9 +44,13 @@ const Color = ({index, color, translateX}: ColorProps) => {
 
   return (
     <Animated.View {...{style: [styles.container, style]}}>
-      <LinearGradient
-        {...{colors: [color.start, color.end], style: styles.gradient}}
-      />
+      <TapGestureHandler {...{onGestureEvent}}>
+        <Animated.View>
+          <LinearGradient
+            {...{colors: [color.start, color.end], style: styles.gradient}}
+          />
+        </Animated.View>
+      </TapGestureHandler>
     </Animated.View>
   );
 };
