@@ -71,7 +71,7 @@ const Background = ({colorSelection}: BackgroundProps) => {
     <LinearGradient
       {...{
         colors: [colorSelection.previous.start, colorSelection.previous.end],
-        style: StyleSheet.absoluteFillObject,
+        style: {zIndex: 1, ...StyleSheet.absoluteFillObject},
       }}>
       <Animated.View style={[style]}>
         <LinearGradient
