@@ -1,8 +1,8 @@
 import React, {useRef} from 'react';
 import {Surface} from 'gl-react-native';
 import {Node, Shaders, GLSL} from 'gl-react';
-import {Blur} from 'gl-react-blur';
 import {Dimensions, StyleSheet} from 'react-native';
+import {Blur} from 'gl-react-blur';
 
 import {color2vector, useGLProgress} from './GLUtils';
 
@@ -57,7 +57,7 @@ const BackgrounGL = ({
   const uniforms = {
     position: [
       ((height - width) / 2 + position.x) / height,
-      1 - (position.y - 104) / height,
+      1 - position.y / height,
     ],
     backgroundColorStart: color2vector(previous.start),
     backgroundColorEnd: color2vector(previous.end),
@@ -68,7 +68,7 @@ const BackgrounGL = ({
   useGLProgress(node, uniforms, [current]);
   return (
     <Surface style={styles.container}>
-      <Blur {...{factor: 20, passes: 6}}>
+      <Blur factor={20} passes={6}>
         <Node ref={node} shader={shaders.background!} uniforms={uniforms} />
       </Blur>
     </Surface>

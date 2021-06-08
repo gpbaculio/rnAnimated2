@@ -13,7 +13,6 @@ import {Text} from '../components';
 import {snapPoint} from '../constants';
 import Color, {COLOR_WIDTH} from './Color';
 import Background from './Background';
-import BackgroundGL from './BackgroundGL';
 
 const colors = [
   {
@@ -78,8 +77,8 @@ const ColorSelection = () => {
   return (
     <PanGestureHandler {...{onGestureEvent}}>
       <Animated.View {...{style: styles.container}}>
-        {/* <Background {...{colorSelection}} /> */}
-        <BackgroundGL {...{colorSelection}} />
+        <Background {...{colorSelection}} />
+
         <View {...{style: styles.placeHolder}} />
         {colors.map((color, index) => {
           return (

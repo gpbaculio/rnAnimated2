@@ -82,13 +82,15 @@ const Pizza = ({id, index, asset, x}: PizzaProps) => {
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={() => navigate('Pizza', {id})}>
         <SharedElement {...{id}}>
-          <Animated.View {...{style}}>
-            <Animated.Image
-              source={assets.plate}
-              style={[styles.plate, plateStyle]}
-            />
-            <Image source={asset} style={styles.bread} />
-          </Animated.View>
+          <>
+            <Animated.View {...{style}}>
+              <Animated.Image
+                source={assets.plate}
+                style={[styles.plate, plateStyle]}
+              />
+              <Image source={asset} style={styles.bread} />
+            </Animated.View>
+          </>
         </SharedElement>
       </TouchableWithoutFeedback>
     </View>

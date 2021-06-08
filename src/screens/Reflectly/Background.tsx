@@ -1,11 +1,12 @@
 import React, {useEffect} from 'react';
-import {View, Text, StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import Animated, {
   Easing,
   useAnimatedStyle,
   withTiming,
   useSharedValue,
 } from 'react-native-reanimated';
+import {LinearGradient} from 'expo-linear-gradient';
 
 const RADIUS = 45;
 
@@ -50,28 +51,44 @@ const Background = ({colorSelection}: BackgroundProps) => {
     2;
 
   const style = useAnimatedStyle(() => {
+    if (!colorSelection.position.x) return {};
     return {
       top: -RADIUS + colorSelection.position.y - 84,
       left: -RADIUS + colorSelection.position.x,
       borderRadius: RADIUS,
       width: RADIUS * 2,
       height: RADIUS * 2,
-      backgroundColor: colorSelection.current.start,
       transform: [{scale: progress.value * (MAX_RADIUS / RADIUS)}],
+      backgroundColor: colorSelection.current.start,
+      shadowColor: colorSelection.current.end,
+      shadowOpacity: 1,
+      shadowRadius: 10,
+      elevation: 5,
     };
   });
 
   return (
-    <View
+    <LinearGradient
       {...{
-        style: {
-          ...StyleSheet.absoluteFillObject,
-          backgroundColor: colorSelection.previous.start,
-        },
+        colors: [colorSelection.previous.start, colorSelection.previous.end],
+        style: StyleSheet.absoluteFillObject,
       }}>
-      <Animated.View {...{style}} />
-    </View>
+      <Animated.View style={[style]}>
+        <LinearGradient
+          colors={[colorSelection.current.start, colorSelection.current.end]}
+          style={styles.linearGradient}
+        />
+      </Animated.View>
+    </LinearGradient>
   );
 };
 
 export default Background;
+
+const styles = StyleSheet.create({
+  linearGradient: {
+    width: '100%',
+    height: '100%',
+    borderRadius: RADIUS,
+  },
+});
