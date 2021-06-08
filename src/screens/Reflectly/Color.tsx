@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
   container: {
     width: COLOR_WIDTH,
     alignItems: 'center',
+    zIndex: 2,
   },
   gradient: {
     borderRadius: RADIUS,
