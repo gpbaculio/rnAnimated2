@@ -15,10 +15,13 @@ import {snapPoint} from '../constants';
 
 import Square, {MAX_HEIGHT, SIZE} from './Square';
 
-const {width} = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
+
+export const HEADER_HEIGHT = 91;
 
 const StickyShapes = () => {
-  const [height, setHeight] = useState(0);
+  const dimensionHeight = height - HEADER_HEIGHT;
+
   const isOnTop = useSharedValue(true);
 
   const sticked = useSharedValue(true);
@@ -44,7 +47,10 @@ const StickyShapes = () => {
       }
     },
     onEnd: ({velocityY}) => {
-      const dest = snapPoint(translateY.value, velocityY, [0, height - SIZE]);
+      const dest = snapPoint(translateY.value, velocityY, [
+        0,
+        dimensionHeight - SIZE,
+      ]);
 
       translateY.value = withSpring(dest, {velocity: velocityY}, () => {
         sticked.value = true;
@@ -69,17 +75,7 @@ const StickyShapes = () => {
   });
 
   return (
-    <Animated.View
-      {...{
-        style: [styles.container, container],
-        onLayout: ({
-          nativeEvent: {
-            layout: {height},
-          },
-        }) => {
-          setHeight(height);
-        },
-      }}>
+    <Animated.View {...{style: [styles.container, container]}}>
       <PanGestureHandler {...{onGestureEvent}}>
         <Animated.View {...{style: [StyleSheet.absoluteFill, square]}}>
           <Square {...{progress}} />

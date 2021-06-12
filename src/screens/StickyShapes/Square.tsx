@@ -31,7 +31,7 @@ const Square = ({progress}: SquareProps) => {
     addCurve(path, {c1: {x: p4.x, y: 0}, c2: {x: p1.x, y: 0}, to: p1});
     return {
       d: serialize(path),
-      fill: '#7EDAB9',
+      fill: '#000000',
     };
   });
   return (
