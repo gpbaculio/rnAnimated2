@@ -23,6 +23,7 @@ import {
   Chrome,
   SnapChat,
   Reflectly,
+  StickyShapes,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -46,6 +47,7 @@ export type AppStackNavigatorType = {
   Chrome: undefined;
   SnapChat: undefined;
   Reflectly: undefined;
+  StickyShapes: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -192,6 +194,13 @@ const AppNavigator = () => (
         component={Reflectly}
         options={{
           title: 'Reflectly',
+        }}
+      />
+      <Stack.Screen
+        name="StickyShapes"
+        component={StickyShapes}
+        options={{
+          title: 'StickyShapes',
         }}
       />
     </Stack.Navigator>

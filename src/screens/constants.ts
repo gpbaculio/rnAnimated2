@@ -128,6 +128,21 @@ export const createPath = (move: Vector): Path => {
 };
 
 /**
+ * @summary Add a line command to a path.
+ * @worklet
+ */
+export const addLine = (path: Path, to: Vector) => {
+  'worklet';
+  const last = path.curves[path.curves.length - 1];
+  const from = last ? last.to : path.move;
+  path.curves.push({
+    c1: from,
+    c2: to,
+    to,
+  });
+};
+
+/**
  * @summary Serialize a path into an SVG path string
  * @worklet
  */
