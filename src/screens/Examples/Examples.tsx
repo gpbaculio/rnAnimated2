@@ -93,6 +93,7 @@ export const examples: {
     title: 'Reflectly',
     icon: reflectlyIcon,
   },
+  {screen: 'StickyShapes', title: '⬛️  Sticky Shapes'},
 ];
 
 const Examples = () => {
