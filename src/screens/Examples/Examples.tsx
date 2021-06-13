@@ -20,6 +20,7 @@ const duolingoIcon = require('../../../assets/duolingo.png');
 const chromeIcon = require('../../../assets/chrome.png');
 const snapchatIcon = require('../../../assets/snapchat.png');
 const reflectlyIcon = require('../../../assets/reflectly.png');
+const breatheIcon = require('../../../assets/breathe.png');
 
 export const examples: {
   screen: string;
@@ -94,6 +95,7 @@ export const examples: {
     icon: reflectlyIcon,
   },
   {screen: 'StickyShapes', title: '◼️ Sticky Shapes'},
+  {screen: 'Breathe', title: 'Breathe', icon: breatheIcon},
 ];
 
 const Examples = () => {
