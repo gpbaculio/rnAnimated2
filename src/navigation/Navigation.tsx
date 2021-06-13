@@ -24,6 +24,7 @@ import {
   SnapChat,
   Reflectly,
   StickyShapes,
+  Breathe,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -48,6 +49,7 @@ export type AppStackNavigatorType = {
   SnapChat: undefined;
   Reflectly: undefined;
   StickyShapes: undefined;
+  Breathe: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -201,6 +203,13 @@ const AppNavigator = () => (
         component={StickyShapes}
         options={{
           title: 'StickyShapes',
+        }}
+      />
+      <Stack.Screen
+        name="Breathe"
+        component={Breathe}
+        options={{
+          title: 'Breathe',
         }}
       />
     </Stack.Navigator>
