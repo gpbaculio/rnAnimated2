@@ -94,6 +94,11 @@ export const examples: {
     title: 'Reflectly',
     icon: reflectlyIcon,
   },
+  {
+    screen: 'ReflectlyTabBar',
+    title: 'ReflectlyTabBar',
+    icon: reflectlyIcon,
+  },
   {screen: 'StickyShapes', title: '◼️ Sticky Shapes'},
   {screen: 'Breathe', title: 'Breathe', icon: breatheIcon},
 ];

@@ -25,6 +25,7 @@ import {
   Reflectly,
   StickyShapes,
   Breathe,
+  ReflectlyTabBar,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -50,6 +51,7 @@ export type AppStackNavigatorType = {
   Reflectly: undefined;
   StickyShapes: undefined;
   Breathe: undefined;
+  ReflectlyTabBar: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -196,6 +198,13 @@ const AppNavigator = () => (
         component={Reflectly}
         options={{
           title: 'Reflectly',
+        }}
+      />
+      <Stack.Screen
+        name="ReflectlyTabBar"
+        component={ReflectlyTabBar}
+        options={{
+          title: 'ReflectlyTabBar',
         }}
       />
       <Stack.Screen

@@ -453,7 +453,7 @@ DEPENDENCIES:
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXGL (from `../node_modules/expo-gl/ios`)
-  - EXGL_CPP (from `../node_modules/expo-gl/node_modules/expo-gl-cpp/cpp`)
+  - EXGL_CPP (from `../node_modules/expo-gl-cpp/cpp`)
   - EXImageLoader (from `../node_modules/expo-image-loader/ios`)
   - EXLinearGradient (from `../node_modules/expo-linear-gradient/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
@@ -561,7 +561,7 @@ EXTERNAL SOURCES:
   EXGL:
     :path: "../node_modules/expo-gl/ios"
   EXGL_CPP:
-    :path: "../node_modules/expo-gl/node_modules/expo-gl-cpp/cpp"
+    :path: "../node_modules/expo-gl-cpp/cpp"
   EXImageLoader:
     :path: "../node_modules/expo-image-loader/ios"
   EXLinearGradient:
