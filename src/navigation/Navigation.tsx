@@ -28,6 +28,7 @@ import {
   ReflectlyTabBar,
   AppleBedtime,
   Chess,
+  LiquidSwipe,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -56,6 +57,7 @@ export type AppStackNavigatorType = {
   ReflectlyTabBar: undefined;
   AppleBedtime: undefined;
   Chess: undefined;
+  LiquidSwipe: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -76,6 +78,13 @@ const AppNavigator = () => (
         component={Examples}
         options={{
           title: 'Learning Reanimated 2',
+        }}
+      />
+      <Stack.Screen
+        name="LiquidSwipe"
+        component={LiquidSwipe}
+        options={{
+          title: 'Liquid Swipe',
         }}
       />
       <Stack.Screen
