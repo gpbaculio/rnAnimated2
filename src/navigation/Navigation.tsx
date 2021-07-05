@@ -26,6 +26,7 @@ import {
   StickyShapes,
   Breathe,
   ReflectlyTabBar,
+  AppleBedtime,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -52,6 +53,7 @@ export type AppStackNavigatorType = {
   StickyShapes: undefined;
   Breathe: undefined;
   ReflectlyTabBar: undefined;
+  AppleBedtime: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -72,6 +74,13 @@ const AppNavigator = () => (
         component={Examples}
         options={{
           title: 'Learning Reanimated 2',
+        }}
+      />
+      <Stack.Screen
+        name="AppleBedtime"
+        component={AppleBedtime}
+        options={{
+          title: 'Apple Bedtime',
         }}
       />
       <Stack.Screen

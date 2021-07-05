@@ -21,6 +21,7 @@ const chromeIcon = require('../../../assets/chrome.png');
 const snapchatIcon = require('../../../assets/snapchat.png');
 const reflectlyIcon = require('../../../assets/reflectly.png');
 const breatheIcon = require('../../../assets/breathe.png');
+const nightIcon = require('../../../assets/night-icon.png');
 
 export const examples: {
   screen: string;
@@ -98,6 +99,11 @@ export const examples: {
     screen: 'ReflectlyTabBar',
     title: 'ReflectlyTabBar',
     icon: reflectlyIcon,
+  },
+  {
+    screen: 'AppleBedtime',
+    title: 'Apple Bedtime',
+    icon: nightIcon,
   },
   {screen: 'StickyShapes', title: '◼️ Sticky Shapes'},
   {screen: 'Breathe', title: 'Breathe', icon: breatheIcon},

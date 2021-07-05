@@ -20,3 +20,4 @@ export {default as Reflectly} from './Reflectly';
 export {default as StickyShapes} from './StickyShapes';
 export {default as Breathe} from './Breathe';
 export {Reflectly as ReflectlyTabBar} from './ReflectlyTabBar';
+export {default as AppleBedtime} from './AppleBedtime';
