@@ -27,6 +27,7 @@ import {
   Breathe,
   ReflectlyTabBar,
   AppleBedtime,
+  Chess,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -54,6 +55,7 @@ export type AppStackNavigatorType = {
   Breathe: undefined;
   ReflectlyTabBar: undefined;
   AppleBedtime: undefined;
+  Chess: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -81,6 +83,13 @@ const AppNavigator = () => (
         component={AppleBedtime}
         options={{
           title: 'Apple Bedtime',
+        }}
+      />
+      <Stack.Screen
+        name="Chess"
+        component={Chess}
+        options={{
+          title: 'Chess',
         }}
       />
       <Stack.Screen
