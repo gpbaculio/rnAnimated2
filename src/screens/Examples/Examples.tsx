@@ -79,6 +79,7 @@ export const examples: {
     icon: duolingoIcon,
   },
   {screen: 'Rainbow', title: '🌈  Rainbow Charts'},
+  {screen: 'LiquidSwipe', title: '💧 Liquid Swipe'},
   {screen: 'PhilzCoffee', title: '☕ PhilzCoffee'},
   {screen: 'Pizza', title: '🍕 Pizza'},
   {

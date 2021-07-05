@@ -22,3 +22,4 @@ export {default as Breathe} from './Breathe';
 export {Reflectly as ReflectlyTabBar} from './ReflectlyTabBar';
 export {default as AppleBedtime} from './AppleBedtime';
 export {default as Chess} from './Chess';
+export {default as LiquidSwipe} from './LiquidSwipe';
