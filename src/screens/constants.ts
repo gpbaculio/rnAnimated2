@@ -6,8 +6,10 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import parseSVG from 'parse-svg-path';
+//@ts-ignore
 import absSVG from 'abs-svg-path';
 import normalizeSVG from 'normalize-svg-path';
+import {useRef} from 'react';
 
 type SVGCloseCommand = ['Z'];
 type SVGMoveCommand = ['M', number, number];
@@ -16,6 +18,21 @@ type SVGNormalizedCommands = [
   SVGMoveCommand,
   ...(SVGCurveCommand | SVGCloseCommand)[]
 ];
+export function useConst<T>(initialValue: T | (() => T)): T {
+  const ref = useRef<{value: T}>();
+  if (ref.current === undefined) {
+    // Box the value in an object so we can tell if it's initialized even if the initializer
+    // returns/is undefined
+    ref.current = {
+      value:
+        typeof initialValue === 'function'
+          ? // eslint-disable-next-line @typescript-eslint/ban-types
+            (initialValue as Function)()
+          : initialValue,
+    };
+  }
+  return ref.current.value;
+}
 
 /**
  * @summary Returns true if node is within lowerBound and upperBound.
