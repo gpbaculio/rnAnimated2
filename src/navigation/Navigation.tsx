@@ -30,6 +30,7 @@ import {
   Chess,
   LiquidSwipe,
   Dvd,
+  Chanel,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -60,6 +61,7 @@ export type AppStackNavigatorType = {
   Chess: undefined;
   LiquidSwipe: undefined;
   Dvd: undefined;
+  Chanel: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -87,6 +89,13 @@ const AppNavigator = () => (
         component={LiquidSwipe}
         options={{
           title: 'Liquid Swipe',
+        }}
+      />
+      <Stack.Screen
+        name="Chanel"
+        component={Chanel}
+        options={{
+          title: 'Chanel',
         }}
       />
       <Stack.Screen
