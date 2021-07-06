@@ -23,6 +23,7 @@ const reflectlyIcon = require('../../../assets/reflectly.png');
 const breatheIcon = require('../../../assets/breathe.png');
 const nightIcon = require('../../../assets/night-icon.png');
 const chessIcon = require('../../../assets/chess.png');
+const dvdIcon = require('../../../assets/dvd.png');
 
 export const examples: {
   screen: string;
@@ -36,6 +37,11 @@ export const examples: {
   {
     screen: 'PanGesture',
     title: '💳  Pan Gesture',
+  },
+  {
+    screen: 'Dvd',
+    title: 'Dvd',
+    icon: dvdIcon,
   },
   {
     screen: 'Transitions',
