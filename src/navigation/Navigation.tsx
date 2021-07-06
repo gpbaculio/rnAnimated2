@@ -31,6 +31,7 @@ import {
   LiquidSwipe,
   Dvd,
   Chanel,
+  Darkroom,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -62,6 +63,7 @@ export type AppStackNavigatorType = {
   LiquidSwipe: undefined;
   Dvd: undefined;
   Chanel: undefined;
+  Darkroom: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -89,6 +91,13 @@ const AppNavigator = () => (
         component={LiquidSwipe}
         options={{
           title: 'Liquid Swipe',
+        }}
+      />
+      <Stack.Screen
+        name="Darkroom"
+        component={Darkroom}
+        options={{
+          title: 'Darkroom',
         }}
       />
       <Stack.Screen
