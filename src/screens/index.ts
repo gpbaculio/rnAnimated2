@@ -25,3 +25,4 @@ export {default as Chess} from './Chess';
 export {default as LiquidSwipe} from './LiquidSwipe';
 export {default as Dvd} from './Dvd';
 export {default as Chanel} from './Chanel';
+export {default as Darkroom} from './Darkroom';
