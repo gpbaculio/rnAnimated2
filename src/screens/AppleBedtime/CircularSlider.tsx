@@ -40,7 +40,7 @@ const CircularSlider = ({start, end}: CircularProps) => {
         <Defs>
           <Mask {...{id: 'mask'}}>
             <AnimatedPath
-              {...{animatedProps, stroke: 'cyan', strokeWidth: STROKE}}
+              {...{animatedProps, stroke: 'white', strokeWidth: STROKE}}
             />
           </Mask>
         </Defs>

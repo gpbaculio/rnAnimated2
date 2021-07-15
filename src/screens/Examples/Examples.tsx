@@ -26,6 +26,7 @@ const chessIcon = require('../../../assets/chess.png');
 const dvdIcon = require('../../../assets/dvd.png');
 const chanelIcon = require('../../../assets/chanel.png');
 const darkroomIcon = require('../../../assets/darkroom.png');
+const fbIcon = require('../../../assets/fb.png');
 
 export const examples: {
   screen: string;
@@ -33,12 +34,21 @@ export const examples: {
   icon?: ImageSourcePropType;
 }[] = [
   {
+    screen: 'FbLiveVideoReaction',
+    title: 'Fb Live Video Reaction',
+    icon: fbIcon,
+  },
+  {
     screen: 'WorkletsAndSharedValues',
     title: '👩‍🏭  Worklets And SharedValues',
   },
   {
     screen: 'PanGesture',
     title: '💳  Pan Gesture',
+  },
+  {
+    screen: 'ZAnimations',
+    title: 'ZAnimations',
   },
   {
     screen: 'Dvd',

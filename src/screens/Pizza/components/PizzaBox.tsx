@@ -35,7 +35,6 @@ const Box = ({object, animation}: BoxProps) => {
       if (!active) return;
       frames.current += 1;
       const delta = (to - from) / TOTAL_FRAMES;
-      console.log('delta: ', delta);
       const m = pivotMatrix(SIZE.z / 2, delta);
       primitiveRef.current.applyMatrix4(m);
     }
