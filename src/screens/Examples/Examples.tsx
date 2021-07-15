@@ -34,6 +34,10 @@ export const examples: {
   icon?: ImageSourcePropType;
 }[] = [
   {
+    screen: 'PlayingAudio',
+    title: 'PlayingAudio',
+  },
+  {
     screen: 'FbLiveVideoReaction',
     title: 'Fb Live Video Reaction',
     icon: fbIcon,
