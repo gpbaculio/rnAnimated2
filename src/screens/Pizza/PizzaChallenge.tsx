@@ -55,10 +55,12 @@ const PizzaChallenge = ({route}: PizzaChallengeProps) => {
       {scale: mix(adding.value, 1, 0)},
     ],
   }));
+
   const style = useAnimatedStyle(() => ({
     opacity: interpolate(closing.value, [0.1, 1], [1, 0], Extrapolate.CLAMP),
     transform: [{scale: mix(closing.value, 1, 0)}],
   }));
+
   useAnimatedReaction(
     () => closing.value > 0.5,
     isClosing => {

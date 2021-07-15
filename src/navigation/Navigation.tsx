@@ -32,11 +32,14 @@ import {
   Dvd,
   Chanel,
   Darkroom,
+  ZAnimations,
+  FbLiveVideoReaction,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
 export type AppStackNavigatorType = {
   Examples: undefined;
+  ZAnimations: undefined;
   WorkletsAndSharedValues: undefined;
   PanGesture: undefined;
   Transitions: undefined;
@@ -64,6 +67,7 @@ export type AppStackNavigatorType = {
   Dvd: undefined;
   Chanel: undefined;
   Darkroom: undefined;
+  FbLiveVideoReaction: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -84,6 +88,20 @@ const AppNavigator = () => (
         component={Examples}
         options={{
           title: 'Learning Reanimated 2',
+        }}
+      />
+      <Stack.Screen
+        name="FbLiveVideoReaction"
+        component={FbLiveVideoReaction}
+        options={{
+          title: 'FbLiveVideoReaction',
+        }}
+      />
+      <Stack.Screen
+        name="ZAnimations"
+        component={ZAnimations}
+        options={{
+          title: 'ZAnimations',
         }}
       />
       <Stack.Screen

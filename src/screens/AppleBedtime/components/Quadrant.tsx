@@ -18,14 +18,14 @@ const Quadrant = () => {
         r={R}
       />
       <G mask="url(#mask)">
-        <Circle fill="#FD9F07" cx={SIZE / 2} cy={SIZE / 2} r={R + PADDING} />
+        <Circle fill="green" cx={SIZE / 2} cy={SIZE / 2} r={R + PADDING} />
         {new Array(LINES).fill(0).map((_, i) => {
           const theta = DELTA * i;
           const p1 = polar2Canvas({theta, radius: R - PADDING / 2}, CENTER);
           const p2 = polar2Canvas({theta, radius: R + PADDING / 2}, CENTER);
           return (
             <Line
-              stroke="#E58406"
+              stroke="yellow"
               strokeWidth={4}
               strokeLinecap="round"
               key={i}
