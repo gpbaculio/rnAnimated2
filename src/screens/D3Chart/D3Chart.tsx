@@ -4,8 +4,8 @@ import * as ART from '@react-native-community/art';
 import styled from 'styled-components/native';
 import * as d3 from 'd3';
 import {PieArcDatum} from 'd3';
-import {Path} from 'react-native-svg';
-const {Surface, Group, Shape, Text: RNArtText} = ART;
+
+import {Svg, G, Path, Text as SVGText} from 'react-native-svg';
 
 const width = 300;
 const height = 300;
@@ -45,21 +45,24 @@ interface MockDataType {
 }
 const NUM_OF_SIDES = 9,
   NUM_OF_LEVEL = 4,
-  size = 300,
+  size = 350,
   offset = Math.PI,
   polyangle = (Math.PI * 2) / NUM_OF_SIDES,
   r = 0.8 * size,
   r_0 = r / 2,
   center = [size / 2, size / 2];
-const Circle = ({cx, cy}: {cx: number; cy: number}) => {
+const Circle = ({cx, cy, color}: {cx: number; cy: number; color: string}) => {
   return (
-    <Shape
-      fill="red"
+    <Path
+      onPress={() => {
+        console.log('${cx}, ${cy}', {cx, cy});
+      }}
+      fill={color}
       d={`
     M ${cx}, ${cy}
-    m -3, 0
-    a 3,3 0 1,0 6,0
-    a 3,3 0 1,0 -6,0
+    m -5, 0
+    a 5,5 0 1,0 10,0
+    a 5,5 0 1,0 -10,0
     `}
     />
   );
@@ -196,13 +199,17 @@ const D3Chart = () => {
   };
 
   const labelData = getLabelTextPoints(dataset, NUM_OF_SIDES);
-
+  const GRAPH_MARGIN = 20;
+  const SVGHeight = 300;
+  const SVGWidth = 300;
+  const graphHeight = SVGHeight - 2 * GRAPH_MARGIN;
+  const graphWidth = SVGWidth - 2 * GRAPH_MARGIN;
   return (
     <Container>
-      <Surface style={{backgroundColor: 'red'}} width={width} height={height}>
-        <Group x={width / 2} y={height / 2}>
+      <Svg fill="#f5f5f5" width={graphWidth} height={graphHeight}>
+        <G x={width / 2} y={height / 2}>
           {sectionAngles.map((section, index) => (
-            <Shape
+            <Path
               key={section.index}
               d={path(section) as string}
               stroke="#000"
@@ -210,83 +217,83 @@ const D3Chart = () => {
               strokeWidth={1}
             />
           ))}
-        </Group>
-      </Surface>
-      <Surface
-        style={{
-          backgroundColor: 'green',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-        width={390}
-        height={390}>
-        <Group x={50} y={50}>
+        </G>
+      </Svg>
+      <Svg
+        style={{backgroundColor: 'green'}}
+        fill="#f5f5f5"
+        width={400}
+        height={400}>
+        <G x={20} y={20}>
           {labelData.map((ld, id) => {
             return (
-              <RNArtText
+              <SVGText
+                onPress={() => {
+                  console.log('pressed label id ', id);
+                }}
                 key={`label:${id}`}
-                x={ld.point[0]}
-                y={ld.point[1] - 5}
-                fill="red"
-                alignment="center">
+                x={ld.point[0] - 15}
+                y={ld.point[1] + 5}
+                fill="red">
                 {ld.label}
-              </RNArtText>
+              </SVGText>
             );
           })}
-        </Group>
-
-        {generateAndDrawLinesPoints.map((gadPoints, index) => (
-          <Group key={`gadPoints:${index}`} x={50} y={50}>
-            <Shape
+          {generateAndDrawLinesPoints.map((gadPoints, index) => (
+            <Path
+              key={`gadPoints:${index}`}
               d={lineGenerator(gadPoints as [number, number][]) as string}
-              stroke="black"
-              strokeJoin="round"
+              stroke="red"
+              fill={'none'}
+              strokeLinejoin="round"
               strokeWidth={1}
             />
-          </Group>
-        ))}
-        {generateAndDrawLevelsPoints.map((glPoints, index) => (
-          <Group key={`glPoints:${index}`} x={50} y={50}>
-            <Shape
+          ))}
+          {generateAndDrawLevelsPoints.map((glPoints, index) => (
+            <Path
+              key={`glPoints:${index}`}
               d={lineGenerator(glPoints as [number, number][]) as string}
               stroke="red"
-              strokeJoin="round"
+              fill={'none'}
+              strokeLinejoin="round"
               strokeWidth={1}
             />
-          </Group>
-        ))}
-        <Group x={50} y={50}>
-          <Shape
+          ))}
+          <Path
             d={lineGenerator(points) as string}
             stroke="yellow"
+            fill="none"
+            strokeWidth={1}
+          />
+
+          <Path
+            d={lineGenerator(points2) as string}
+            stroke="white"
+            fill="none"
+            strokeWidth={1}
+          />
+
+          <Path
+            d={lineGenerator(points3) as string}
+            stroke="blue"
+            fill="none"
             strokeWidth={1}
           />
           {points.map((p, i) => {
-            return <Circle key={`k:${i}`} cx={p[0]} cy={p[1]} />;
+            return (
+              <Circle key={`k1:${i}`} color={'yellow'} cx={p[0]} cy={p[1]} />
+            );
           })}
-        </Group>
-        <Group x={50} y={50}>
-          <Shape
-            d={lineGenerator(points2) as string}
-            stroke="blue"
-            strokeWidth={1}
-          />
           {points2.map((p, i) => {
-            return <Circle key={`k:${i}`} cx={p[0]} cy={p[1]} />;
+            return (
+              <Circle key={`k2:${i}`} color={'white'} cx={p[0]} cy={p[1]} />
+            );
           })}
-        </Group>
-
-        <Group x={50} y={50}>
-          <Shape
-            d={lineGenerator(points3) as string}
-            stroke="white"
-            strokeWidth={1}
-          />
           {points3.map((p, i) => {
-            return <Circle key={`k:${i}`} cx={p[0]} cy={p[1]} />;
+            return <Circle key={`k3:${i}`} color="blue" cx={p[0]} cy={p[1]} />;
           })}
-        </Group>
-      </Surface>
+        </G>
+      </Svg>
     </Container>
   );
 };
