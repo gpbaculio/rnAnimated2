@@ -3,6 +3,24 @@ import styled from 'styled-components/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Animated, {useAnimatedStyle} from 'react-native-reanimated';
 import {StyleSheet} from 'react-native';
+import FastImage, {
+  FastImageProps,
+  ResizeMode,
+  Priority,
+  Source,
+} from 'react-native-fast-image';
+
+const likeGif = require('../../../assets/postreaction/like.gif');
+const loveGif = require('../../../assets/postreaction/love.gif');
+const angryGif = require('../../../assets/postreaction/angry.gif');
+const hahaGif = require('../../../assets/postreaction/haha.gif');
+const sadGif = require('../../../assets/postreaction/sad.gif');
+interface FastImageStaticProperties {
+  resizeMode: ResizeMode;
+  priority: Priority;
+  cacheControl: 'immutable' | 'web' | 'cacheOnly';
+  preload: (sources: Source[]) => void;
+}
 
 interface ReactionsProps {
   currentX: Animated.SharedValue<number>;
@@ -14,7 +32,6 @@ export const between = (x: number, min: number, max: number) => {
   'worklet';
   return x >= min && x <= max;
 };
-
 const AnimatedIcon = Animated.createAnimatedComponent(MaterialCommunityIcons);
 const Reactions = ({currentX, currentY}: ReactionsProps) => {
   const style1 = useAnimatedStyle(() => {
@@ -84,36 +101,11 @@ const Reactions = ({currentX, currentY}: ReactionsProps) => {
   });
   return (
     <Container>
-      <AnimatedIcon
-        style={[styles.icon, style1]}
-        name="thumb-up"
-        color="blue"
-        size={18}
-      />
-      <AnimatedIcon
-        style={[styles.icon, style2]}
-        name="heart"
-        color="blue"
-        size={18}
-      />
-      <AnimatedIcon
-        style={[styles.icon, style3]}
-        name="emoticon-angry"
-        color="blue"
-        size={18}
-      />
-      <AnimatedIcon
-        style={[styles.icon, style4]}
-        name="emoticon-lol"
-        color="blue"
-        size={18}
-      />
-      <AnimatedIcon
-        style={[styles.icon, style5]}
-        name="emoticon-cry"
-        color="blue"
-        size={18}
-      />
+      <Animated.Image style={[styles.icon, style1]} source={likeGif} />
+      <Animated.Image style={[styles.icon, style2]} source={loveGif} />
+      <Animated.Image style={[styles.icon, style3]} source={angryGif} />
+      <Animated.Image style={[styles.icon, style4]} source={hahaGif} />
+      <Animated.Image style={[styles.icon, style5]} source={sadGif} />
     </Container>
   );
 };
@@ -131,8 +123,9 @@ const Container = styled.View`
 
 const styles = StyleSheet.create({
   icon: {
-    marginHorizontal: 12,
-    backgroundColor: 'red',
-    transform: [{scale: 1.8}],
+    position: 'relative',
+    width: 33,
+    height: 33,
+    marginHorizontal: 4,
   },
 });

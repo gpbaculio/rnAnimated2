@@ -52,6 +52,8 @@ const FbPostReaction = () => {
         runOnJS(setCurrentEmoji)('emoticon-cry');
         runOnJS(setHasLiked)(true);
       }
+      x.value = 0;
+      y.value = 0;
       runOnJS(setShouldShowReactions)(false);
     },
   });
