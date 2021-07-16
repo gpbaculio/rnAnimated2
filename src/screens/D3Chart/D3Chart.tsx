@@ -1,9 +1,11 @@
 import React from 'react';
 import {View, Text} from 'react-native';
-import {Surface, Group, Shape} from '@react-native-community/art';
+import * as ART from '@react-native-community/art';
 import styled from 'styled-components/native';
 import * as d3 from 'd3';
 import {PieArcDatum} from 'd3';
+import {Path} from 'react-native-svg';
+const {Surface, Group, Shape, Text: RNArtText} = ART;
 
 const width = 300;
 const height = 300;
@@ -41,7 +43,6 @@ interface MockDataType {
   itemName: string;
   price: number;
 }
-
 const NUM_OF_SIDES = 9,
   NUM_OF_LEVEL = 4,
   size = 300,
@@ -50,6 +51,19 @@ const NUM_OF_SIDES = 9,
   r = 0.8 * size,
   r_0 = r / 2,
   center = [size / 2, size / 2];
+const Circle = ({cx, cy}: {cx: number; cy: number}) => {
+  return (
+    <Shape
+      fill="red"
+      d={`
+    M ${cx}, ${cy}
+    m -3, 0
+    a 3,3 0 1,0 6,0
+    a 3,3 0 1,0 -6,0
+    `}
+    />
+  );
+};
 const D3Chart = () => {
   const scale = d3.scaleLinear().domain([0, 100]).range([0, r_0]);
   const generatePoint = ({
@@ -163,6 +177,26 @@ const D3Chart = () => {
     return totalPoints;
   };
   const generateAndDrawLinesPoints = generateAndDrawLines(NUM_OF_SIDES);
+
+  const getLabelTextPoints = (
+    dataset: {
+      name: string;
+      value: number;
+    }[],
+    sideCount: number,
+  ) => {
+    const totalPoints = [];
+    for (let vertex = 0; vertex < sideCount; vertex++) {
+      const angle = vertex * polyangle;
+      const label = dataset[vertex].name;
+      const point = generatePoint({length: 0.93 * (size / 2), angle});
+      totalPoints.push({point, label});
+    }
+    return totalPoints;
+  };
+
+  const labelData = getLabelTextPoints(dataset, NUM_OF_SIDES);
+
   return (
     <Container>
       <Surface style={{backgroundColor: 'red'}} width={width} height={height}>
@@ -186,6 +220,21 @@ const D3Chart = () => {
         }}
         width={390}
         height={390}>
+        <Group x={50} y={50}>
+          {labelData.map((ld, id) => {
+            return (
+              <RNArtText
+                key={`label:${id}`}
+                x={ld.point[0]}
+                y={ld.point[1] - 5}
+                fill="red"
+                alignment="center">
+                {ld.label}
+              </RNArtText>
+            );
+          })}
+        </Group>
+
         {generateAndDrawLinesPoints.map((gadPoints, index) => (
           <Group key={`gadPoints:${index}`} x={50} y={50}>
             <Shape
@@ -212,6 +261,9 @@ const D3Chart = () => {
             stroke="yellow"
             strokeWidth={1}
           />
+          {points.map((p, i) => {
+            return <Circle key={`k:${i}`} cx={p[0]} cy={p[1]} />;
+          })}
         </Group>
         <Group x={50} y={50}>
           <Shape
@@ -219,13 +271,20 @@ const D3Chart = () => {
             stroke="blue"
             strokeWidth={1}
           />
+          {points2.map((p, i) => {
+            return <Circle key={`k:${i}`} cx={p[0]} cy={p[1]} />;
+          })}
         </Group>
+
         <Group x={50} y={50}>
           <Shape
             d={lineGenerator(points3) as string}
             stroke="white"
             strokeWidth={1}
           />
+          {points3.map((p, i) => {
+            return <Circle key={`k:${i}`} cx={p[0]} cy={p[1]} />;
+          })}
         </Group>
       </Surface>
     </Container>
