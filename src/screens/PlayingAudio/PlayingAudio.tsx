@@ -6,6 +6,7 @@ import {
   Pressable,
   TouchableHighlight,
 } from 'react-native';
+import SystemSetting from 'react-native-system-setting';
 import styled from 'styled-components/native';
 import {Audio} from 'expo-av';
 import Slider from '@react-native-community/slider';
@@ -195,6 +196,8 @@ const PlayingAudio = () => {
         initialStatus,
         onPlaybackStatusUpdate,
       );
+      const systemVolume = await SystemSetting.getVolume();
+      console.log('systemVolume: ', systemVolume);
       setSound(sound);
     };
     loadSound();

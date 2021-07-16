@@ -36,6 +36,7 @@ import {
   FbLiveVideoReaction,
   PlayingAudio,
   FbPostReaction,
+  D3Chart,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -72,6 +73,7 @@ export type AppStackNavigatorType = {
   FbLiveVideoReaction: undefined;
   FbPostReaction: undefined;
   PlayingAudio: undefined;
+  D3Chart: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -92,6 +94,13 @@ const AppNavigator = () => (
         component={Examples}
         options={{
           title: 'Learning Reanimated 2',
+        }}
+      />
+      <Stack.Screen
+        name="D3Chart"
+        component={D3Chart}
+        options={{
+          title: 'D3Chart',
         }}
       />
       <Stack.Screen

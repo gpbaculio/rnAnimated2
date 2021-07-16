@@ -21,6 +21,7 @@ module.exports = {
       'mp3',
       'ttf',
       'wav',
+      'gif',
       'aac',
       'obj',
       'png',
