@@ -10,10 +10,24 @@ import styled from 'styled-components/native';
 import {Audio} from 'expo-av';
 import Slider from '@react-native-community/slider';
 import {AVPlaybackSource, AVPlaybackStatus} from 'expo-av/build/AV';
+import MainAnimatedCircle from './MainAnimatedCircle';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useRef} from 'react';
 import {StyleSheet} from 'react-native';
+import Animated, {
+  Easing,
+  interpolate,
+  runOnJS,
+  useAnimatedReaction,
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withRepeat,
+  withTiming,
+} from 'react-native-reanimated';
+import AnimatedCircle from './AnimatedCircle';
+import {mix, withPause} from '../constants';
 
 const song = require('../../../assets/audio/song.mp3');
 const thumb = require('../../../assets/thumb.png');
@@ -261,9 +275,7 @@ const PlayingAudio = () => {
   };
 
   const onPlayPausePressed = () => {
-    console.log('pressed');
     if (sound != null) {
-      console.log('pressed 2');
       if (isPlaying) {
         sound.pauseAsync();
       } else {
@@ -278,17 +290,64 @@ const PlayingAudio = () => {
     }
   };
 
+  const progress = useSharedValue(0);
+  const isPause = useSharedValue(true);
+  const mainProgress = useSharedValue(0);
+
+  const style = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          rotate: `${
+            progress.value !== undefined
+              ? interpolate(progress.value, [0, 1], [1, 360])
+              : -45
+          }deg`,
+        },
+      ],
+    };
+  });
+
+  useEffect(() => {
+    'worklet';
+
+    progress.value = withPause(
+      withRepeat(
+        withTiming(1, {duration: 1000, easing: Easing.linear}),
+        -1,
+        false,
+      ),
+      isPause,
+    );
+
+    mainProgress.value = withPause(
+      withRepeat(
+        withTiming(1, {duration: 1000, easing: Easing.linear}),
+        -1,
+        true,
+      ),
+      isPause,
+    );
+  }, [isPause, progress, mainProgress]);
   return (
     <Container>
       <Main>
         <StyledSlider
-          minimumTrackTintColor="#FFFFFF"
-          maximumTrackTintColor="#000000"
+          minimumTrackTintColor="red"
+          maximumTrackTintColor="green"
           value={getSeekSliderPosition()}
           onValueChange={onSeekSliderValueChange}
           onSlidingComplete={onSeekSliderSlidingComplete}
           disabled={isLoading}
         />
+        <Animated.View style={[StyleSheet.absoluteFill, style]}>
+          {new Array(2).fill(0).map((i, index) => {
+            return (
+              <AnimatedCircle {...{key: index, index, progress, isPause}} />
+            );
+          })}
+        </Animated.View>
+        <MainAnimatedCircle {...{progress: mainProgress}} />
         <TimestampRow>
           <StyledText>{isBuffering ? BUFFERING_STRING : ''}</StyledText>
           <StyledText>{getTimestamp()}</StyledText>
@@ -300,6 +359,7 @@ const PlayingAudio = () => {
             {
               opacity: isLoading ? DISABLED_OPACITY : 1.0,
             },
+            {zIndex: 99},
           ]}>
           <TouchableHighlight
             underlayColor={BACKGROUND_COLOR}
@@ -311,7 +371,11 @@ const PlayingAudio = () => {
           <TouchableHighlight
             underlayColor={BACKGROUND_COLOR}
             style={styles.wrapper}
-            onPress={onPlayPausePressed}
+            onPress={() => {
+              'worklet';
+              isPause.value = !isPause.value;
+              runOnJS(onPlayPausePressed)();
+            }}
             disabled={isLoading}>
             {isPlaying ? (
               <FontAwesome name="pause" color="red" size={18} />
@@ -460,10 +524,12 @@ const TimestampRow = styled.View`
   justify-content: space-between;
   align-self: stretch;
   min-height: 14px;
+  z-index: 99;
 `;
 
 const StyledSlider = styled(Slider)`
   align-self: stretch;
+  z-index: 99;
 `;
 
 const Container = styled.View`
