@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AppLoading from 'expo-app-loading';
 import {Asset} from 'expo-asset';
 import {Image} from 'react-native';
@@ -17,6 +18,7 @@ function cacheImages(images: any) {
     }
   });
 }
+MaterialCommunityIcons.loadFont();
 Feather.loadFont();
 AntDesign.loadFont();
 FontAwesome.loadFont();
