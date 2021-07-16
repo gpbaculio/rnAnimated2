@@ -20,6 +20,8 @@ module.exports = {
       'mp4',
       'mp3',
       'ttf',
+      'wav',
+      'aac',
       'obj',
       'png',
       'jpg',

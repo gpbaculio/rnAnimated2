@@ -14,11 +14,13 @@ import AnimatedEmoji from './AnimatedEmoji';
 const {width} = Dimensions.get('window');
 export const PADDING = 24;
 
+export const getRandXFromContainer = () =>
+  Math.random() * (width - PADDING * 2);
+
 const FbLiveVideoReaction = () => {
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const [currentX, setCurrentX] = useState(0);
   const progress = useSharedValue(0);
-  const getRandXFromContainer = () => Math.random() * (width - PADDING * 2);
 
   useEffect(() => {
     if (shouldAnimate) {

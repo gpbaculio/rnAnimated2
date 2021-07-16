@@ -28,3 +28,5 @@ export {default as Chanel} from './Chanel';
 export {default as Darkroom} from './Darkroom';
 export {default as ZAnimations} from './ZAnimations';
 export {default as FbLiveVideoReaction} from './FbLiveVideoReaction';
+export {default as PlayingAudio} from './PlayingAudio';
+export {default as FbPostReaction} from './FbPostReaction';

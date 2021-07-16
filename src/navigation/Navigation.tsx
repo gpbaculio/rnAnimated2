@@ -34,6 +34,8 @@ import {
   Darkroom,
   ZAnimations,
   FbLiveVideoReaction,
+  PlayingAudio,
+  FbPostReaction,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -68,6 +70,8 @@ export type AppStackNavigatorType = {
   Chanel: undefined;
   Darkroom: undefined;
   FbLiveVideoReaction: undefined;
+  FbPostReaction: undefined;
+  PlayingAudio: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -88,6 +92,20 @@ const AppNavigator = () => (
         component={Examples}
         options={{
           title: 'Learning Reanimated 2',
+        }}
+      />
+      <Stack.Screen
+        name="PlayingAudio"
+        component={PlayingAudio}
+        options={{
+          title: 'PlayingAudio',
+        }}
+      />
+      <Stack.Screen
+        name="FbPostReaction"
+        component={FbPostReaction}
+        options={{
+          title: 'FbPostReaction',
         }}
       />
       <Stack.Screen
