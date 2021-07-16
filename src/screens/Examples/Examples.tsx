@@ -38,6 +38,14 @@ export const examples: {
     title: 'PlayingAudio',
   },
   {
+    screen: 'FbPostReaction',
+    title: 'FbPostReaction',
+  },
+  {
+    screen: 'D3Chart',
+    title: 'D3Chart',
+  },
+  {
     screen: 'FbLiveVideoReaction',
     title: 'Fb Live Video Reaction',
     icon: fbIcon,

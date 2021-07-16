@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Text, View, StyleSheet, Dimensions} from 'react-native';
-import * as shape from 'd3-shape';
+
 import Animated, {
   useAnimatedProps,
   useAnimatedStyle,
@@ -8,7 +8,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import Svg, {Path} from 'react-native-svg';
-import {scaleLinear} from 'd3-scale';
+import * as d3 from 'd3';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
 import {Prices, DataPoints, SIZE} from './Model';
@@ -34,7 +34,8 @@ const buildGraph = (datapoints: DataPoints, label: string) => {
 
   const dates = formattedValues.map(value => value[1]);
 
-  const scaleX = scaleLinear()
+  const scaleX = d3
+    .scaleLinear()
     .domain([Math.min(...dates), Math.max(...dates)])
     .range([0, SIZE]);
 
@@ -42,7 +43,7 @@ const buildGraph = (datapoints: DataPoints, label: string) => {
 
   const maxPrice = Math.max(...prices);
 
-  const scaleY = scaleLinear().domain([minPrice, maxPrice]).range([SIZE, 0]);
+  const scaleY = d3.scaleLinear().domain([minPrice, maxPrice]).range([SIZE, 0]);
 
   return {
     label,
@@ -50,11 +51,11 @@ const buildGraph = (datapoints: DataPoints, label: string) => {
     maxPrice,
     percentChange: datapoints.percent_change,
     path: parse(
-      shape
+      d3
         .line()
         .x(([, x]) => scaleX(x) as number)
         .y(([y]) => scaleY(y) as number)
-        .curve(shape.curveBasis)(formattedValues) as string,
+        .curve(d3.curveBasis)(formattedValues) as string,
     ),
   };
 };
