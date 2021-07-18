@@ -45,10 +45,11 @@ const Cursor = ({strokeWidth, theta, r}: CursorProps) => {
           : clamp(y1, r, 2 * r);
       const value = canvas2Polar({x, y}, center).theta;
       theta.value = value > 0 ? value : 2 * Math.PI + value;
-      console.log({
-        before: value,
-        after: theta.value,
-      });
+      // console.log('y: ', y);
+      // console.log({
+      //   before: value,
+      //   after: theta.value,
+      // });
     },
   });
 
