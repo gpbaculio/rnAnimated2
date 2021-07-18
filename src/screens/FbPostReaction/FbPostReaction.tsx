@@ -73,7 +73,7 @@ const FbPostReaction = () => {
   return (
     <Container>
       <PanGestureHandler {...{onGestureEvent}}>
-        <Animated.View style={{marginTop: 'auto'}}>
+        <Animated.View style={{marginTop: 50}}>
           <LikeButton
             hasLiked={hasLiked}
             onPress={() => {
