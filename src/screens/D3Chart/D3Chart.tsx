@@ -1,11 +1,11 @@
 import React from 'react';
 import {View, Text} from 'react-native';
-import * as ART from '@react-native-community/art';
 import styled from 'styled-components/native';
 import * as d3 from 'd3';
 import {PieArcDatum} from 'd3';
-
 import {Svg, G, Path, Text as SVGText} from 'react-native-svg';
+
+import Counties from './Counties';
 
 const width = 300;
 const height = 300;
@@ -294,13 +294,13 @@ const D3Chart = () => {
           })}
         </G>
       </Svg>
+      <Counties />
     </Container>
   );
 };
 
 export default D3Chart;
 
-const Container = styled.View`
-  flex: 1;
+const Container = styled.ScrollView`
   background-color: #f5f5f5;
 `;
