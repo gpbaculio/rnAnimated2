@@ -6,6 +6,7 @@ import {PieArcDatum} from 'd3';
 import {Svg, G, Path, Text as SVGText} from 'react-native-svg';
 
 import Counties from './Counties';
+import Globe from './Globe';
 
 const width = 300;
 const height = 300;
@@ -295,6 +296,7 @@ const D3Chart = () => {
         </G>
       </Svg>
       <Counties />
+      <Globe />
     </Container>
   );
 };
