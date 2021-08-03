@@ -1,4 +1,4 @@
-import {RouteProp} from '@react-navigation/core';
+import {RouteProp} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {View, Image, StyleSheet, ScrollView} from 'react-native';
 import Animated, {

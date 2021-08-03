@@ -1,6 +1,6 @@
 import React, {useCallback, useMemo, useRef} from 'react';
 import {Dimensions, Image} from 'react-native';
-import {Surface} from 'gl-react-native';
+import {Surface} from 'gl-react-expo';
 import {Node, Shaders, GLSL} from 'gl-react';
 
 import {Path as RePath, serialize} from '../constants';

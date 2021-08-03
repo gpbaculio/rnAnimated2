@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {Image, StyleSheet, View} from 'react-native';
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDerivedValue, useSharedValue} from 'react-native-reanimated';
 

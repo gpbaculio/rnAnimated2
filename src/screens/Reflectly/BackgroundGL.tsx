@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import {Surface} from 'gl-react-native';
+import {Surface} from 'gl-react-expo';
 import {Node, Shaders, GLSL} from 'gl-react';
 import {Dimensions, StyleSheet} from 'react-native';
 import {Blur} from 'gl-react-blur';
