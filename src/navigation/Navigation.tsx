@@ -37,6 +37,7 @@ import {
   PlayingAudio,
   FbPostReaction,
   D3Chart,
+  LockScreen,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -74,6 +75,7 @@ export type AppStackNavigatorType = {
   FbPostReaction: undefined;
   PlayingAudio: undefined;
   D3Chart: undefined;
+  LockScreen: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -94,6 +96,13 @@ const AppNavigator = () => (
         component={Examples}
         options={{
           title: 'Learning Reanimated 2',
+        }}
+      />
+      <Stack.Screen
+        name="LockScreen"
+        component={LockScreen}
+        options={{
+          title: 'LockScreen',
         }}
       />
       <Stack.Screen

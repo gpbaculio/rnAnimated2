@@ -32,6 +32,7 @@
     "gl-react-expo": "^5.0.0",
     "gl-react-image": "^3.2.0",
     "gl-transitions": "^1.43.0",
+    "jsc-android": "^250230.2.1",
     "normalize-svg-path": "^1.1.0",
     "parse-svg-path": "^0.1.2",
     "react": "17.0.2",

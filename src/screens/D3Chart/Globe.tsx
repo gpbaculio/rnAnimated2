@@ -1,5 +1,5 @@
-import React, {useMemo, useState} from 'react';
-import {Dimensions, Text} from 'react-native';
+import React, {useState} from 'react';
+import {Dimensions} from 'react-native';
 import {feature} from 'topojson-client';
 import {GeometryObject, Topology} from 'topojson-specification';
 import {ExtendedFeatureCollection} from 'd3';
@@ -8,11 +8,9 @@ import {Svg, G, Circle, Path} from 'react-native-svg';
 import Animated, {
   runOnJS,
   useAnimatedGestureHandler,
-  useAnimatedProps,
   useAnimatedReaction,
   useAnimatedStyle,
   useSharedValue,
-  withTiming,
 } from 'react-native-reanimated';
 
 import countries from './data/countries-110m.json';
@@ -31,7 +29,6 @@ const COUNTRIES = feature(
 const {width: SVG_WIDTH, height} = Dimensions.get('window');
 const SVG_HEIGHT = height / 2;
 const clipAngle = 90;
-const AnimatedG = Animated.createAnimatedComponent(G);
 
 const Globe = () => {
   const translateX = useSharedValue(0);
@@ -57,31 +54,27 @@ const Globe = () => {
     [-98.862052, 37.848794],
   ];
 
-  const pointers = useMemo(
-    () =>
-      coordinates.map(data => {
-        //calculate xy position from coordinates (long,lat)
-        const lang = data[0];
-        const lat = data[1];
-        const coordinate = projection([lang, lat]);
+  const centerPos = projection.invert
+    ? projection.invert([SVG_WIDTH / 2, mapExtent / 2])
+    : [0, 0];
 
-        const xdata = (coordinate as [number, number])[0]; //first should be longitude
-        const ydata = (coordinate as [number, number])[1];
+  const pointers = coordinates.map(data => {
+    //calculate xy position from coordinates (long,lat)
+    const lang = data[0];
+    const lat = data[1];
+    const coordinate = projection([lang, lat]);
 
-        //if marker out of circle or back side marker will hide
+    const xdata = (coordinate as [number, number])[0]; //first should be longitude
+    const ydata = (coordinate as [number, number])[1];
 
-        const centerPos = projection.invert
-          ? projection.invert([SVG_WIDTH / 2, mapExtent / 2])
-          : [0, 0];
+    //if marker out of circle or back side marker will hide
 
-        const d = d3.geoDistance([lang, lat], centerPos as [number, number]);
+    const d = d3.geoDistance([lang, lat], centerPos as [number, number]);
 
-        const opacity = d > 1.57 ? 0 : 1;
+    const opacity = d > 1.57 ? 0 : 1;
 
-        return [xdata, ydata, opacity];
-      }),
-    [projection],
-  );
+    return [xdata, ydata, opacity];
+  });
 
   const scale = useSharedValue(1);
 
@@ -158,7 +151,7 @@ const Globe = () => {
                   fill={'#0099FF'}
                 />
                 <Path
-                  d={geoPath(COUNTRIES) as string}
+                  d={`${geoPath(COUNTRIES)}`}
                   stroke={'#666666'}
                   strokeOpacity={0.3}
                   strokeWidth={0.6}

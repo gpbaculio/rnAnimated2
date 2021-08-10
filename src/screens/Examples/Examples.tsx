@@ -34,6 +34,10 @@ export const examples: {
   icon?: ImageSourcePropType;
 }[] = [
   {
+    screen: 'LockScreen',
+    title: 'LockScreen',
+  },
+  {
     screen: 'PlayingAudio',
     title: 'PlayingAudio',
   },
