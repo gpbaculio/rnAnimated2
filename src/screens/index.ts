@@ -31,3 +31,4 @@ export {default as FbLiveVideoReaction} from './FbLiveVideoReaction';
 export {default as PlayingAudio} from './PlayingAudio';
 export {default as FbPostReaction} from './FbPostReaction';
 export {default as D3Chart} from './D3Chart';
+export {default as LockScreen} from './LockScreen';
