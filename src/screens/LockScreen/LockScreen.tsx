@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Dimensions} from 'react-native';
 import Animated, {
+  runOnJS,
   useAnimatedGestureHandler,
   useAnimatedProps,
   withTiming,
@@ -12,7 +13,7 @@ import {
 import Svg, {Circle, G, Line, Rect} from 'react-native-svg';
 import styled from 'styled-components/native';
 import {useSharedValue} from '../Chrome/Animations';
-import {getDotIndex} from './helpers';
+import {getDotIndex, isAlreadyInPattern} from './helpers';
 
 const {width} = Dimensions.get('window');
 
@@ -77,6 +78,7 @@ interface Coordinate {
 const AnimatedLine = Animated.createAnimatedComponent(Line);
 
 const NewLockScreen = () => {
+  const [pattern, setPattern] = useState<Coordinate[]>([]);
   const show = useSharedValue(false);
 
   const activelineStart = useSharedValue<Coordinate>({x: 0, y: 0});
@@ -85,7 +87,16 @@ const NewLockScreen = () => {
 
   const onGestureEvent =
     useAnimatedGestureHandler<PanGestureHandlerGestureEvent>({
-      onStart: () => {
+      onStart: e => {
+        const value = {
+          x: e.x,
+          y: e.y,
+        };
+        const matchedDotIndex = getDotIndex(value, coordinates);
+        if (matchedDotIndex) {
+          const matchedDot = coordinates[matchedDotIndex];
+          runOnJS(setPattern)([matchedDot]);
+        }
         show.value = true;
       },
       onActive: e => {
@@ -95,7 +106,16 @@ const NewLockScreen = () => {
         };
 
         const matchedDotIndex = getDotIndex(value, coordinates);
-
+        if (matchedDotIndex) {
+          const matchedDot = coordinates[matchedDotIndex];
+          const isInPattern = isAlreadyInPattern(matchedDot, pattern);
+          console.log('isInPattern: ', {
+            isInPattern,
+            value,
+            matchedDot,
+            pattern,
+          });
+        }
         activelineEnd.value = value;
       },
       onEnd: () => {
@@ -122,7 +142,13 @@ const NewLockScreen = () => {
               strokeWidth="2"
             />
             {new Array(9).fill(0).map((_e, i) => (
-              <G key={i}>
+              <G key={`g:${i}`}>
+                <Circle
+                  fill="blue"
+                  r={radius - 10}
+                  cx={coordinates[i].x}
+                  cy={coordinates[i].y}
+                />
                 <Rect
                   onPressIn={() => {
                     activelineStart.value = coordinates[i];
@@ -132,12 +158,6 @@ const NewLockScreen = () => {
                   y={coordinates[i].y - recWidth / 2}
                   width={recWidth}
                   height={recWidth}
-                />
-                <Circle
-                  fill="blue"
-                  r={radius - 10}
-                  cx={coordinates[i].x}
-                  cy={coordinates[i].y}
                 />
               </G>
             ))}
