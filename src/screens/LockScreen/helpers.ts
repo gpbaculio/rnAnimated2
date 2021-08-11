@@ -38,6 +38,7 @@ export const getIntermediateDotIndexes = (
   focusCoordinate: Coordinate,
   dimension: number,
 ) => {
+  'worklet';
   let intermediateDotIndexes = [];
   let testIndex = [];
 
@@ -136,6 +137,7 @@ export const populateDotsCoordinate = (
   containerWidth: number,
   containerHeight: number,
 ) => {
+  'worklet';
   let mappedIndex = [];
   let screenCoordinates = [];
 

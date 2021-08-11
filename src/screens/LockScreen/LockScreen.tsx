@@ -13,7 +13,12 @@ import {
 import Svg, {Circle, G, Line, Rect} from 'react-native-svg';
 import styled from 'styled-components/native';
 import {useSharedValue} from '../Chrome/Animations';
-import {getDotIndex, isAlreadyInPattern} from './helpers';
+import {
+  getDotIndex,
+  getIntermediateDotIndexes,
+  isAlreadyInPattern,
+  populateDotsCoordinate,
+} from './helpers';
 
 const {width} = Dimensions.get('window');
 
@@ -21,54 +26,7 @@ const svgWidth = width - 24;
 
 const radius = 20;
 
-const c1 = {
-  x: radius,
-  y: radius,
-};
-
-const c2 = {
-  x: (svgWidth - 5) / 2,
-  y: radius,
-};
-
-const c3 = {
-  x: svgWidth - radius,
-  y: radius,
-};
-
-const c4 = {
-  x: radius,
-  y: (svgWidth - 5) / 2,
-};
-
-const c5 = {
-  x: (svgWidth - 5) / 2,
-  y: (svgWidth - 5) / 2,
-};
-
-const c6 = {
-  x: svgWidth - radius,
-  y: (svgWidth - 5) / 2,
-};
-
-const c7 = {
-  x: radius,
-  y: svgWidth - radius,
-};
-
-const c8 = {
-  x: (svgWidth - 5) / 2,
-  y: svgWidth - radius,
-};
-
-const c9 = {
-  x: svgWidth - radius,
-  y: svgWidth - radius,
-};
-
 const recWidth = 50;
-
-const coordinates = [c1, c2, c3, c4, c5, c6, c7, c8, c9];
 
 interface Coordinate {
   x: number;
@@ -76,10 +34,17 @@ interface Coordinate {
 }
 
 const AnimatedLine = Animated.createAnimatedComponent(Line);
-
+const containerDimension = 3;
 const NewLockScreen = () => {
   const [pattern, setPattern] = useState<Coordinate[]>([]);
+
   const show = useSharedValue(false);
+
+  const {screenCoordinates, mappedIndex} = populateDotsCoordinate(
+    containerDimension,
+    svgWidth,
+    svgWidth,
+  );
 
   const activelineStart = useSharedValue<Coordinate>({x: 0, y: 0});
 
@@ -92,9 +57,9 @@ const NewLockScreen = () => {
           x: e.x,
           y: e.y,
         };
-        const matchedDotIndex = getDotIndex(value, coordinates);
+        const matchedDotIndex = getDotIndex(value, screenCoordinates);
         if (matchedDotIndex) {
-          const matchedDot = coordinates[matchedDotIndex];
+          const matchedDot = screenCoordinates[matchedDotIndex];
           runOnJS(setPattern)([matchedDot]);
         }
         show.value = true;
@@ -105,16 +70,18 @@ const NewLockScreen = () => {
           y: e.y,
         };
 
-        const matchedDotIndex = getDotIndex(value, coordinates);
-        if (matchedDotIndex) {
-          const matchedDot = coordinates[matchedDotIndex];
+        const matchedDotIndex = getDotIndex(value, screenCoordinates);
+
+        if (matchedDotIndex || typeof matchedDotIndex === 'number') {
+          const matchedDot = screenCoordinates[matchedDotIndex];
           const isInPattern = isAlreadyInPattern(matchedDot, pattern);
-          console.log('isInPattern: ', {
-            isInPattern,
-            value,
-            matchedDot,
-            pattern,
-          });
+          if (matchedDotIndex !== null && matchedDot && !isInPattern) {
+            let newPattern = {
+              x: matchedDot.x,
+              y: matchedDot.y,
+            };
+            activelineStart.value = newPattern;
+          }
         }
         activelineEnd.value = value;
       },
@@ -141,26 +108,25 @@ const NewLockScreen = () => {
               stroke={'white'}
               strokeWidth="2"
             />
-            {new Array(9).fill(0).map((_e, i) => (
-              <G key={`g:${i}`}>
-                <Circle
-                  fill="blue"
-                  r={radius - 10}
-                  cx={coordinates[i].x}
-                  cy={coordinates[i].y}
-                />
-                <Rect
-                  onPressIn={() => {
-                    activelineStart.value = coordinates[i];
-                    activelineEnd.value = coordinates[i];
-                  }}
-                  x={coordinates[i].x - recWidth / 2}
-                  y={coordinates[i].y - recWidth / 2}
-                  width={recWidth}
-                  height={recWidth}
-                />
-              </G>
-            ))}
+            {screenCoordinates.map(({x, y}, i) => {
+              return (
+                <G key={`g:${i}`}>
+                  <Circle fill="blue" r={radius - 10} cx={x} cy={y} />
+                  <Rect
+                    onPressIn={() => {
+                      activelineStart.value = screenCoordinates[i];
+                      activelineEnd.value = screenCoordinates[i];
+                    }}
+                    x={x - recWidth / 2}
+                    y={y - recWidth / 2}
+                    width={recWidth}
+                    height={recWidth}
+                    fill="red"
+                    fillOpacity={0.4}
+                  />
+                </G>
+              );
+            })}
           </SvgContainer>
         </Animated.View>
       </PanGestureHandler>
