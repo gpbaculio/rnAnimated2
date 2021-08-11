@@ -38,6 +38,7 @@ export const getIntermediateDotIndexes = (
   focusCoordinate: Coordinate,
   dimension: number,
 ) => {
+  'worklet';
   let intermediateDotIndexes = [];
   let testIndex = [];
 
@@ -99,7 +100,19 @@ export const getIntermediateDotIndexes = (
   return intermediateDotIndexes;
 };
 
-const DEFAULT_HIT_SLOP = 50;
+const DEFAULT_HIT_SLOP = 25;
+
+export const isAlreadyInPattern = (
+  value: Coordinate,
+  pattern: Coordinate[],
+): boolean => {
+  'worklet';
+  return pattern.some(
+    dot =>
+      (dot && dot.x) === (value && value.x) &&
+      (dot && dot.y) === (value && value.y),
+  );
+};
 
 export const getDotIndex = (
   {x, y}: Coordinate,
@@ -107,7 +120,7 @@ export const getDotIndex = (
   hitSlop: number = DEFAULT_HIT_SLOP,
 ) => {
   'worklet';
-  let dotIndex;
+  let dotIndex = null;
   for (let i = 0; i < dots.length; i++) {
     let {x: dotX, y: dotY} = dots[i];
     if (
@@ -128,6 +141,7 @@ export const populateDotsCoordinate = (
   containerWidth: number,
   containerHeight: number,
 ) => {
+  'worklet';
   let mappedIndex = [];
   let screenCoordinates = [];
 

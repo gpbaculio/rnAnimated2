@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Dimensions} from 'react-native';
 import Animated, {
+  runOnJS,
   useAnimatedGestureHandler,
   useAnimatedProps,
   withTiming,
@@ -12,7 +13,12 @@ import {
 import Svg, {Circle, G, Line, Rect} from 'react-native-svg';
 import styled from 'styled-components/native';
 import {useSharedValue} from '../Chrome/Animations';
-import {getDotIndex} from './helpers';
+import {
+  getDotIndex,
+  getIntermediateDotIndexes,
+  isAlreadyInPattern,
+  populateDotsCoordinate,
+} from './helpers';
 
 const {width} = Dimensions.get('window');
 
@@ -20,54 +26,7 @@ const svgWidth = width - 24;
 
 const radius = 20;
 
-const c1 = {
-  x: radius,
-  y: radius,
-};
-
-const c2 = {
-  x: (svgWidth - 5) / 2,
-  y: radius,
-};
-
-const c3 = {
-  x: svgWidth - radius,
-  y: radius,
-};
-
-const c4 = {
-  x: radius,
-  y: (svgWidth - 5) / 2,
-};
-
-const c5 = {
-  x: (svgWidth - 5) / 2,
-  y: (svgWidth - 5) / 2,
-};
-
-const c6 = {
-  x: svgWidth - radius,
-  y: (svgWidth - 5) / 2,
-};
-
-const c7 = {
-  x: radius,
-  y: svgWidth - radius,
-};
-
-const c8 = {
-  x: (svgWidth - 5) / 2,
-  y: svgWidth - radius,
-};
-
-const c9 = {
-  x: svgWidth - radius,
-  y: svgWidth - radius,
-};
-
 const recWidth = 50;
-
-const coordinates = [c1, c2, c3, c4, c5, c6, c7, c8, c9];
 
 interface Coordinate {
   x: number;
@@ -76,8 +35,18 @@ interface Coordinate {
 
 const AnimatedLine = Animated.createAnimatedComponent(Line);
 
+const containerDimension = 3;
+
 const NewLockScreen = () => {
+  const [pattern, setPattern] = useState<Coordinate[]>([]);
+
   const show = useSharedValue(false);
+
+  const {screenCoordinates, mappedIndex} = populateDotsCoordinate(
+    containerDimension,
+    svgWidth,
+    svgWidth,
+  );
 
   const activelineStart = useSharedValue<Coordinate>({x: 0, y: 0});
 
@@ -85,17 +54,64 @@ const NewLockScreen = () => {
 
   const onGestureEvent =
     useAnimatedGestureHandler<PanGestureHandlerGestureEvent>({
-      onStart: () => {
-        show.value = true;
+      onStart: e => {
+        const activeDotIndex = getDotIndex(
+          {
+            x: e.x,
+            y: e.y,
+          },
+          screenCoordinates,
+        );
+        if (activeDotIndex !== null) {
+          show.value = true;
+          let firstDot = mappedIndex[activeDotIndex];
+          runOnJS(setPattern)([firstDot]);
+        }
       },
       onActive: e => {
         const value = {
           x: e.x,
           y: e.y,
         };
+        let matchedDotIndex = getDotIndex(value, screenCoordinates);
+        let matchedDot =
+          matchedDotIndex !== null && mappedIndex[matchedDotIndex];
+        if (
+          matchedDotIndex !== null &&
+          matchedDot &&
+          !isAlreadyInPattern(matchedDot, pattern)
+        ) {
+          const activeCoordinate = screenCoordinates[matchedDotIndex];
+          let newPattern = {
+            x: matchedDot.x,
+            y: matchedDot.y,
+          };
 
-        const matchedDotIndex = getDotIndex(value, coordinates);
-
+          let intermediateDotIndexes: number[] = [];
+          if (pattern.length > 0) {
+            intermediateDotIndexes = getIntermediateDotIndexes(
+              pattern[pattern.length - 1],
+              newPattern,
+              3,
+            );
+          }
+          let patterns: Coordinate[] = [];
+          let filteredIntermediateDotIndexes = intermediateDotIndexes.filter(
+            index => {
+              'worklet';
+              return !isAlreadyInPattern(mappedIndex[index], pattern);
+            },
+          );
+          filteredIntermediateDotIndexes.forEach(index => {
+            'worklet';
+            const mappedDot = mappedIndex[index];
+            if (mappedDot && mappedDot.x && mappedDot.y) {
+              patterns.push({x: mappedDot.x, y: mappedDot.y});
+            }
+          });
+          runOnJS(setPattern)([...pattern, ...patterns, newPattern]);
+          activelineStart.value = activeCoordinate;
+        }
         activelineEnd.value = value;
       },
       onEnd: () => {
@@ -121,26 +137,58 @@ const NewLockScreen = () => {
               stroke={'white'}
               strokeWidth="2"
             />
-            {new Array(9).fill(0).map((_e, i) => (
-              <G key={i}>
+            {screenCoordinates.map(({x, y}, i) => (
+              <G key={`g:${i}`}>
+                <Circle fill="blue" r={radius - 10} cx={x} cy={y} />
                 <Rect
                   onPressIn={() => {
-                    activelineStart.value = coordinates[i];
-                    activelineEnd.value = coordinates[i];
+                    activelineStart.value = screenCoordinates[i];
+                    activelineEnd.value = screenCoordinates[i];
                   }}
-                  x={coordinates[i].x - recWidth / 2}
-                  y={coordinates[i].y - recWidth / 2}
+                  x={x - recWidth / 2}
+                  y={y - recWidth / 2}
                   width={recWidth}
                   height={recWidth}
-                />
-                <Circle
-                  fill="blue"
-                  r={radius - 10}
-                  cx={coordinates[i].x}
-                  cy={coordinates[i].y}
+                  fill="red"
+                  fillOpacity={0.4}
                 />
               </G>
             ))}
+            {pattern.map((startCoordinate, index) => {
+              if (index === pattern.length - 1) return;
+
+              const startIndex = mappedIndex.findIndex(
+                dot =>
+                  (dot && dot.x) === (startCoordinate && startCoordinate.x) &&
+                  (dot && dot.y) === (startCoordinate && startCoordinate.y),
+              );
+
+              const endCoordinate = pattern[index + 1];
+
+              const endIndex = mappedIndex.findIndex(
+                dot =>
+                  (dot && dot.x) === (endCoordinate && endCoordinate.x) &&
+                  (dot && dot.y) === (endCoordinate && endCoordinate.y),
+              );
+
+              if (startIndex < 0 || endIndex < 0) return;
+
+              const actualStartDot = screenCoordinates[startIndex];
+
+              const actualEndDot = screenCoordinates[endIndex];
+
+              return (
+                <Line
+                  key={`l:${index}`}
+                  x1={actualStartDot.x}
+                  y1={actualStartDot.y}
+                  x2={actualEndDot.x}
+                  y2={actualEndDot.y}
+                  stroke={'black'}
+                  strokeWidth="2"
+                />
+              );
+            })}
           </SvgContainer>
         </Animated.View>
       </PanGestureHandler>
