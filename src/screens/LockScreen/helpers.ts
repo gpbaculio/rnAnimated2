@@ -103,11 +103,15 @@ export const getIntermediateDotIndexes = (
 const DEFAULT_HIT_SLOP = 25;
 
 export const isAlreadyInPattern = (
-  {x, y}: Coordinate,
+  value: Coordinate,
   pattern: Coordinate[],
 ): boolean => {
   'worklet';
-  return pattern.some(dot => dot.x === x && dot.y === y);
+  return pattern.some(
+    dot =>
+      (dot && dot.x) === (value && value.x) &&
+      (dot && dot.y) === (value && value.y),
+  );
 };
 
 export const getDotIndex = (
