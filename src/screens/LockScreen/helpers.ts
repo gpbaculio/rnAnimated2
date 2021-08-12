@@ -1,3 +1,5 @@
+import {svgWidth} from './LockScreen';
+
 export const getDayName = (index: number) => {
   const dayName = [
     'Sunday',
@@ -33,16 +35,109 @@ export const getMonthName = (index: number) => {
 
 type Coordinate = {x: number; y: number};
 
+export const getHorizontalIntermediate = (
+  anchorCoordinate: Coordinate, // start
+  focusCoordinate: Coordinate, // current focus
+  dimension: number,
+  screenCoordinates: Coordinate[],
+  hitSlop = 25,
+) => {
+  'worklet';
+  if (
+    focusCoordinate.y + hitSlop >= anchorCoordinate.y &&
+    focusCoordinate.y - hitSlop <= anchorCoordinate.y
+  ) {
+    const xCoords = screenCoordinates.filter(c => {
+      if (focusCoordinate.x > anchorCoordinate.x) {
+        return (
+          focusCoordinate.x > c.x &&
+          c.x < focusCoordinate.x &&
+          c.y + hitSlop >= anchorCoordinate.y &&
+          c.y - hitSlop <= anchorCoordinate.y &&
+          c.x !== anchorCoordinate.x
+        );
+      } else if (anchorCoordinate.x > focusCoordinate.x) {
+        return (
+          focusCoordinate.x < c.x &&
+          c.x > focusCoordinate.x &&
+          c.y + hitSlop >= anchorCoordinate.y &&
+          c.y - hitSlop <= anchorCoordinate.y &&
+          c.x !== anchorCoordinate.x
+        );
+      }
+    });
+  } else if (
+    focusCoordinate.x + hitSlop >= anchorCoordinate.x &&
+    focusCoordinate.x - hitSlop <= anchorCoordinate.x
+  ) {
+    const yCoords = screenCoordinates.filter(c => {
+      if (focusCoordinate.y > anchorCoordinate.y) {
+        return (
+          focusCoordinate.x > c.y &&
+          c.y < focusCoordinate.y &&
+          c.x + hitSlop >= anchorCoordinate.x &&
+          c.x - hitSlop <= anchorCoordinate.x &&
+          c.y !== anchorCoordinate.y
+        );
+      } else if (focusCoordinate.y < anchorCoordinate.y) {
+        return (
+          focusCoordinate.y < c.y &&
+          c.y > focusCoordinate.y &&
+          c.x + hitSlop >= anchorCoordinate.x &&
+          c.x - hitSlop <= anchorCoordinate.x &&
+          c.y !== anchorCoordinate.y
+        );
+      }
+    });
+  } else {
+    let dotIndex = [];
+    function closest(num: number, arr: number[]) {
+      var curr = arr[0];
+      var diff = Math.abs(num - curr);
+      for (var val = 0; val < arr.length; val++) {
+        var newdiff = Math.abs(num - arr[val]);
+        if (newdiff < diff) {
+          diff = newdiff;
+          curr = arr[val];
+        }
+      }
+      return curr;
+    }
+    const maxWidth = Math.max.apply(
+      Math,
+      screenCoordinates.map(c => c.x),
+    );
+    const coordsSquare = svgWidth - maxWidth;
+    const sqrWidth = maxWidth - coordsSquare;
+    const sd = (sqrWidth * Math.sqrt(2)) / 3;
+    for (let i = 0; i < screenCoordinates.length; i++) {
+      const f = screenCoordinates[i];
+      // const ff = screenCoordinates[j];
+      // console.log('f: ', f);
+      // console.log('ff: ', ff);
+      // if (
+      //   dotX + hitSlop > focusCoordinate.x &&
+      //   dotX - hitSlop < focusCoordinate.x &&
+      //   dotY + hitSlop > focusCoordinate.y &&
+      //   dotY - hitSlop < focusCoordinate.y
+      // ) {
+      //   dotIndex.push(i);
+      // }
+    }
+    // console.log('dotIndex: ', dotIndex);
+  }
+
+  return [];
+};
+
 export const getIntermediateDotIndexes = (
   anchorCoordinate: Coordinate,
   focusCoordinate: Coordinate,
   dimension: number,
+  hitSlop = 25,
 ) => {
   'worklet';
   let intermediateDotIndexes = [];
-  let testIndex = [];
-
-  // check horizontal
   if (focusCoordinate.y === anchorCoordinate.y) {
     let row = focusCoordinate.y;
     for (
@@ -122,13 +217,14 @@ export const getDotIndex = (
   'worklet';
   let dotIndex = null;
   for (let i = 0; i < dots.length; i++) {
-    let {x: dotX, y: dotY} = dots[i];
+    const {x: dotX, y: dotY} = dots[i];
     if (
       dotX + hitSlop >= x &&
       dotX - hitSlop <= x &&
       dotY + hitSlop >= y &&
       dotY - hitSlop <= y
     ) {
+      // console.log('{x, y}', {x, y});
       dotIndex = i;
       break;
     }
