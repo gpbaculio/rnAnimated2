@@ -133,7 +133,6 @@ const NewLockScreen = () => {
           filteredIntermediateDotIndexes.forEach(index => {
             'worklet';
             const mappedDot = mappedIndex[index];
-            console.log('mappedDot: ', mappedDot);
             if (
               mappedDot &&
               typeof mappedDot.x === 'number' &&
@@ -157,7 +156,7 @@ const NewLockScreen = () => {
     y1: activelineStart.value.y,
     x2: activelineEnd.value.x,
     y2: activelineEnd.value.y,
-    opacity: withTiming(show.value ? 1 : 0),
+    opacity: show.value ? 1 : 0,
   }));
 
   return (
