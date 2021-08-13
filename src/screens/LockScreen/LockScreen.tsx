@@ -20,6 +20,7 @@ import {
   isAlreadyInPattern,
   populateDotsCoordinate,
 } from './helpers';
+import NewLine from './NewLine';
 
 const {width} = Dimensions.get('window');
 
@@ -34,7 +35,7 @@ interface Coordinate {
   y: number;
 }
 
-const AnimatedLine = Animated.createAnimatedComponent(Line);
+export const AnimatedLine = Animated.createAnimatedComponent(Line);
 
 const containerDimension = 3;
 
@@ -58,6 +59,10 @@ const NewLockScreen = () => {
   //   {x: 1, y: 2},
   //   {x: 2, y: 2}
   // ];
+  const focusX = useSharedValue(0);
+  const focusY = useSharedValue(0);
+  const startX = useSharedValue(0);
+  const startY = useSharedValue(0);
 
   const activelineStart = useSharedValue<Coordinate>({x: 0, y: 0});
 
@@ -80,6 +85,8 @@ const NewLockScreen = () => {
         }
       },
       onActive: e => {
+        focusX.value = e.x;
+        focusY.value = e.y;
         const value = {
           x: e.x,
           y: e.y,
@@ -143,6 +150,12 @@ const NewLockScreen = () => {
           });
           runOnJS(setPattern)([...pattern, ...patterns, newPattern]);
           activelineStart.value = activeCoordinate;
+
+          startX.value = focusX.value;
+          startX.value = withTiming(activeCoordinate.x);
+
+          startY.value = focusY.value;
+          startY.value = withTiming(activeCoordinate.y);
         }
         activelineEnd.value = value;
       },
@@ -151,13 +164,15 @@ const NewLockScreen = () => {
       },
     });
 
-  const animatedProps = useAnimatedProps(() => ({
-    x1: activelineStart.value.x,
-    y1: activelineStart.value.y,
-    x2: activelineEnd.value.x,
-    y2: activelineEnd.value.y,
-    opacity: show.value ? 1 : 0,
-  }));
+  const animatedProps = useAnimatedProps(() => {
+    return {
+      x1: startX.value,
+      y1: startY.value,
+      x2: activelineEnd.value.x,
+      y2: activelineEnd.value.y,
+      opacity: show.value ? 1 : 0,
+    };
+  });
 
   return (
     <Container>
@@ -169,6 +184,8 @@ const NewLockScreen = () => {
                 <Circle fill="blue" r={radius - 10} cx={x} cy={y} />
                 <Rect
                   onPressIn={() => {
+                    startX.value = screenCoordinates[i].x;
+                    startY.value = screenCoordinates[i].y;
                     activelineStart.value = screenCoordinates[i];
                     activelineEnd.value = screenCoordinates[i];
                   }}
@@ -205,20 +222,18 @@ const NewLockScreen = () => {
               const actualEndDot = screenCoordinates[endIndex];
 
               return (
-                <Line
-                  key={`l:${index}`}
-                  x1={actualStartDot.x}
-                  y1={actualStartDot.y}
-                  x2={actualEndDot.x}
-                  y2={actualEndDot.y}
-                  stroke="white"
-                  strokeWidth="2"
+                <NewLine
+                  key={`n:${index}`}
+                  focusX={focusX}
+                  focusY={focusY}
+                  start={actualStartDot}
+                  end={actualEndDot}
                 />
               );
             })}
             <AnimatedLine
               animatedProps={animatedProps}
-              stroke="white"
+              stroke="red"
               strokeWidth="2"
             />
           </SvgContainer>
