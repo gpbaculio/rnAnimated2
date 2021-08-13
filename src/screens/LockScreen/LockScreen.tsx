@@ -15,14 +15,16 @@ import styled from 'styled-components/native';
 import {useSharedValue} from '../Chrome/Animations';
 import {
   getDotIndex,
+  getHorizontalIntermediate,
   getIntermediateDotIndexes,
   isAlreadyInPattern,
   populateDotsCoordinate,
 } from './helpers';
+import NewLine from './NewLine';
 
 const {width} = Dimensions.get('window');
 
-const svgWidth = width - 24;
+export const svgWidth = width - 24;
 
 const radius = 20;
 
@@ -33,7 +35,7 @@ interface Coordinate {
   y: number;
 }
 
-const AnimatedLine = Animated.createAnimatedComponent(Line);
+export const AnimatedLine = Animated.createAnimatedComponent(Line);
 
 const containerDimension = 3;
 
@@ -47,6 +49,20 @@ const NewLockScreen = () => {
     svgWidth,
     svgWidth,
   );
+  //petterin is
+  //const CORRECT_UNLOCK_PATTERN = [
+  //   {x: 0, y: 0},
+  //   {x: 1, y: 0},
+  //   {x: 2, y: 0},
+  //   {x: 1, y: 1},
+  //   {x: 0, y: 2},
+  //   {x: 1, y: 2},
+  //   {x: 2, y: 2}
+  // ];
+  const focusX = useSharedValue(0);
+  const focusY = useSharedValue(0);
+  const startX = useSharedValue(0);
+  const startY = useSharedValue(0);
 
   const activelineStart = useSharedValue<Coordinate>({x: 0, y: 0});
 
@@ -69,20 +85,39 @@ const NewLockScreen = () => {
         }
       },
       onActive: e => {
+        focusX.value = e.x;
+        focusY.value = e.y;
         const value = {
           x: e.x,
           y: e.y,
         };
+
+        if (pattern.length > 0) {
+          const p = pattern[pattern.length - 1];
+          const index = mappedIndex.findIndex(
+            dot =>
+              (dot && dot.x) === (p && p.x) && (dot && dot.y) === (p && p.y),
+          );
+          const screenC = screenCoordinates[index];
+          const test = getHorizontalIntermediate(
+            screenC,
+            {x: e.x, y: e.y},
+            3,
+            screenCoordinates,
+          );
+        }
         let matchedDotIndex = getDotIndex(value, screenCoordinates);
         let matchedDot =
           matchedDotIndex !== null && mappedIndex[matchedDotIndex];
+
         if (
           matchedDotIndex !== null &&
           matchedDot &&
           !isAlreadyInPattern(matchedDot, pattern)
         ) {
+          // console.log('matchedDotIndex: ', matchedDotIndex);
           const activeCoordinate = screenCoordinates[matchedDotIndex];
-          let newPattern = {
+          const newPattern = {
             x: matchedDot.x,
             y: matchedDot.y,
           };
@@ -95,8 +130,8 @@ const NewLockScreen = () => {
               3,
             );
           }
-          let patterns: Coordinate[] = [];
-          let filteredIntermediateDotIndexes = intermediateDotIndexes.filter(
+          const patterns: Coordinate[] = [];
+          const filteredIntermediateDotIndexes = intermediateDotIndexes.filter(
             index => {
               'worklet';
               return !isAlreadyInPattern(mappedIndex[index], pattern);
@@ -105,12 +140,22 @@ const NewLockScreen = () => {
           filteredIntermediateDotIndexes.forEach(index => {
             'worklet';
             const mappedDot = mappedIndex[index];
-            if (mappedDot && mappedDot.x && mappedDot.y) {
+            if (
+              mappedDot &&
+              typeof mappedDot.x === 'number' &&
+              typeof mappedDot.y === 'number'
+            ) {
               patterns.push({x: mappedDot.x, y: mappedDot.y});
             }
           });
           runOnJS(setPattern)([...pattern, ...patterns, newPattern]);
           activelineStart.value = activeCoordinate;
+
+          startX.value = focusX.value;
+          startX.value = withTiming(activeCoordinate.x);
+
+          startY.value = focusY.value;
+          startY.value = withTiming(activeCoordinate.y);
         }
         activelineEnd.value = value;
       },
@@ -119,29 +164,28 @@ const NewLockScreen = () => {
       },
     });
 
-  const animatedProps = useAnimatedProps(() => ({
-    x1: activelineStart.value.x,
-    y1: activelineStart.value.y,
-    x2: activelineEnd.value.x,
-    y2: activelineEnd.value.y,
-    opacity: withTiming(show.value ? 1 : 0),
-  }));
+  const animatedProps = useAnimatedProps(() => {
+    return {
+      x1: startX.value,
+      y1: startY.value,
+      x2: activelineEnd.value.x,
+      y2: activelineEnd.value.y,
+      opacity: show.value ? 1 : 0,
+    };
+  });
 
   return (
     <Container>
       <PanGestureHandler onGestureEvent={onGestureEvent}>
         <Animated.View>
           <SvgContainer width={svgWidth} height={svgWidth}>
-            <AnimatedLine
-              animatedProps={animatedProps}
-              stroke={'white'}
-              strokeWidth="2"
-            />
             {screenCoordinates.map(({x, y}, i) => (
               <G key={`g:${i}`}>
                 <Circle fill="blue" r={radius - 10} cx={x} cy={y} />
                 <Rect
                   onPressIn={() => {
+                    startX.value = screenCoordinates[i].x;
+                    startY.value = screenCoordinates[i].y;
                     activelineStart.value = screenCoordinates[i];
                     activelineEnd.value = screenCoordinates[i];
                   }}
@@ -178,17 +222,20 @@ const NewLockScreen = () => {
               const actualEndDot = screenCoordinates[endIndex];
 
               return (
-                <Line
-                  key={`l:${index}`}
-                  x1={actualStartDot.x}
-                  y1={actualStartDot.y}
-                  x2={actualEndDot.x}
-                  y2={actualEndDot.y}
-                  stroke={'black'}
-                  strokeWidth="2"
+                <NewLine
+                  key={`n:${index}`}
+                  focusX={focusX}
+                  focusY={focusY}
+                  start={actualStartDot}
+                  end={actualEndDot}
                 />
               );
             })}
+            <AnimatedLine
+              animatedProps={animatedProps}
+              stroke="red"
+              strokeWidth="2"
+            />
           </SvgContainer>
         </Animated.View>
       </PanGestureHandler>
