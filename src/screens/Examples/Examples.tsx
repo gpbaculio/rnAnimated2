@@ -38,6 +38,10 @@ export const examples: {
     title: 'RotaryLogin',
   },
   {
+    screen: 'Flip3d',
+    title: 'Flip3d',
+  },
+  {
     screen: 'WheelOfFortune',
     title: 'WheelOfFortune',
   },

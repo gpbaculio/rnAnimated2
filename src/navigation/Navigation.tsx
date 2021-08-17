@@ -40,6 +40,7 @@ import {
   LockScreen,
   RotaryLogin,
   WheelOfFortune,
+  Flip3d,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -80,6 +81,7 @@ export type AppStackNavigatorType = {
   LockScreen: undefined;
   RotaryLogin: undefined;
   WheelOfFortune: undefined;
+  Flip3d: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -100,6 +102,13 @@ const AppNavigator = () => (
         component={Examples}
         options={{
           title: 'Learning Reanimated 2',
+        }}
+      />
+      <Stack.Screen
+        name="Flip3d"
+        component={Flip3d}
+        options={{
+          title: 'Flip3d',
         }}
       />
       <Stack.Screen
