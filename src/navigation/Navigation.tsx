@@ -39,6 +39,7 @@ import {
   D3Chart,
   LockScreen,
   RotaryLogin,
+  WheelOfFortune,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -78,6 +79,7 @@ export type AppStackNavigatorType = {
   D3Chart: undefined;
   LockScreen: undefined;
   RotaryLogin: undefined;
+  WheelOfFortune: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -98,6 +100,13 @@ const AppNavigator = () => (
         component={Examples}
         options={{
           title: 'Learning Reanimated 2',
+        }}
+      />
+      <Stack.Screen
+        name="WheelOfFortune"
+        component={WheelOfFortune}
+        options={{
+          title: 'WheelOfFortune',
         }}
       />
       <Stack.Screen
