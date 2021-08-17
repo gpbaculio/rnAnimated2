@@ -38,6 +38,7 @@ import {
   FbPostReaction,
   D3Chart,
   LockScreen,
+  RotaryLogin,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -76,6 +77,7 @@ export type AppStackNavigatorType = {
   PlayingAudio: undefined;
   D3Chart: undefined;
   LockScreen: undefined;
+  RotaryLogin: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -96,6 +98,13 @@ const AppNavigator = () => (
         component={Examples}
         options={{
           title: 'Learning Reanimated 2',
+        }}
+      />
+      <Stack.Screen
+        name="RotaryLogin"
+        component={RotaryLogin}
+        options={{
+          title: 'RotaryLogin',
         }}
       />
       <Stack.Screen
