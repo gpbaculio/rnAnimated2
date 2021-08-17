@@ -34,6 +34,10 @@ export const examples: {
   icon?: ImageSourcePropType;
 }[] = [
   {
+    screen: 'RotaryLogin',
+    title: 'RotaryLogin',
+  },
+  {
     screen: 'LockScreen',
     title: 'LockScreen',
   },

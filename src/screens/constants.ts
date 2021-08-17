@@ -10,6 +10,7 @@ import parseSVG from 'parse-svg-path';
 import absSVG from 'abs-svg-path';
 import normalizeSVG from 'normalize-svg-path';
 import {useRef} from 'react';
+import {TransformsStyle} from 'react-native';
 
 type SVGCloseCommand = ['Z'];
 type SVGMoveCommand = ['M', number, number];
@@ -1734,4 +1735,35 @@ export const withPause = (
       callback: nextAnimation.callback,
     };
   });
+};
+
+type RNTransform = Exclude<TransformsStyle['transform'], undefined>;
+
+export const transformOrigin = (
+  {x, y}: Vector,
+  transformations: RNTransform,
+): RNTransform => {
+  'worklet';
+  return [
+    {translateX: x},
+    {translateY: y},
+    ...transformations,
+    {translateX: -x},
+    {translateY: -y},
+  ];
+};
+
+export const {PI} = Math;
+export const TAU = PI * 2;
+
+/**
+ * @summary Normalize any radian value between 0 and 2PI.
+ * For example, if the value is -PI/2, it will be comverted to 1.5PI.
+ * Or 4PI will be converted to 0.
+ * @worklet
+ */
+export const normalizeRad = (value: number) => {
+  'worklet';
+  const rest = value % TAU;
+  return rest > 0 ? rest : TAU + rest;
 };
