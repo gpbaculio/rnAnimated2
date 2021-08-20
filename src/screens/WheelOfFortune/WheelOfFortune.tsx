@@ -1,27 +1,15 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {View, Dimensions} from 'react-native';
+import React, {useState} from 'react';
+import {Dimensions} from 'react-native';
 import Svg, {Path, G, Text as RNSVGText, TSpan} from 'react-native-svg';
 import * as d3Shape from 'd3-shape';
-import {
-  GestureEvent,
-  GestureEventPayload,
-  HandlerStateChangeEvent,
-  PanGestureHandler,
-  PanGestureHandlerEventPayload,
-  State,
-} from 'react-native-gesture-handler';
+import {PanGestureHandler} from 'react-native-gesture-handler';
 import Animated, {
-  Extrapolate,
   interpolate,
   runOnJS,
-  runOnUI,
   useAnimatedGestureHandler,
   useAnimatedStyle,
   withDecay,
   withTiming,
-  modulo,
-  divide,
-  sub,
 } from 'react-native-reanimated';
 import color from 'randomcolor';
 import {StyleSheet} from 'react-native';
