@@ -85,7 +85,7 @@ const getWinnerIndex = (a: number) => {
 const WheelOfFortune = () => {
   const angle = useSharedValue(0);
   const [enabled, setEnabled] = useState(true);
-  const pinRotate = useSharedValue(0);
+  const isVelocityDirectionLeft = useSharedValue(true);
   const style3 = useAnimatedStyle(() => {
     const rotate = interpolate(
       Math.round(
@@ -95,7 +95,7 @@ const WheelOfFortune = () => {
         ),
       ),
       [-1, 0, 1],
-      [0, 35, 0],
+      [0, isVelocityDirectionLeft.value ? 35 : -35, 0],
     );
     return {
       transform: [
@@ -136,6 +136,8 @@ const WheelOfFortune = () => {
       onActive: ({velocityY}) => {
         if (!enabled) return;
         runOnJS(setEnabled)(false);
+        console.log('velocityY: ', velocityY);
+        isVelocityDirectionLeft.value = velocityY < 0 ? true : false;
         angle.value = withDecay(
           {velocity: velocityY * 2.5, deceleration: 0.999},
           isFinished => {
@@ -145,12 +147,7 @@ const WheelOfFortune = () => {
               const winnerIndex = getWinnerIndex(angle.value);
               const winner = paths[winnerIndex].value;
               console.log('winner = ', winner);
-              const s1 = angle.value - angleOffset;
-              const m1 = Math.abs(s1 % oneTurn);
-              const d1 = m1 / angleBySegment;
-              const m2 = Math.abs(d1 % 1);
 
-              pinRotate.value = interpolate(m2, [-1, 0, 1], [0, 35, 0]);
               runOnJS(setEnabled)(true);
             }
           },
