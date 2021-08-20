@@ -1,31 +1,19 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {View, Dimensions} from 'react-native';
+import React, {useState} from 'react';
+import {Dimensions} from 'react-native';
 import Svg, {Path, G, Text as RNSVGText, TSpan} from 'react-native-svg';
 import * as d3Shape from 'd3-shape';
-import {
-  GestureEvent,
-  GestureEventPayload,
-  HandlerStateChangeEvent,
-  PanGestureHandler,
-  PanGestureHandlerEventPayload,
-  State,
-} from 'react-native-gesture-handler';
+import {PanGestureHandler} from 'react-native-gesture-handler';
 import Animated, {
-  Extrapolate,
   interpolate,
   runOnJS,
-  runOnUI,
   useAnimatedGestureHandler,
   useAnimatedStyle,
   withDecay,
   withTiming,
-  modulo,
-  divide,
-  sub,
+  useSharedValue,
 } from 'react-native-reanimated';
 import color from 'randomcolor';
 import {StyleSheet} from 'react-native';
-import {useSharedValue} from '../Chrome/Animations';
 const {width} = Dimensions.get('screen');
 const oneTurn = 360;
 const numberOfSegments = 10;
@@ -85,7 +73,7 @@ const getWinnerIndex = (a: number) => {
 const WheelOfFortune = () => {
   const angle = useSharedValue(0);
   const [enabled, setEnabled] = useState(true);
-  const pinRotate = useSharedValue(0);
+  const isVelocityDirectionLeft = useSharedValue(true);
   const style3 = useAnimatedStyle(() => {
     const rotate = interpolate(
       Math.round(
@@ -95,7 +83,7 @@ const WheelOfFortune = () => {
         ),
       ),
       [-1, 0, 1],
-      [0, 35, 0],
+      [0, isVelocityDirectionLeft.value ? 35 : -35, 0],
     );
     return {
       transform: [
@@ -136,6 +124,8 @@ const WheelOfFortune = () => {
       onActive: ({velocityY}) => {
         if (!enabled) return;
         runOnJS(setEnabled)(false);
+        console.log('velocityY: ', velocityY);
+        isVelocityDirectionLeft.value = velocityY < 0 ? true : false;
         angle.value = withDecay(
           {velocity: velocityY * 2.5, deceleration: 0.999},
           isFinished => {
@@ -145,12 +135,7 @@ const WheelOfFortune = () => {
               const winnerIndex = getWinnerIndex(angle.value);
               const winner = paths[winnerIndex].value;
               console.log('winner = ', winner);
-              const s1 = angle.value - angleOffset;
-              const m1 = Math.abs(s1 % oneTurn);
-              const d1 = m1 / angleBySegment;
-              const m2 = Math.abs(d1 % 1);
 
-              pinRotate.value = interpolate(m2, [-1, 0, 1], [0, 35, 0]);
               runOnJS(setEnabled)(true);
             }
           },
