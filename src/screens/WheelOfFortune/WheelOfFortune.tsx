@@ -10,10 +10,10 @@ import Animated, {
   useAnimatedStyle,
   withDecay,
   withTiming,
+  useSharedValue,
 } from 'react-native-reanimated';
 import color from 'randomcolor';
 import {StyleSheet} from 'react-native';
-import {useSharedValue} from '../Chrome/Animations';
 const {width} = Dimensions.get('screen');
 const oneTurn = 360;
 const numberOfSegments = 10;
