@@ -4,9 +4,10 @@ import styled from 'styled-components/native';
 import * as d3 from 'd3';
 import {PieArcDatum} from 'd3';
 import {Svg, G, Path, Text as SVGText} from 'react-native-svg';
-
+import BarChart from './BarChart';
 import Counties from './Counties';
 import Globe from './Globe';
+import {useState} from 'react';
 
 const width = 300;
 const height = 300;
@@ -205,8 +206,12 @@ const D3Chart = () => {
   const SVGWidth = 300;
   const graphHeight = SVGHeight - 2 * GRAPH_MARGIN;
   const graphWidth = SVGWidth - 2 * GRAPH_MARGIN;
+  const [enableScroll, setEnableScroll] = useState(true);
+  const handleScroll = (b: boolean) => {
+    setEnableScroll(b);
+  };
   return (
-    <Container>
+    <Container scrollEnabled={enableScroll}>
       <Svg fill="#f5f5f5" width={graphWidth} height={graphHeight}>
         <G x={width / 2} y={height / 2}>
           {sectionAngles.map((section, index) => (
@@ -295,7 +300,8 @@ const D3Chart = () => {
           })}
         </G>
       </Svg>
-      <Counties />
+      <BarChart handleScroll={handleScroll} />
+      <Counties handleScroll={handleScroll} />
       <Globe />
     </Container>
   );

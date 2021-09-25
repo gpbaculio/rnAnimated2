@@ -22,21 +22,7 @@ const Counties = ({handleScroll}: CountiesProps) => {
   const handlePinch = Animated.event([{nativeEvent: {scale}}], {
     useNativeDriver: true,
   });
-  var defaultScale = d3.geoAlbersUsa();
-  var projection = d3.geoAlbersUsa().translate([480, 300]).scale(1);
-  // projection = geoAlbersUsaPr().scale(1300).translate([487.5, 305])
-  function scaleG(scaleFactor: number, width: number, height: number) {
-    return d3.geoTransform({
-      point: function (x, y) {
-        this.stream.point(
-          (x - width / 2) * scaleFactor + width / 2,
-          (y - height / 2) * scaleFactor + height / 2,
-        );
-      },
-    });
-  }
-  console.log('width: ', width);
-  const path = d3.geoPath().projection(scaleG(0.37, width / 4, width / 2));
+  const path = d3.geoPath();
 
   const mapData = topojson.feature(
     us as unknown as Topology,
@@ -88,32 +74,14 @@ const Counties = ({handleScroll}: CountiesProps) => {
       <View style={styles.zoomWrapper}>
         <ReactNativeZoomableView
           zoomEnabled={true}
-          maxZoom={4}
+          maxZoom={1.5}
           minZoom={1}
           zoomStep={0.25}
           initialZoom={1}
           bindToBorders={true}
-          style={styles.zoomableView}
-          onZoomBefore={() => {
-            handleScroll(false);
-          }}
-          onShiftingEnd={(event: any, gestureState: any, e: any) => {
-            console.log('Event: ', event);
-            console.log('GestureState: ', gestureState);
-            console.log('ZoomableEventObject: ', e);
-          }}
-          onZoomEnd={(event: any, gestureState: any, e: any) => {
-            console.log('Event: ', event);
-            console.log('GestureState: ', gestureState);
-            console.log('ZoomableEventObject: ', e);
-            if (e.zoomLevel !== 1) {
-              handleScroll(false);
-            } else {
-              handleScroll(true);
-            }
-          }}>
+          style={styles.zoomableView}>
           <Svg width={width} height={width}>
-            <G scale={1}>
+            <G scale={0.385} translateX={18} translateY={(width * 0.33) / 2}>
               <Path d={path(mapData) as string} stroke="blue" fill="green" />
               <Path
                 d={path(mapDataBorders) as string}
@@ -126,7 +94,7 @@ const Counties = ({handleScroll}: CountiesProps) => {
                     key={`circle:${index}`}
                     r={radius(d.value)}
                     transform={`translate(${d.position})`}
-                    // fillOpacity={0.4}
+                    fillOpacity={0.4}
                     stroke={'white'}
                   />
                 );
