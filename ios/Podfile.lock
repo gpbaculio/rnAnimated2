@@ -2,12 +2,15 @@ PODS:
   - boost-for-react-native (1.63.0)
   - BVLinearGradient (2.5.6):
     - React
+  - Charts (3.3.0):
+    - Charts/Core (= 3.3.0)
+  - Charts/Core (3.3.0)
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
   - EXAV (9.2.3):
     - ExpoModulesCore
     - UMCore
-  - EXConstants (11.0.1):
+  - EXConstants (11.0.2):
     - ExpoModulesCore
     - UMCore
   - EXFileSystem (11.1.3):
@@ -34,7 +37,7 @@ PODS:
   - ExpoModulesCore/Interfaces (0.2.0):
     - ExpoModulesCore/Core
     - UMCore
-  - EXSplashScreen (0.11.2):
+  - EXSplashScreen (0.11.4):
     - React-Core
     - UMCore
   - FBLazyVector (0.64.1)
@@ -309,11 +312,11 @@ PODS:
     - React-jsi (= 0.64.1)
     - React-perflogger (= 0.64.1)
   - React-jsinspector (0.64.1)
-  - react-native-safe-area-context (3.2.0):
+  - react-native-safe-area-context (3.3.2):
     - React-Core
   - react-native-slider (3.0.3):
     - React
-  - react-native-webview (11.6.5):
+  - react-native-webview (11.13.0):
     - React-Core
   - React-perflogger (0.64.1)
   - React-RCTActionSheet (0.64.1):
@@ -381,15 +384,19 @@ PODS:
     - React-perflogger (= 0.64.1)
   - ReactNativeART (1.2.0):
     - React
+  - RNCharts (0.5.7):
+    - Charts (= 3.3.0)
+    - React
+    - SwiftyJSON (= 5.0)
   - RNCMaskedView (0.1.11):
     - React
-  - RNFastImage (8.3.7):
+  - RNFastImage (8.5.8):
     - React-Core
-    - SDWebImage (~> 5.8)
-    - SDWebImageWebPCoder (~> 0.6.1)
+    - SDWebImage (~> 5.11.1)
+    - SDWebImageWebPCoder (~> 0.8.4)
   - RNGestureHandler (1.10.3):
     - React-Core
-  - RNReanimated (2.2.0):
+  - RNReanimated (2.2.2):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -418,16 +425,16 @@ PODS:
     - React-RCTVibration
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.4.0):
+  - RNScreens (3.7.2):
     - React-Core
     - React-RCTImage
   - RNSharedElement (0.7.0):
     - React
-  - RNSound (0.11.0):
-    - React
-    - RNSound/Core (= 0.11.0)
-  - RNSound/Core (0.11.0):
-    - React
+  - RNSound (0.11.1):
+    - React-Core
+    - RNSound/Core (= 0.11.1)
+  - RNSound/Core (0.11.1):
+    - React-Core
   - RNSVG (12.1.1):
     - React
   - RNVectorIcons (8.1.0):
@@ -435,12 +442,13 @@ PODS:
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
   - SDWebImage/Core (5.11.1)
-  - SDWebImageWebPCoder (0.6.1):
+  - SDWebImageWebPCoder (0.8.4):
     - libwebp (~> 1.0)
-    - SDWebImage/Core (~> 5.7)
+    - SDWebImage/Core (~> 5.10)
+  - SwiftyJSON (5.0.0)
   - UMAppLoader (2.2.0)
-  - UMCore (7.1.1)
-  - UMReactNativeAdapter (6.3.5):
+  - UMCore (7.1.2)
+  - UMReactNativeAdapter (6.3.8):
     - ExpoModulesCore
     - React-Core
     - UMCore
@@ -454,7 +462,7 @@ DEPENDENCIES:
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXAV (from `../node_modules/expo-av/ios`)
-  - EXConstants (from `../node_modules/expo-constants/ios`)
+  - EXConstants (from `../node_modules/react-native-unimodules/node_modules/expo-constants/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXGL (from `../node_modules/expo-gl/ios`)
   - EXGL_CPP (from `../node_modules/expo-gl-cpp/cpp`)
@@ -514,6 +522,7 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "ReactNativeART (from `../node_modules/@react-native-community/art`)"
+  - RNCharts (from `../node_modules/react-native-charts-wrapper`)
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -532,6 +541,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - boost-for-react-native
+    - Charts
     - CocoaAsyncSocket
     - Flipper
     - Flipper-DoubleConversion
@@ -545,6 +555,7 @@ SPEC REPOS:
     - OpenSSL-Universal
     - SDWebImage
     - SDWebImageWebPCoder
+    - SwiftyJSON
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -555,7 +566,7 @@ EXTERNAL SOURCES:
   EXAV:
     :path: "../node_modules/expo-av/ios"
   EXConstants:
-    :path: "../node_modules/expo-constants/ios"
+    :path: "../node_modules/react-native-unimodules/node_modules/expo-constants/ios"
   EXFileSystem:
     :path: "../node_modules/expo-file-system/ios"
   EXGL:
@@ -632,6 +643,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeART:
     :path: "../node_modules/@react-native-community/art"
+  RNCharts:
+    :path: "../node_modules/react-native-charts-wrapper"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
   RNFastImage:
@@ -664,17 +677,18 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
+  Charts: e0dd4cd8f257bccf98407b58183ddca8e8d5b578
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
-  EXAV: 67bcc1d0afeb1fab854b206c84b9f2afbd61d0cd
-  EXConstants: 3babb61f8f4bb7dffe85b8b7d6eaa31d903e4d7e
-  EXFileSystem: 0a04aba8da751b9ac954065911bcf166503f8267
-  EXGL: a67b6bca3aff3ed5a6dc3f627ad3898acb981af7
-  EXGL_CPP: 76964bd58c8ab1932b8d86b532d66c9b32133f02
-  EXImageLoader: d3531a3fe530b22925c19977cb53bb43e3821fe6
-  EXLinearGradient: f9ea3259f096b27008860ca50764184225dc71c9
-  ExpoModulesCore: 2734852616127a6c1fc23012197890a6f3763dc7
-  EXSplashScreen: 6208ca88470ff5979fd49a08ef3feb01143a2b79
+  EXAV: f2df8aac66a8e9ffe7be4e5dded4244cf55bc864
+  EXConstants: d0969e870d37f824cc940751d8e7e3c50afe6063
+  EXFileSystem: 94496f1160b0bf7f000fe04e38ecb2aa63083a2c
+  EXGL: 0e3e92858dd8ebefd03e072642fd1fc7f3e83208
+  EXGL_CPP: 10a3262df3598a43669d26622b9bf39bf11aa168
+  EXImageLoader: 6494524ac2b99af4edcacada0e19c71600423e59
+  EXLinearGradient: 39c0836741b28dc4b7a07065e921de00abae47f3
+  ExpoModulesCore: 730c7158b2fb179ba5921230e56a083a2304974d
+  EXSplashScreen: f537a41eed0ad091fa599e1591ad4f94e38c6ca9
   FBLazyVector: 7b423f9e248eae65987838148c36eec1dbfe0b53
   FBReactNativeSpec: 0c12eec2913b56868c56dced190db0486145a30e
   Flipper: 1bd2db48dcc31e4b167b9a33ec1df01c2ded4893
@@ -700,9 +714,9 @@ SPEC CHECKSUMS:
   React-jsi: 5de8204706bd872b78ea646aee5d2561ca1214b6
   React-jsiexecutor: 124e8f99992490d0d13e0649d950d3e1aae06fe9
   React-jsinspector: 500a59626037be5b3b3d89c5151bc3baa9abf1a9
-  react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
-  react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
-  react-native-webview: 2e8fe70dc32b50d3231c23043f8e8b5a5525d346
+  react-native-safe-area-context: 5cf05f49df9d17261e40e518481f2e334c6cd4b5
+  react-native-slider: b733e17fdd31186707146debf1f04b5d94aa1a93
+  react-native-webview: b176c6404ad40d10cfc818be41c053f85a72d751
   React-perflogger: aad6d4b4a267936b3667260d1f649b6f6069a675
   React-RCTActionSheet: fc376be462c9c8d6ad82c0905442fd77f82a9d2a
   React-RCTAnimation: ba0a1c3a2738be224a08092fa7f1b444ab77d309
@@ -715,25 +729,27 @@ SPEC CHECKSUMS:
   React-RCTVibration: 4b99a7f5c6c0abbc5256410cc5425fb8531986e1
   React-runtimeexecutor: ff951a0c241bfaefc4940a3f1f1a229e7cb32fa6
   ReactCommon: bedc99ed4dae329c4fcf128d0c31b9115e5365ca
-  ReactNativeART: 78edc68dd4a1e675338cd0cd113319cf3a65f2ab
-  RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
-  RNFastImage: a7384db75df352500261e8e8f1ac2026def26102
+  ReactNativeART: f003b07dfa7098aa419ed95b69560923440b1eee
+  RNCharts: e9461314e1930516d6c986d1be00440aeb26d5f2
+  RNCMaskedView: f127cd9652acfa31b91dcff613e07ba18b774db6
+  RNFastImage: adef7f9c9a7aeca0141807ee5a8be8a3eb240dd8
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  RNReanimated: 9c13c86454bfd54dab7505c1a054470bfecd2563
-  RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
-  RNSharedElement: 00b1a1420d213a34459bb9a5aacabb38107d7948
-  RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
+  RNReanimated: 241c586663f44f19a53883c63375fdd041253960
+  RNScreens: 0591543e343c7444ea1756b6265d81a4295922c9
+  RNSharedElement: 591b3be4f03678cee37697acc62702984ea43de4
+  RNSound: 9253013eeaa051eab63d354fd4654f7aa67c82f0
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
-  SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21
-  UMAppLoader: 21af63390e55c82e037fb9752d93114a80ecf16e
-  UMCore: 2f671796d7439604a1cf8ac7bbe5809cd5c50437
-  UMReactNativeAdapter: f808906d586a16cebdc3844d86e1bdb8f114a873
-  UMTaskManagerInterface: 2be431101b73604e64fbfffcf759336f9d8fccbb
+  SDWebImageWebPCoder: f93010f3f6c031e2f8fb3081ca4ee6966c539815
+  SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
+  UMAppLoader: db2dae4bc3085e21f56d6d9cf7783d08c5999af4
+  UMCore: ad33bbda30dee343a248e3696f30502092d9842d
+  UMReactNativeAdapter: bbf1855fa899139a4b2b842581556a3602c3dd7b
+  UMTaskManagerInterface: 75462b0d8580ec91ae23f88a4f9271a3130efb02
   Yoga: a7de31c64fe738607e7a3803e3f591a4b1df7393
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 02d4daf27574b67dd320d0d49d84542ea358304e
+PODFILE CHECKSUM: c6e8fb95953b9f186fb6a70262f67d0df0646052
 
 COCOAPODS: 1.10.1
