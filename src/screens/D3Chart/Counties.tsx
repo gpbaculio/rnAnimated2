@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, StyleSheet, Animated, View, Text} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import * as d3 from 'd3';
 import * as topojson from 'topojson';
 import {Svg, G, Path, Circle, Text as SVGText} from 'react-native-svg';
@@ -10,23 +10,19 @@ import {ExtendedFeatureCollection} from 'd3';
 import us from './data/counties-albers-10m.json';
 
 import population from './data/population.json';
-import {useRef} from 'react';
 
 const {width} = Dimensions.get('window');
-const AnimatedSvg = Animated.createAnimatedComponent(Svg);
 interface CountiesProps {
   handleScroll: (b: boolean) => void;
 }
+
 const Counties = ({handleScroll}: CountiesProps) => {
-  const scale = useRef(new Animated.Value(1)).current;
-  const handlePinch = Animated.event([{nativeEvent: {scale}}], {
-    useNativeDriver: true,
-  });
-  var defaultScale = d3.geoAlbersUsa();
-  var projection = d3.geoAlbersUsa().translate([480, 300]).scale(1);
-  // projection = geoAlbersUsaPr().scale(1300).translate([487.5, 305])
-  function scaleG(scaleFactor: number, width: number, height: number) {
-    return d3.geoTransform({
+  const scaleProjection = (
+    scaleFactor: number,
+    width: number,
+    height: number,
+  ) =>
+    d3.geoTransform({
       point: function (x, y) {
         this.stream.point(
           (x - width / 2) * scaleFactor + width / 2,
@@ -34,9 +30,10 @@ const Counties = ({handleScroll}: CountiesProps) => {
         );
       },
     });
-  }
-  console.log('width: ', width);
-  const path = d3.geoPath().projection(scaleG(0.37, width / 4, width / 2));
+
+  const path = d3
+    .geoPath()
+    .projection(scaleProjection(0.37, width / 4, width / 2));
 
   const mapData = topojson.feature(
     us as unknown as Topology,
@@ -97,15 +94,7 @@ const Counties = ({handleScroll}: CountiesProps) => {
           onZoomBefore={() => {
             handleScroll(false);
           }}
-          onShiftingEnd={(event: any, gestureState: any, e: any) => {
-            console.log('Event: ', event);
-            console.log('GestureState: ', gestureState);
-            console.log('ZoomableEventObject: ', e);
-          }}
           onZoomEnd={(event: any, gestureState: any, e: any) => {
-            console.log('Event: ', event);
-            console.log('GestureState: ', gestureState);
-            console.log('ZoomableEventObject: ', e);
             if (e.zoomLevel !== 1) {
               handleScroll(false);
             } else {
@@ -126,7 +115,6 @@ const Counties = ({handleScroll}: CountiesProps) => {
                     key={`circle:${index}`}
                     r={radius(d.value)}
                     transform={`translate(${d.position})`}
-                    // fillOpacity={0.4}
                     stroke={'white'}
                   />
                 );
