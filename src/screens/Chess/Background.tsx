@@ -48,7 +48,7 @@ const Row = ({row}: RowProps) => {
   return (
     <View {...{style: styles.rowContainer}}>
       {new Array(8).fill(0).map((_, col) => (
-        <Square {...{key: col, row, col}} />
+        <Square {...{key: `row:${col}`, row, col}} />
       ))}
     </View>
   );
@@ -58,7 +58,7 @@ const Background = () => {
   return (
     <View {...{style: styles.container}}>
       {new Array(8).fill(0).map((_, row) => (
-        <Row {...{key: row, row}} />
+        <Row {...{key: `background:${row}`, row}} />
       ))}
     </View>
   );

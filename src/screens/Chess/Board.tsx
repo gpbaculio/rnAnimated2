@@ -29,6 +29,7 @@ const Board = () => {
           if (square === null) return null;
           return (
             <Piece
+              key={`piece:${j}`}
               {...{
                 enabled: state.player === square.color,
                 onTurn,

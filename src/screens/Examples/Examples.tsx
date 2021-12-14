@@ -34,6 +34,10 @@ export const examples: {
   icon?: ImageSourcePropType;
 }[] = [
   {
+    screen: 'PhoneWave',
+    title: 'Phone Wave',
+  },
+  {
     screen: 'Tarot',
     title: 'Tarot',
   },
