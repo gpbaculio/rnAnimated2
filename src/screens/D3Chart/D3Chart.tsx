@@ -13,7 +13,7 @@ const D3Chart = () => {
   };
   return (
     <Container scrollEnabled={enableScroll}>
-      <BarChart handleScroll={handleScroll} />
+      <BarChart />
       <WebChart handleScroll={handleScroll} />
       <Counties handleScroll={handleScroll} />
       <Globe />

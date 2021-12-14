@@ -88,9 +88,9 @@ const WebChart = ({handleScroll}: WebChartProps) => {
 
   const path = d3
     .arc<PieArcDatum<MockDataType>>()
-    .outerRadius(100) //must be less than 1/2 the chart's height/width
+    .outerRadius(120) //must be less than 1/2 the chart's height/width
     .padAngle(0.05) //defines the amount of whitespace between sections
-    .innerRadius(60); //the size of the inner 'donut' whitespace
+    .innerRadius(80); //the size of the inner 'donut' whitespace
 
   const color = d3
     .scaleOrdinal()
@@ -113,7 +113,7 @@ const WebChart = ({handleScroll}: WebChartProps) => {
 
     for (let i = 0; i < length; i++) {
       data.push({
-        name: 'Label',
+        name: `Item:${i}`,
         value: Math.round(min + (max - min) * Math.random()),
       });
     }
@@ -199,26 +199,42 @@ const WebChart = ({handleScroll}: WebChartProps) => {
   };
 
   const labelData = getLabelTextPoints(dataset, NUM_OF_SIDES);
-  const GRAPH_MARGIN = 20;
-  const SVGHeight = 300;
-  const SVGWidth = 300;
 
   return (
     <View style={styles.container}>
       <View style={styles.zoomWrapper}>
-        <Svg style={{backgroundColor: 'yellow'}} width={width} height={width}>
-          <G x={width / 2} y={height / 2} scale={1}>
-            {sectionAngles.map((section, index) => (
-              <Path
-                key={section.index}
-                d={path(section) as string}
-                stroke=""
-                fill={`${color(`${index}`)}`}
-                strokeWidth={1}
-              />
-            ))}
-          </G>
-        </Svg>
+        <ReactNativeZoomableView
+          zoomEnabled={true}
+          maxZoom={4}
+          minZoom={1}
+          zoomStep={0.25}
+          initialZoom={1}
+          bindToBorders={true}
+          style={styles.zoomableView}
+          onZoomBefore={() => {
+            handleScroll(false);
+          }}
+          onZoomEnd={(_: any, __: any, e: any) => {
+            if (e.zoomLevel !== 1) {
+              handleScroll(false);
+            } else {
+              handleScroll(true);
+            }
+          }}>
+          <Svg style={{backgroundColor: 'purple'}} width={width} height={width}>
+            <G x={width / 2} y={width / 2}>
+              {sectionAngles.map((section, index) => (
+                <Path
+                  key={section.index}
+                  d={path(section) as string}
+                  stroke="yellow"
+                  fill={`${color(`${index}`)}`}
+                  strokeWidth={1}
+                />
+              ))}
+            </G>
+          </Svg>
+        </ReactNativeZoomableView>
         <ReactNativeZoomableView
           zoomEnabled={true}
           maxZoom={4}
@@ -283,14 +299,12 @@ const WebChart = ({handleScroll}: WebChartProps) => {
                 fill="none"
                 strokeWidth={3}
               />
-
               <Path
                 d={lineGenerator(points2) as string}
                 stroke="white"
                 fill="none"
                 strokeWidth={3}
               />
-
               <Path
                 d={lineGenerator(points3) as string}
                 stroke="blue"
