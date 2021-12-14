@@ -59,7 +59,7 @@ export const examples: {
   },
   {
     screen: 'D3Chart',
-    title: 'D3Chart',
+    title: 'Interactable Zoom/Pan D3Charts',
   },
   {
     screen: 'FbLiveVideoReaction',

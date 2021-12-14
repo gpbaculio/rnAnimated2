@@ -136,7 +136,7 @@ const AppNavigator = () => (
         name="D3Chart"
         component={D3Chart}
         options={{
-          title: 'D3Chart',
+          title: 'Zoom/Pan D3 Charts',
         }}
       />
       <Stack.Screen
