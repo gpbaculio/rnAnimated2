@@ -35,3 +35,4 @@ export {default as LockScreen} from './LockScreen';
 export {default as RotaryLogin} from './RotaryLogin';
 export {default as WheelOfFortune} from './WheelOfFortune';
 export {default as Flip3d} from './Flip3d';
+export {Tarot} from './Tarot';
