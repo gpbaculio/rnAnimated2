@@ -33,10 +33,10 @@ export const examples: {
   title: string;
   icon?: ImageSourcePropType;
 }[] = [
-  // {
-  //   screen: 'RotaryLogin',
-  //   title: 'RotaryLogin',
-  // },
+  {
+    screen: 'RotaryLogin',
+    title: 'RotaryLogin',
+  },
   {
     screen: 'Flip3d',
     title: 'Flip3d',
