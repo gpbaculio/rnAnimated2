@@ -42,6 +42,7 @@ import {
   WheelOfFortune,
   Flip3d,
   Tarot,
+  PhoneWave,
 } from '../screens';
 import {styleGuide} from '../screens/constants';
 
@@ -84,6 +85,7 @@ export type AppStackNavigatorType = {
   WheelOfFortune: undefined;
   Flip3d: undefined;
   Tarot: undefined;
+  PhoneWave: undefined;
 };
 
 const Stack = createStackNavigator<AppStackNavigatorType>();
@@ -111,6 +113,13 @@ const AppNavigator = () => (
         component={Tarot}
         options={{
           title: 'Tarot',
+        }}
+      />
+      <Stack.Screen
+        name="PhoneWave"
+        component={PhoneWave}
+        options={{
+          title: 'PhoneWave',
         }}
       />
       <Stack.Screen
