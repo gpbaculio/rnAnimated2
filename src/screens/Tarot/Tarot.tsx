@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
+import {useSharedValue} from '../Chrome/Animations';
 
 import {Card} from './Card';
 
@@ -33,10 +34,11 @@ const cards = [
 export const assets = cards.map(card => card.source);
 
 export const Tarot = () => {
+  const shuffleBack = useSharedValue(false);
   return (
     <View style={styles.container}>
       {cards.map((card, index) => (
-        <Card card={card} key={index} index={index} />
+        <Card card={card} key={index} index={index} shuffleBack={shuffleBack} />
       ))}
     </View>
   );
