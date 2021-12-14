@@ -210,7 +210,7 @@ const WebChart = ({handleScroll}: WebChartProps) => {
           zoomStep={0.25}
           initialZoom={1}
           bindToBorders={true}
-          style={styles.zoomableView}
+          style={{backgroundColor: 'red'}}
           onZoomBefore={() => {
             handleScroll(false);
           }}
@@ -221,7 +221,7 @@ const WebChart = ({handleScroll}: WebChartProps) => {
               handleScroll(true);
             }
           }}>
-          <Svg style={{backgroundColor: 'purple'}} width={width} height={width}>
+          <Svg width={width} height={width}>
             <G x={width / 2} y={width / 2}>
               {sectionAngles.map((section, index) => (
                 <Path
@@ -235,6 +235,8 @@ const WebChart = ({handleScroll}: WebChartProps) => {
             </G>
           </Svg>
         </ReactNativeZoomableView>
+      </View>
+      <View style={styles.zoomWrapper}>
         <ReactNativeZoomableView
           zoomEnabled={true}
           maxZoom={4}
@@ -242,7 +244,7 @@ const WebChart = ({handleScroll}: WebChartProps) => {
           zoomStep={0.25}
           initialZoom={1}
           bindToBorders={true}
-          style={styles.zoomableView}
+          style={{backgroundColor: 'green'}}
           onZoomBefore={() => {
             handleScroll(false);
           }}
