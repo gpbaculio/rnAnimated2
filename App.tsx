@@ -1,3 +1,4 @@
+import 'react-native-reanimated';
 import React, {useState} from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
