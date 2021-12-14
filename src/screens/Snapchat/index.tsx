@@ -4,7 +4,6 @@ import {createSharedElementStackNavigator} from 'react-navigation-shared-element
 import Snapchat, {stories} from './Snapchat';
 import StoryComp from './Story';
 import {SnapchatRoutes} from './Model';
-import {RouteProp} from '@react-navigation/core';
 
 export const assets = stories.map(story => [story.avatar, story.source]).flat();
 

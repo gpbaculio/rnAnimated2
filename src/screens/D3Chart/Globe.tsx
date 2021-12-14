@@ -4,7 +4,6 @@ import {feature} from 'topojson-client';
 import {GeometryObject, Topology} from 'topojson-specification';
 import {ExtendedFeatureCollection} from 'd3';
 import * as d3 from 'd3';
-import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
 import {Svg, G, Circle, Path} from 'react-native-svg';
 import Animated, {
   runOnJS,
@@ -18,8 +17,6 @@ import countries from './data/countries-110m.json';
 import {
   PanGestureHandler,
   PanGestureHandlerGestureEvent,
-  PinchGestureHandler,
-  PinchGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
 
 const COUNTRIES = feature(
@@ -27,7 +24,8 @@ const COUNTRIES = feature(
   countries.objects.countries as GeometryObject,
 ) as ExtendedFeatureCollection;
 
-const {width: SVG_WIDTH, height} = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
+const SVG_WIDTH = width - 20;
 const SVG_HEIGHT = height / 2;
 const clipAngle = 90;
 const AnimatedSvg = Animated.createAnimatedComponent(Svg);
@@ -77,11 +75,6 @@ const Globe = () => {
     return [xdata, ydata, opacity];
   });
 
-  const scale = useSharedValue(1);
-
-  const focalX = useSharedValue(0);
-  const focalY = useSharedValue(0);
-
   const onGestureEvent = useAnimatedGestureHandler<
     PanGestureHandlerGestureEvent,
     {
@@ -108,86 +101,43 @@ const Globe = () => {
     [translateX, translateY],
   );
 
-  const onPinchGesture = useAnimatedGestureHandler<
-    PinchGestureHandlerGestureEvent,
-    {scale: number}
-  >({
-    onStart: (_, ctx) => {
-      ctx.scale = scale.value;
-    },
-    onActive: (event, ctx) => {
-      scale.value = event.scale;
-      focalX.value = event.focalX;
-      focalY.value = event.focalY;
-    },
-  });
-
-  const style = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {translateX: focalX.value},
-        {translateY: focalY.value},
-        {translateX: -SVG_WIDTH / 2},
-        {translateY: -SVG_HEIGHT / 2},
-        {scale: scale.value},
-        {translateX: -focalX.value},
-        {translateY: -focalY.value},
-        {translateX: SVG_WIDTH / 2},
-        {translateY: SVG_HEIGHT / 2},
-      ],
-    };
-  });
-
   return (
-    // <PanGestureHandler onGestureEvent={onGestureEvent}>
-    //   <Animated.View>
-    //     <PinchGestureHandler onGestureEvent={onPinchGesture}>
-    //       <Animated.View style={style}>
-    <ReactNativeZoomableView
-      zoomEnabled={true}
-      maxZoom={4}
-      minZoom={1}
-      zoomStep={0.25}
-      initialZoom={1}
-      bindToBorders={true}
-      onZoomEnd={(event: any, gestureState: any, e: any) => {
-        console.log('Event: ', event);
-        console.log('GestureState: ', gestureState);
-        console.log('ZoomableEventObject: ', e);
-      }}>
-      <AnimatedSvg width={SVG_WIDTH} height={SVG_HEIGHT}>
-        <G scale={1}>
-          <Circle
-            cx={SVG_WIDTH / 2}
-            cy={mapExtent / 2}
-            r={mapExtent / 2}
-            fill={'#0099FF'}
-          />
-          <Path
-            d={`${geoPath(COUNTRIES)}`}
-            stroke={'#666666'}
-            strokeOpacity={0.3}
-            strokeWidth={0.6}
-            fill={'#DDDDDD'}
-            opacity={1}
-          />
-          {pointers.map((d, i) => (
+    <PanGestureHandler onGestureEvent={onGestureEvent}>
+      <Animated.View>
+        <Svg
+          style={{backgroundColor: 'black'}}
+          width={SVG_WIDTH + 20}
+          height={SVG_HEIGHT}>
+          <G x={10} y={10} scale={1}>
             <Circle
-              key={`circle:${i}`}
-              cx={d[0]}
-              cy={d[1]}
-              r={6}
-              fillOpacity={0.5}
-              opacity={d[2]}
-              fill="red"
+              cx={SVG_WIDTH / 2}
+              cy={mapExtent / 2}
+              r={mapExtent / 2}
+              fill={'#0099FF'}
             />
-          ))}
-        </G>
-      </AnimatedSvg>
-    </ReactNativeZoomableView>
-    //     </PinchGestureHandler>
-    //   </Animated.View>
-    // </PanGestureHandler>
+            <Path
+              d={`${geoPath(COUNTRIES)}`}
+              stroke={'#666666'}
+              strokeOpacity={0.3}
+              strokeWidth={0.6}
+              fill={'#DDDDDD'}
+              opacity={1}
+            />
+            {pointers.map((d, i) => (
+              <Circle
+                key={`circle:${i}`}
+                cx={d[0]}
+                cy={d[1]}
+                r={6}
+                fillOpacity={0.5}
+                opacity={d[2]}
+                fill="red"
+              />
+            ))}
+          </G>
+        </Svg>
+      </Animated.View>
+    </PanGestureHandler>
   );
 };
 
